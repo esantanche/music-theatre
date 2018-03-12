@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en" ng-app="MusicTheatreApp">
+<head>
+    <meta charset="utf-8">
+    <title ng-bind="title"></title>
+    <!--<title>MusicTheatre</title>-->
+    <link rel="stylesheet" href="/css/stylesheets/screen.css"/>
+    <link rel="stylesheet" href="/css/stylesheets/scrollbar.css"/>
+    <link rel="stylesheet" href="/css/stylesheets/ngDialog.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/stylesheets/ng-img-crop.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/stylesheets/font-awesome.css"/>
+    <!-- @todo Which one are you using? default or plain? Get rid of the other one-->
+    <link rel="stylesheet" href="/css/stylesheets/ngDialog-theme-musictheatre.css"/>
+
+    <!--<script type="text/javascript" src="/flowplayer/flowplayer-3.2.4.min.js"></script>-->
+
+    <!--/vol/WORKnARCH/SwProjects/musictheatre/production/frontends/angular/app/jwplayer/jwplayer-7.2.4/jwplayer.js-->
+
+    <script type="text/javascript" src="/jwplayer/jwplayer-7.2.4/jwplayer.js"></script>
+    <!--script type="text/javascript">
+          window.onpopstate = function(event) {
+              console.debug("onpopstate location: " + document.location + ", state: " + JSON.stringify(event.state));
+          };
+          window.onload = function() { console.debug("onload"); };
+    </script -->
+
+</head>
+<body class="page-wrapper">
+
+    <div class="tagring-pane-container" ng-if="show_tagring">
+
+        <div class="non-omega-pane-1-of-30">&nbsp;</div>
+
+        <div id="tag-ring" class="non-omega-pane-28-of-30">
+
+        </div>
+
+        <div class="omega-pane-1-of-30">&nbsp;</div>
+
+    </div>
+
+    <div ng-view></div>
+
+    <!-- In production use:
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+    -->
+    <script src="/lib/angular/angular.js"></script>
+	<script src="/lib/angular/angular-route.js"></script>
+    <script src="/lib/angular/angular-resource.js"></script>
+    <script src="/lib/angular/angular-animate.js"></script>
+    <script src="/lib/angular/angular-sanitize.js"></script>
+	<script src="/js/app.js"></script>
+
+    <script src="/lib/Moment.js/moment.js"></script>
+    <script src="/lib/angular-moment/angular-moment.min.js"></script>
+
+    <script src="/lib/ngdialog/ngDialog.js"></script>
+
+    <script src="/js/directives/ngLoadScriptDir.js"></script>
+    <script src="/js/directives/ngPasswordStrengthDir.js"></script>
+    <script src="/js/directives/uppercaseDir.js"></script>
+    <script src="/js/directives/ngPostDir.js"></script>
+    <script src="/js/directives/ngReviewDir.js"></script>
+    <script src="/js/directives/ngGroupDir.js"></script>
+    <script src="/js/directives/ng-img-crop.js"></script>
+
+    <!--<script src="/js/directives/ngVoteDir.js"></script>-->
+
+    <script src="/js/controllers/TagViewCtrl.js"></script>
+    <script src="/js/controllers/ShopViewCtrl.js"></script>
+    <script src="/js/controllers/LoginFormCtrl.js"></script>
+    <script src="/js/controllers/ShoppingOrderPanelCtrl.js"></script>
+    <script src="/js/controllers/Checkout_checkoutFormCtrl.js"></script>
+    <script src="/js/controllers/UserViewCtrl.js"></script>
+    <script src="/js/controllers/RegisterPanelCtrl.js"></script>
+    <script src="/js/controllers/CommentsFormCtrl.js"></script>
+    <script src="/js/controllers/ReviewsFormCtrl.js"></script>
+    <script src="/js/controllers/SocialViewCtrl.js"></script>
+    <script src="/js/controllers/FansPanelCtrl.js"></script>
+    <script src="/js/controllers/FooterPanelCtrl.js"></script>
+
+    <script src="/js/services/programmeService.js"></script>
+    <script src="/js/services/userService.js"></script>
+    <script src="/js/services/userhelperService.js"></script>
+    <script src="/js/services/base64Service.js"></script>
+
+    <script src="/js/services/urlskitService.js"></script>
+    <script src="/js/services/permalinkhelperService.js"></script>
+    <script src="/js/services/programmehelperService.js"></script>
+    <script src="/js/services/urlskithelperService.js"></script>
+    <script src="/js/services/downloadableurlhelperService.js"></script>
+    <script src="/js/services/downloadableurlService.js"></script>
+    <script src="/js/services/videoplayerhelperService.js"></script>
+    <script src="/js/services/tagringhelperService.js"></script>
+    <script src="/js/services/clientexceptionhelperService.js"></script>
+    <script src="/js/services/clientexceptionService.js"></script>
+    <script src="/js/services/messagehelperService.js"></script>
+    <script src="/js/services/messageService.js"></script>
+    <script src="/js/services/searchtermhelperService.js"></script>
+    <script src="/js/services/searchtermService.js"></script>
+
+    <script src="/js/services/orderService.js"></script>
+    <script src="/js/services/orderhelperService.js"></script>
+    <script src="/js/services/lineitemService.js"></script>
+    <script src="/js/services/lineitemhelperService.js"></script>
+    <script src="/js/services/customerprofileService.js"></script>
+    <script src="/js/services/customerprofilehelperService.js"></script>
+    <script src="/js/services/paymenttransactionService.js"></script>
+    <script src="/js/services/paymenttransactionhelperService.js"></script>
+    <script src="/js/services/geoinfohelperService.js"></script>
+
+    <script src="/js/services/producthelperService.js"></script>
+    <script src="/js/services/productService.js"></script>
+
+    <script src="/js/services/commenthelperService.js"></script>
+    <script src="/js/services/commentService.js"></script>
+
+    <script src="/js/services/reviewhelperService.js"></script>
+    <script src="/js/services/reviewService.js"></script>
+
+    <script src="/js/services/votehelperService.js"></script>
+    <script src="/js/services/voteService.js"></script>
+
+    <script src="/js/services/votesaggregatehelperService.js"></script>
+    <script src="/js/services/votesaggregateService.js"></script>
+
+    <script src="/js/services/flagginghelperService.js"></script>
+    <script src="/js/services/flaggingService.js"></script>
+
+    <script src="/js/services/grouphelperService.js"></script>
+    <script src="/js/services/groupService.js"></script>
+
+    <script src="/js/services/posthelperService.js"></script>
+    <script src="/js/services/postService.js"></script>
+
+    <script src="/js/services/dialoghelperService.js"></script>
+
+    <script src="/js/filters/crlf2pFilter.js"></script>
+    <script src="/js/filters/durationFilter.js"></script>
+    <script src="/js/filters/ISOdurationFilter.js"></script>
+    <script src="/js/filters/priceFilter.js"></script>
+    <script src="/js/filters/truncateFilter.js"></script>
+
+    <script src="/lib/downloadfile/downloadfile.js"></script>
+
+    <script src="https://www.google.com/jsapi" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        google.load("swfobject", "2.2");
+        // @todo do we need this?
+        if (window.history && window.history.pushState) {
+            console.info('It looks like there is html5 support')
+        } else {
+            console.info('It looks like there is NO html5 support')
+        }
+    </script>
+
+</body>
+</html>

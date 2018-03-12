@@ -1,0 +1,201 @@
+<div class="omega-pane-{{totalnumberofcolumns}}-of-{{totalnumberofcolumns}}"
+     ng-if="oneditmode || review.id">
+
+    <!--<div class="non-omega-pane-1-of-{{totalnumberofcolumns}}">-->
+        <!--&nbsp;-->
+    <!--</div>-->
+
+    <div class="large-avatar-pane-{{totalnumberofcolumns}}" ng-show="!alwaysonedit">
+
+        <img ng-show="!review.avatar" src="/backend/sites/default/files/pictures/noavatarchosen.png" width="30"/>
+
+        <img ng-show="review.avatar" ng-src="{{review.avatar}}" width="30"/>
+
+    </div>
+
+    <!--<div class="large-avatar-pane-{{totalnumberofcolumns}}" ng-show="alwaysonedit">-->
+
+        <!--&lt;!&ndash;<img ng-src="{{user.avatar}}" width="30"/>&ndash;&gt;-->
+
+        <!--&nbsp;-->
+
+    <!--</div>-->
+
+    <div class="omega-pane-{{totalnumberofcolumns - 2 + (alwaysonedit ? 2:0)}}-of-{{totalnumberofcolumns}}">
+
+        <div class="omega-pane-{{totalnumberofcolumns - 2 + (alwaysonedit ? 2:0)}}-of-{{totalnumberofcolumns - 2 + (alwaysonedit ? 2:0)}}">
+
+            <div class="non-omega-pane-{{totalnumberofcolumns - 4 + (alwaysonedit ? 2:0)}}-of-{{totalnumberofcolumns - 2 + (alwaysonedit ? 2:0)}}">
+
+                <div ng-if="review.uid == user.uid" class="dark-grey-text">
+                    {{ review.name }}
+                </div>
+
+                <div ng-if="review.uid != user.uid">
+                    <a ng-href="{{review.user_profile_permalink}}" class="left-menu-text">{{ review.name }}</a>
+                </div>
+
+            </div>
+
+            <div class="omega-pane-2-of-{{totalnumberofcolumns - 2 + (alwaysonedit ? 2:0)}} bluish-bold-text">
+
+                {{ review.status | uppercase }}
+
+            </div>
+
+        </div>
+
+        <div class="omega-pane-{{totalnumberofcolumns - 2 + (alwaysonedit ? 2:0)}}-of-{{totalnumberofcolumns - 2 + (alwaysonedit ? 2:0)}}">
+
+            <div ng-if="oneditmode">
+
+                <!--<div ng-if="alwaysonedit" class="dark-grey-text">-->
+                    <!--Create a new review!-->
+                <!--</div>-->
+
+                <input type="text" name="reviewtitle" ng-model="review.title" class="inputfield">
+
+                <textarea rows="5"
+                          cols="{{100 * (totalnumberofcolumns / 30)}}"
+                          name="reviewbody" ng-model="review.body"
+                          class="standardtextarea"></textarea>
+
+            </div>
+            <div ng-if="!oneditmode">
+
+                <div class="header3-text" style="white-space: pre-wrap">{{ review.title }}</div>
+
+                <div class="dark-grey-text" style="white-space: pre-wrap">{{ review.body }}</div>
+
+            </div>
+        </div>
+
+        <!--style="text-align: right; font-weight: bold; cursor: pointer"-->
+
+        <div class="omega-pane-{{totalnumberofcolumns - 2 + (alwaysonedit ? 2:0)}}-of-{{totalnumberofcolumns - 2 + (alwaysonedit ? 2:0)}}">
+
+            <span ng-click="do_edit_mode()"
+                  ng-show="review.uid == user.uid && user.uid && ! oneditmode && review.status == 'draft'"
+                  class="info-text light-grey-fixed-width-mini-button" style="float: right">Edit</span>
+
+            <span ng-click="do_delete()"
+                  ng-show="review.uid == user.uid && user.uid && ! oneditmode && review.status == 'draft'"
+                  class="info-text light-grey-fixed-width-mini-button" style="float: right">Delete</span>
+
+            <span ng-click="do_save()"
+                  ng-show="oneditmode"
+                  class="info-text light-grey-fixed-width-mini-button" style="float: right">Save</span>
+
+            <span ng-click="do_submit()"
+                  ng-show="review.uid == user.uid && user.uid && ! oneditmode && review.status == 'draft'"
+                  class="info-text light-grey-fixed-width-mini-button" style="float: right">Submit</span>
+
+            <span ng-click="do_cancel()"
+                  ng-show="oneditmode && !alwaysonedit"
+                  class="info-text light-grey-fixed-width-mini-button" style="float: right">Cancel</span>
+
+            &nbsp;
+
+        </div>
+
+    </div>
+
+    <!--<div class="omega-pane-1-of-{{totalnumberofcolumns}}">-->
+        <!--&nbsp;-->
+    <!--</div>-->
+
+</div>
+
+<!--<div class="omega-pane-{{totalnumberofcolumns}}-of-{{totalnumberofcolumns}}">-->
+
+    <!--<div class="non-omega-pane-3-of-{{totalnumberofcolumns}}">-->
+        <!--&nbsp;-->
+    <!--</div>-->
+
+    <!--<div class="non-omega-pane-{{totalnumberofcolumns - 4}}-of-{{totalnumberofcolumns}}">-->
+
+        <!--&lt;!&ndash;<div ng-if="review.rating.sum != null">&ndash;&gt;-->
+
+            <!--&lt;!&ndash;sum {{ review.rating.sum | number : 0 }} ({{ review.rating.count }} votes)&ndash;&gt;-->
+
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+        <!--&nbsp;-->
+
+    <!--</div>-->
+
+    <!--<div class="omega-pane-1-of-{{totalnumberofcolumns}}">-->
+        <!--&nbsp;-->
+
+    <!--</div>-->
+
+<!--</div>-->
+
+<div class="omega-pane-{{totalnumberofcolumns}}-of-{{totalnumberofcolumns}}">
+
+    <div class="non-omega-pane-3-of-{{totalnumberofcolumns}}">
+        &nbsp;
+    </div>
+
+    <div class="omega-pane-{{totalnumberofcolumns - 3}}-of-{{totalnumberofcolumns}}">
+
+        <div ng-show="review.uid != user.uid && user.uid && !oneditmode && review.status == 'published' && !alwaysonedit">
+
+            <!--<span ng-if="review.vote_user_gave_to_review.value">-->
+                <!--your vote: {{ review.vote_user_gave_to_review.value }}-->
+            <!--</span>-->
+
+            <!--Rate this review ->-->
+
+            <div class="non-omega-pane-5-of-{{totalnumberofcolumns - 3}}">
+
+                <span ng-show="review.vote_user_gave_to_review.value == 0">
+
+                    Rate this review <i class="fa fa-arrow-right"></i>
+
+                </span>
+
+                <span ng-show="review.vote_user_gave_to_review.value == 1 ||
+                               review.vote_user_gave_to_review.value == -1">
+
+                    How you rated this review <i class="fa fa-arrow-right"></i>
+
+                </span>
+
+            </div>
+
+            <div class="omega-pane-{{totalnumberofcolumns - 8}}-of-{{totalnumberofcolumns - 3}}"
+                 style="margin-top: -6px">
+
+                <span ng-mouseover="voteinfo.mouse_over_thumb = true" ng-mouseout="voteinfo.mouse_over_thumb = false">
+
+                    <img src="/images/thumbs_white.png"
+                         ng-show="review.vote_user_gave_to_review.value == 0 && !voteinfo.mouse_over_thumb">
+
+                    <img src="/images/thumbs_up.gif"
+                         ng-show="review.vote_user_gave_to_review.value == 0 && voteinfo.mouse_over_thumb"
+                         ng-click="review.vote_user_gave_to_review.value = 1; do_rate()">
+
+                    <img src="/images/thumbs_up.gif"
+                         ng-show="review.vote_user_gave_to_review.value == 1"
+                         ng-click="review.vote_user_gave_to_review.value = -1; do_rate()">
+
+                    <img src="/images/thumbs_down.gif"
+                         ng-show="review.vote_user_gave_to_review.value == -1"
+                         ng-click="review.vote_user_gave_to_review.value = 1; do_rate()">
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--<div class="omega-pane-1-of-{{totalnumberofcolumns}}">-->
+        <!--&nbsp;-->
+
+    <!--</div>-->
+
+</div>
+

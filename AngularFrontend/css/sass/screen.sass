@@ -1,0 +1,357 @@
+/*
+  Welcome to Compass.
+  In this file you should write your main styles. (or centralize your imports)
+  Import this file using the following HTML or equivalent:
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// How to compile this file
+// FIXME
+////////////////////////////////////////////////////////////////////////////////////////////
+
+@import compass/reset
+@import "form_reset"
+@import compass/css3/transition
+@import compass/css3/transform
+// This has to be susyone because, if we upgrade to susy two, we have to change everything
+@import susyone
+@import compass/typography/lists/horizontal-list
+@import compass/css3/text-shadow
+@import compass/utilities/sprites
+@import compass/typography/links/hover-link
+@import tooltip
+// @todo are we still using sassy buttons?
+//@import sassy-buttons
+
+// Suzy grid parameters
+
+// Our grid is 1040px wide, 30 columns
+// Each columm is 25 px wide with a 10px gutter between columns
+// Remember that there is no gutter at the right of the last column
+
+$total-columns: 30           // 30 columns grid
+$column-width: 25px          // each column is 25px wide
+$gutter-width: 10px          // 10px gutters between columns
+$grid-padding: 0px           // no grid padding
+$container-style: static
+$grid-width: columns-width()
+$half-grid-width: $grid-width/2
+
+// Video player parameters
+
+$videoplayer-width: 640px
+$videoplayer-height: 360px
+$half-videoplayer-width: $videoplayer-width/2
+
+// Some heights
+
+$header-height: 50px
+$info-panel-height: 300px
+$login-panel-height: 520px
+$half-info-panel-height: $info-panel-height/2
+$tabs-horizontal-menu-pane-container-height: 40px
+$slanting-lines-pane-height: 30px
+$margin-between-header-and-tabs: 10px
+$input-field-height: 30px
+$social-view-main-pane-container-height: 750px
+$user-profile-view-main-pane-container-height: 750px
+$new-review-pane-container-height: 440px
+$footer-height: 300px
+$tagview-height: 608px
+
+// Z indexes
+
+$z-index-layer-background: 100
+$z-index-layer-tagring: 200
+$z-index-layer-header-menu: $z-index-layer-tagring
+$z-index-layer-footer: 250
+$z-index-layer-login-menu: 1000 // @todo fix this
+$z-index-layer-infopanel: 300
+$z-index-layer-new-review: 3500
+$z-index-left-menu: 350
+$z-index-layer-videoplayer-back-panel: 400
+$z-index-layer-videoplayer: 500
+$z-index-layer-near-top-pane-container: 600
+//$z-index-layer-loginpanel: 600
+
+// Colors
+
+$subtitle-color: #676767
+$info-panel-nav-button-text-color: #707070
+$soft-text-color: #acacac
+$soft-border-color: #ececec
+$soft-highlighting-color: #ececec
+$left-menu-text-color: #2d6297
+$background-color-for-input-fields: #f5f5f5
+$light-grey-for-labels: #888
+$dark-grey-for-labels: #2f2f2f
+
+// Radius of some borders
+
+$input-field-border-radius: 8px
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// Object oriented sass
+// We follow an object oriented approach.
+// In the following each class is defined and its subclasses are supposed to follow the
+// definition.
+// Each class and subclass should follow avoid properties that don't match the definition.
+// For example, classes that are about text elements shouldn't include positioning
+// properties. The latter should be attached to pane classes.
+// Likewise pane classes shouldn't include text properties like font.
+// FIXME anything more to say here?
+////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// Good practices
+// * It's best to begin each class sass file with the top-level classes.
+// * The idea of object oriented sass is that, if two classes share common properties,
+//   a superclass should be created that includes the common properties and the two classes
+//   should inherit from it.
+// * Sometimes classes share no common properties and there will be no superclass.
+// * Class names end with the type of object. For example a button class will have a name
+//   ending with '-button'
+// * FIXME what about name conventions?
+// FIXME anything more to say here?
+////////////////////////////////////////////////////////////////////////////////////////////
+
+//  @todo write comments about the conventions: put an element in its main class tree
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// WRAPPERS
+// Definition of wrapper:
+// The purposes of wrappers are several, including:
+//
+// * to group elements semantically, for instance to separate page heading
+//   from body text from sidebar from footer.
+// * to group elements cosmetically, such as with a surrounding border or a
+//   common background image or color.
+// * to group elements in layout, such as to keep them all in the same column
+//   when columns are floated next to one another.
+// * to enable special positioning, as when a wrapper is given relative
+//   positioning in order to contain child elements with absolute positioning.
+// * to make it more convenient to specify elements in CSS and JavaScript by
+//   referring to their parent, without having to id or class each child
+//   element
+// (from http://www.webteacher.ws/2005/02/01/494/)
+////////////////////////////////////////////////////////////////////////////////////////////
+
+@import "wrappers"
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// PANE CONTAINERS
+// Pane containers contain one or more panes and each one of them, in our case, is
+// an instance of susy grid.
+// So, each one of them contains all susy columns in the number specified above.
+// Pane containers specify any z index and any background.
+// Overflow property should be here as well.
+// Backgrounds may be overridden by single panes.
+////////////////////////////////////////////////////////////////////////////////////////////
+
+@import "pane-containers"
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// PANES
+// Panes define the positioning of elements.
+// They are usually grid rows, cells or groups of cells.
+// They may define backgrounds, overriding the ones defined in the pane container
+// that contains them.
+// They may define border, height, padding and margin.
+////////////////////////////////////////////////////////////////////////////////////////////
+
+@import "panes"
+
+///////////////////////////////////////////////////
+// INDEPENDENT PANES
+// These panes are neither in a grid nor in a pane container
+// They may define background, border, height, padding and margin.
+///////////////////////////////////////////////////
+
+@import "independent-panes"
+
+//////////////////////////////////////////////////////////////
+// BUTTONS
+// Buttons are actually subclasses of a generic 'actionable' superclass
+// that you won't find in this file because it would have too few classes in it
+// to bother defining it explicitly.
+// Such 'actionable' superclass would be the class of all elements that you can click on to
+// perform an action.
+// Buttons are actionables that appear visually as buttons regardless
+// of their html markup (a/button/input)
+// They can have these properties: cursor, display, height, width, background, box-shadow
+// border-radius
+// There shouldn't be positioning properties, even tough it may happen to have
+// padding specified if it can't be specified in panes
+/////////////////////////////////////////////////////////////
+
+@import "buttons"
+
+////////////////////////////////////////////////////////////////
+// LINKS
+// Our notion of link is more general than the one you may find on the web
+// Our links are actionables, see buttons, and have the aspect of a link
+// regardless of their html markup.
+// Not necessarily they go to a URL.
+// Like buttons, links don't allow positions properties, the latter go to panes.
+// It may happen to have padding specified if it can't be specified in panes
+////////////////////////////////////////////////////////////////
+
+@import "links"
+
+//////////////////////////////////////////////////////////////
+// TABS
+// FIXME
+// a defining characteristic of a tab is that it "remembers"
+// that it has been clicked. It represents a state.
+// When clicked it changes colour and keeps it until another
+// tab (in the same group) is clicked
+// FIXME Def: Elements that have the function of a button regardless
+// of their html markup (a/button/input), but they change
+// the content of a pane, not of the entire page
+// They don't have any other function than changing a pane's
+// content, whilst button may have any function
+// There shouldn't be positioning properties, even tough it may happen to have
+// padding specified if it can't be specified in panes
+/////////////////////////////////////////////////////////////
+
+// @todo tags to come
+
+@import "tabs"
+
+//////////////////////////////////////////////////////////////
+// IMAGES
+// FIXME Def: Images
+// images can't be clicked, otherwise they are buttons
+// @todo do we need this section?
+/////////////////////////////////////////////////////////////
+
+// @todo maybe I have some images after all
+
+// @todo now empty @import "images"
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// SPRITES
+// FIXME
+////////////////////////////////////////////////////////////////////////////////////////////
+
+// @todo this vertical menu has been used for the shopping view that has been abandoned
+// do we it any more?
+// @todo dont delete this, we may need it in user profile
+
+// @todo I'm about to use it for user profile!!
+
+@import "sprites/vertical-left-menu/*.png"
+@include all-vertical-left-menu-sprites
+
+////////////////////////////////////////////////////////////////
+// TEXTS
+// These classes define font, text color, text-overflow,
+// overflow, white-space, text-indent, text-align,
+// text-decoration
+// No positioning here, not even padding
+////////////////////////////////////////////////////////////////
+
+@import "texts"
+
+////////////////////////////////////////////////////////////////
+// INPUT FIELDS
+// FIXME definition
+////////////////////////////////////////////////////////////////
+
+// @todo maybe we want to use this class to specify input fields width
+
+@import "inputfields"
+
+////////////////////////////////////////////////////////////////
+// ANIMATIONS
+// FIXME definition
+////////////////////////////////////////////////////////////////
+
+//.animate-show
+//  background: transparent .animate-show.ng-hide-add,
+
+// @todo this is plain mess
+
+// @todo wait a moment! This might be the infopanel animation!
+
+.animate-show.ng-hide-remove
+  display: block!important
+  +transition(all, 1s)
+
+.animate-show.ng-hide-add.ng-hide-add-active, .animate-show.ng-hide-remove
+  margin-top: 300px
+
+.animate-show.ng-hide-add, .animate-show.ng-hide-remove.ng-hide-remove-active
+  margin-top: 0
+
+////////////////////////////////////////////////////////////////
+// Html standard tags
+// FIXME definition
+// When including content fragments, (see  frontends/angular/app/includes/content_fragments/)
+// there will be standard html tags like h1 or p
+// we have to format them
+////////////////////////////////////////////////////////////////
+
+@import "standardhtmltags"
+
+////////////////////////////
+// experiments
+// @todo cleanup here please!!
+///////////////////////////
+
+// @todo used for box shadows for shopping cart, refactor it
+// It might disappear, actually, if it doesn't fit the design
+.temp-box
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2) /* @todo */
+
+// @todo this is used but it's supposed to be eliminated
+.bordered-table
+  border: 1px solid black
+  padding: 3px
+  margin: 3px
+
+// @todo used in social view, but it will be replaced by a better one
+// false means no padding
+.menu-list
+  +horizontal-list(false)
+
+.menu-list-reverse
+  +horizontal-list(false, right)
+
+.gradient-example
+  width: 150px
+  height: 26px
+  background: red
+  cursor: pointer
+  margin-bottom: 5px
+  margin-top: 5px
+  vertical-align: bottom
+  //float: left
+  //margin: 1em 1em 0 0
+  $svg-gradient-shim-threshold: 1 !global
+  //+background-image(linear-gradient(120deg, #2ac363, #cd8c14, #9c4cc2))
+  //+background-image(linear-gradient(120deg, #e5e5e5, #fdfdfd, #9c4cc2))
+  //+background-image(linear-gradient(to bottom left, #fdfdfd, #e5e5e5))
+  +background-image(linear-gradient(30deg, #e5e5e5, #f1f1f1))
+  //+background-image(linear-gradient(150deg, #e5e5e5, #f1f1f1, #fdfdfd))
+  &:hover
+    +background-image(linear-gradient(30deg, #e5e5e5, white))
+
+// @todo work in progress
+.triangle-experiment
+  position: absolute
+  width: 0
+  height: 0
+  z-index: 350
+  //float: right
+  //margin-bottom: 20px
+  left: 133px
+  margin-top: 1px
+  border-style: solid
+  //border-width: 3.5px 0 3.5px 6.1px
+  border-width: 4.5px 0 4.5px 7.8px
+  //  border-width: 10px 0 10px 17.3px
+  border-color: transparent transparent transparent #2d6297
+
+//.temp-iframe-class
+//  overflow-y: visible

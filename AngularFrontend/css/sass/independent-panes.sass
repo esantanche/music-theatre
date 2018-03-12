@@ -1,0 +1,48 @@
+.independent-pane
+  position: absolute
+
+.centred-independent-pane
+  @extend .independent-pane
+  display: block // @todo this property should not be here, it belongs to images
+  left: 50%
+
+.videoplayer-independent-pane
+  @extend .centred-independent-pane
+  top: $header-height
+  margin-left: -$half-videoplayer-width
+  height: $videoplayer-height
+  width: $videoplayer-width
+  z-index: $z-index-layer-videoplayer
+
+// @todo fix this class is abstract in the sense that the class videoplayer-close-button
+// inherit from it but this class is not actually used anywhere in the html
+
+.videoplayer-close-button-independent-pane
+  @extend .independent-pane
+  left: 50%
+  margin-left: $half-videoplayer-width + 10
+  top: 60px // @todo make parameter
+  z-index: $z-index-layer-videoplayer
+
+.videoplayer-back-element-independent-pane
+  @extend .centred-independent-pane
+  top: $header-height
+  height: $videoplayer-height
+  margin-left: -$half-grid-width
+  width: $grid-width
+  background: url("../../images/bg_middle_block310px.png") repeat-x
+  z-index: $z-index-layer-videoplayer-back-panel
+
+// @todo is this still in use?
+.dialog-independent-pane
+  @extend .centred-independent-pane
+  top: 200px  // @todo fix this
+  margin-left: -100px // @todo fix this
+  width: 200px  // @todo fix this
+  z-index: 300 // @todo fix this
+
+.footer-panel-independent-pane
+  @extend .centred-independent-pane
+  top: $header-height
+  height: 600px // @todo fix this
+  z-index: 2000 // @todo fix this

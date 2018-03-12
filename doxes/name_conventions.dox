@@ -1,0 +1,68 @@
+/**
+ * @page nameconventions Name conventions
+ *
+ * @section intronameconv Introduction
+ *
+ * Names are the first source of documentation and their choice greatly influences code readability and
+ * easiness of troubleshooting.
+ *
+ * The most important thing to remember when choosing names is that a name that doesn't strictly correspond to the thing
+ * it represents will make thinking and reasoning confused.
+ *
+ * This is what names have been invented for. To help reasoning and thinking. They will never be perfect and are not
+ * expected to be, but, please, don't call a variable "get_the_url" because a variable is a box containing something,
+ * it isn't an action.
+ *
+ * The time spent double-checking your names is always well-spent.
+ *
+ * @section nameconvvariables Variables
+ *
+ * A variable's name should describe its content as precisely as possible.
+ *
+ * We use long names with words separated by underscores. For example: programme_node_id
+ *
+ * Abbreviations are allowed if generally understood or if documented in the section below (@ref abbreviations).
+ *
+ * Hungarian notations are optional. If used, they should be widely understood notations or defined
+ * in the section below (@ref abbreviations).
+ *
+ * Arrays should have a plural name. Like user_ids for instance. It's better to use a plural name
+ * for arrays even if they contain one element only.
+ *
+ * An interesting practice is to add the unit to a variable's name. For instance: delay_ms is better that delay
+ * as name because it says that the delay is measured in milliseconds.
+ *
+ * @section nameconvfunctions Functions
+ *
+ * The name of a function has to correspond strictly with its purpose. The best function name is the one
+ * that is so clear that you don't even have to read the function to know what it's doing.
+ *
+ * @section nameconvfields Fields
+ *
+ * Auto populated fields will have a name that begins with 'apf'.
+ *
+ * They are fields that are calculated by some code, not entered by editors.
+ *
+ * @section nameconventities Entities
+ *
+ * Custom entities will have a name that begins with 'ape'.
+ *
+ * For more information about apes, auto-populated entities see:
+ * @ref apesexplained
+ *
+ * @section nameconvgitbranches Git branches
+ *
+ * We use tags to mark branches that need to be merged back asap and also to mark product versions
+ *
+ * @section abbreviations Abbreviations table
+ *
+ * Abbreviation | Meaning
+ * ---- | ----
+ * eid | entity id
+ * tid | taxonomy term id
+ * nid | node id
+ * fh | file handle
+ * us | unsafe string (it needs to be sanitised against code injection)
+ * ms | milliseconds (used for example for variables containing time measures to specify the unit)
+ * s | seconds
+ */

@@ -1,0 +1,72 @@
+/**
+ * @page errorcodingconventions Error coding conventions
+ *
+ * @section errorlevels Error levels
+ *
+ * @subsection errorlevel0 Level 0 Emergency
+ *
+ * - Watchdog error level: WATCHDOG_EMERG
+ * - Numeric code as from RFC3164: 0
+ * - MusicTheatre error level identifier (ELI): W0E
+ * - Description of the error level: Emergency: system is unusable
+ *
+ * @subsection errorlevel1 Level 1 Alert
+ *
+ * - Watchdog error level: WATCHDOG_ALERT
+ * - Numeric code as from RFC3164: 1
+ * - MusicTheatre error level identifier (ELI): W1A
+ * - Description of the error level: Alert: action must be taken immediately
+ *
+ * @subsection errorlevel2 Level 2 Critical
+ *
+ * - Watchdog error level: WATCHDOG_CRITICAL
+ * - Numeric code as from RFC3164: 2
+ * - MusicTheatre error level identifier (ELI): W2C
+ * - Description of the error level: Critical: critical conditions
+ *
+ * @subsection errorlevel3 Level 3 Error
+ *
+ * - Watchdog error level: WATCHDOG_ERROR
+ * - Numeric code as from RFC3164: 3
+ * - MusicTheatre error level identifier (ELI): W3E
+ * - Description of the error level: Error: error conditions
+ *
+ * @subsection errorlevel4 Level 4 Warning
+ *
+ * - Watchdog error level: WATCHDOG_WARNING
+ * - Numeric code as from RFC3164: 4
+ * - MusicTheatre error level identifier (ELI): W4W
+ * - Description of the error level: Warning: warning conditions
+ *
+ * @subsection errorlevel5 Level 5 Notice
+ *
+ * - Watchdog error level: WATCHDOG_NOTICE
+ * - Numeric code as from RFC3164: 5
+ * - MusicTheatre error level identifier (ELI): W5N
+ * - Description of the error level: Notice: normal but significant condition
+ *
+ * @subsection errorlevel6 Level 6 Informational
+ *
+ * - Watchdog error level: WATCHDOG_INFO
+ * - Numeric code as from RFC3164: 6
+ * - MusicTheatre error level identifier (ELI): W6I
+ * - Description of the error level: Informational: informational messages
+ *
+ * @subsection errorlevel7 Level 7 Debug
+ *
+ * - Watchdog error level: WATCHDOG_DEBUG
+ * - Numeric code as from RFC3164: 7
+ * - MusicTheatre error level identifier (ELI): W7D
+ * - Description of the error level: Debug: debug-level messages
+ *
+ * @section errorcodes Error codes
+ *
+ * Every error code will begin with its ELI followed by its number.
+ *
+ * For instance:
+ * - W0E001 Server crash
+ * - W1A001 Streaming too slow
+ * - W5N001 More than three failed login attempts from the same ip
+ *
+ * For each ELI the number begins from 1
+ */

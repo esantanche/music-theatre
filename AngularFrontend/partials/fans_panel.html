@@ -1,0 +1,136 @@
+<div ng-controller="FansPanelCtrl">
+
+    <div class="scrollable-fans-parent">
+        <div id="scrollable-fans">
+
+            <div class="omega-pane-26-of-26">
+
+                <div class="non-omega-pane-7-of-26">
+
+                    <div ng-if="!programmefanstabinfo.user_vote.value && user.uid"
+                         ng-click="become_a_fan_or_stop_being_one(user.uid, programmefanstabinfo.nid, true)"
+                         class="blue-button" style="padding-top: 5px">Become a fan
+
+                    </div>
+
+                    <div ng-if="programmefanstabinfo.user_vote.value == 100 && user.uid"
+                         ng-click="become_a_fan_or_stop_being_one(user.uid, programmefanstabinfo.nid, false)"
+                         class="blue-button" style="padding-top: 5px">No longer a fan
+
+                    </div>
+
+                    <div ng-if="!user.uid" class="header3-text">
+
+                        Please login to become a fan
+
+                    </div>
+
+                </div>
+
+                <div class="non-omega-pane-12-of-26">
+
+                    &nbsp;
+
+                </div>
+
+                <div class="non-omega-pane-5-of-26" style="text-align: right;">
+
+                   <span ng-if="programmefanstabinfo.number_of_fans" class="header3-text">
+                       {{programmefanstabinfo.number_of_fans}} fan(s) so far
+                   </span>
+
+                   <span ng-if="programmefanstabinfo.number_of_fans == 0" class="header3-text">
+                       No fans yet
+                   </span>
+
+                </div>
+
+                <div class="omega-pane-2-of-26">
+
+                    &nbsp;
+
+                </div>
+
+            </div>
+
+            <!--<p>user vote value-->
+                <!--{{programmefanstabinfo.user_vote.value}}</p>-->
+
+            <!--<p>user vote value type-->
+                <!--{{programmefanstabinfo.user_vote.value_type}}</p>-->
+
+            <!--<p>fan count-->
+                <!--{{programmefanstabinfo.number_of_fans}}</p>-->
+
+            <!--<img src="/images/red-heart.png"-->
+            <!--ng-show="(programmevotepanelinfo.mouse_over_button_no > 0 && (programmevotepanelinfo.user_vote.value >= (iter * 20) && user.uid != 0)) ||-->
+            <!--(programmevotepanelinfo.average >= (iter * 20) && (programmevotepanelinfo.mouse_over_button_no == 0 || user.uid == 0))"-->
+            <!--ng-click="user.uid && rate_programme(user.uid, programmevotepanelinfo.nid, (iter * 20))">-->
+
+            <!--<div ng-class="{'omega-pane-2-of-26': !infopanelinfo.no_prices,-->
+                                    <!--'omega-pane-4-of-26': infopanelinfo.no_prices}">-->
+                <!--&nbsp;-->
+            <!--</div>-->
+
+            <ul>
+
+                <li ng-repeat="fan in programmefanstabinfo.fanslist">
+
+                    <div class="non-omega-pane-8-of-26" style="margin-top: 5px;">
+
+                        <div class="omega-pane-8-of-8">
+
+                            <div class="non-omega-pane-1-of-8">
+
+                                <img ng-if="fan.avatar" ng-src="{{fan.avatar}}" width="30"/>
+
+                                <img ng-if="!fan.avatar" ng-src="/backend/sites/default/files/pictures/noavatarchosen.png" width="30"/>
+
+                            </div>
+
+                            <div class="omega-pane-7-of-8" style="margin-top: 10px; margin-left: 5px; margin-right: -5px">
+
+                                <a ng-href="{{fan.user_profile_permalink}}"
+                                   class="left-menu-text">
+                                    {{ fan.name | truncate:32 }}
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div ng-if="$index % 3 == 2" class="omega-pane-2-of-26">
+
+                        &nbsp;
+
+                    </div>
+
+                </li>
+
+            </ul>
+
+            <!--<div ng-repeat="fan in programmefanstabinfo.fanslist">-->
+                <!-- -->
+                <!-- -->
+                <!--{{$index}}/{{$index % 4}}-->
+
+            <!--</div>-->
+
+<!--here I leave two columns so that I have 4 fans per row-->
+
+            <!--you need a one column omega pane at the end-->
+
+            <!--<div class="omega-pane-1-of-19">-->
+
+                <!--&nbsp;-->
+
+            <!--</div>-->
+
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript-lazy" src="/lib/scrollbar/scrollbar.js"></script>

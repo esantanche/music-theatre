@@ -1,0 +1,250 @@
+
+<div class="header-wrapper">
+
+    <div class="header-pane-container">
+
+        <!-- controller_name: {{controller_name}} -->
+
+        <div class="non-omega-pane-4-of-30">
+
+            <a href="/"><img src="/images/logo.png"></a>
+
+        </div>
+
+        <div class="header-horizontal-menu-pane">
+
+            <div class="header-black-links-menu-pane">
+
+               <!--black-link-text-->
+
+                <!--ng-class="{'right-part-inactive-tab': !apply_active_class_01,-->
+                <!--'right-part-active-red-tab': apply_active_class_01 ||-->
+                <!--tabs_horizontal_menu_info.active_item == 'edit'}"-->
+
+                <!--$scope.headerinfo = { current_menu_item: '' };-->
+
+                <ul class="menu-list">
+                    <li>
+                        <a href="/"
+                           ng-class="{'selected-black-link-text': headerinfo.current_menu_item == 'Video',
+                                      'black-link-text': headerinfo.current_menu_item != 'Video'}"
+                           class="black-link">Video</a>
+                    </li>
+                    <li>
+                        <a href="/en/a"
+                           ng-class="{'selected-black-link-text': headerinfo.current_menu_item == 'Audio',
+                                      'black-link-text': headerinfo.current_menu_item != 'Audio'}"
+                           class="black-link">Audio</a>
+                    </li>
+                    <li>
+                        <a href="/en/l"
+                           ng-class="{'selected-black-link-text': headerinfo.current_menu_item == 'Library',
+                                      'black-link-text': headerinfo.current_menu_item != 'Library'}"
+                           class="black-link">Library</a>
+                    </li>
+                    <!--<li><a href="#" class="black-link-text black-link">What's new</a></li>-->
+                    <!--<li><a href="#" class="black-link-text black-link">Events</a></li>-->
+                    <!--<li><a href="#" class="black-link-text black-link">Shop</a></li>-->
+                    <!--<li><a href="#" class="black-link-text black-link">Backstage</a></li>-->
+                    <li>
+                        <a href="/social/en"
+                           ng-class="{'selected-black-link-text': headerinfo.current_menu_item == 'Lounge',
+                                      'black-link-text': headerinfo.current_menu_item != 'Lounge'}"
+                           class="inset-button black-link">Lounge</a>
+                    </li>
+                    <!--<li>-->
+                        <!--<a href="/en/p"-->
+                           <!--ng-class="{'selected-black-link-text': headerinfo.current_menu_item == 'Partners',-->
+                                      <!--'black-link-text': headerinfo.current_menu_item != 'Partners'}"-->
+                           <!--class="inset-button black-link">Partners</a>-->
+                    <!--</li>-->
+                </ul>
+
+            </div>
+
+            <div class="non-omega-pane-1-of-26">
+
+                <!--@todo language selection-->
+
+                &nbsp;
+
+            </div>
+
+            <!--@todo awful_dirty_trick needs fixing but only after things have settled down-->
+
+            <div class="avatar-pane" ng-init="awful_dirty_trick = false">
+
+                <div ng-click="awful_dirty_trick = !awful_dirty_trick">
+
+                    <img ng-show="!user.uid"
+                         src="/backend/sites/default/files/pictures/anonymous.png"
+                         class="avatar-login-button"
+                         width="30"/>
+
+                    <img ng-show="user.uid && user.avatar"
+                         ng-src="{{user.avatar}}"
+                         class="avatar-login-button"
+                         width="30"/>
+
+                    <img ng-show="user.uid && !user.avatar"
+                         src="/backend/sites/default/files/pictures/noavatarchosen.png"
+                         class="avatar-login-button"
+                         width="30"/>
+
+                </div>
+
+                <!--@todo when the drop down menu shows up it has transparent background-->
+
+                <div ng-show="awful_dirty_trick" class="my-super-dirty-pane">
+
+                    <ul>
+                        <li ng-show="user.uid">
+                            <a class="vertical-central-menu-button bluish-bold-text" href="/profile/en/{{ user.uid }}">My profile</a>
+                        </li>
+                        <li ng-click="awful_dirty_trick = false; loginpanelinfo.section_to_show = 'login'; loginpanelinfo.show = true"
+                            ng-show="!user.uid">
+                            <a class="vertical-central-menu-button bluish-bold-text">Login</a>
+                        </li>
+                        <li ng-click="awful_dirty_trick = false; loginpanelinfo.section_to_show = 'logout';"
+                            ng-show="user.uid">
+                            <a class="vertical-central-menu-button bluish-bold-text">Logout</a>
+                        </li>
+                        <li ng-click="awful_dirty_trick = false; loginpanelinfo.section_to_show = 'register'; loginpanelinfo.show = true"
+                            ng-show="!user.uid">
+                            <a class="vertical-central-menu-button bluish-bold-text">Register</a>
+                        </li>
+                        <li ng-click="awful_dirty_trick = false;">
+                            <a class="vertical-central-menu-button bluish-bold-text">Close</a>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="shopping-cart-pane"
+                 ng-click="shoppingorderinfo.show = true; shoppingorderinfo.section_to_show = 'shopping_order'">
+
+                <!--@todo this style has to become a sass class-->
+
+                <i class="fa fa-shopping-cart bluish-big-icon-text"></i>
+
+                <!--<img ng-src="/images/cart.png" width="30"/>-->
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="loginpanel-pane-container temp-box" ng-show="loginpanelinfo.show">
+
+        <div class="omega-pane-30-of-30">
+            &nbsp;
+        </div>
+
+        <div class="omega-pane-30-of-30">
+
+            <div class="non-omega-pane-28-of-30">
+                &nbsp;
+            </div>
+
+            <div class="omega-pane-2-of-30"
+                 ng-mouseover="show_login_panel_close_button_on = true"
+                 ng-mouseout="show_login_panel_close_button_on = false">
+
+                <img src="/images/close_button_off.png"
+                     class="button"
+                     ng-show="!show_login_panel_close_button_on">
+
+                <img src="/images/close_button_on.png"
+                     class="button"
+                     ng-show="show_login_panel_close_button_on"
+                     ng-click="loginpanelinfo.show = false;">
+
+            </div>
+
+            <!--<div class="omega-pane-1-of-30">-->
+                <!--&nbsp;-->
+            <!--</div>-->
+
+        </div>
+
+        <div class="omega-pane-30-of-30">
+
+            &nbsp;
+
+        </div>
+
+        <!--The id loginform is used in the function appscope_loginform (app.js) to access the scope that the -->
+        <!--controller LoginFormCtrl manages-->
+        <!--The function iframeCallback uses that scope to call some functions defined in LoginFormCtrl-->
+
+        <div id="loginform" ng-form="loginForm" ng-controller="LoginFormCtrl" novalidate>
+
+            <!--If the section to show is 'logout', there is actually no section to show, we have just to-->
+            <!--call the logout method in the LoginFormCtrl controller-->
+
+            <div ng-if="loginpanelinfo.section_to_show == 'logout'" ng-init="logout()"></div>
+
+            <div class="omega-pane-30-of-30">
+
+                <div class="non-omega-pane-1-of-30">
+                    &nbsp;
+                </div>
+
+                <div class="non-omega-pane-28-of-30">
+
+                    <div ng-if="loginpanelinfo.section_to_show == 'login'">
+
+                        <iframe width="100%"
+                                height="420"
+                                name="loginframe"
+                                scrolling="no"
+                                src="/backend/user/login?destination=callback4login"></iframe>
+
+                    </div>
+
+                    <div ng-if="loginpanelinfo.section_to_show == 'register'">
+
+                        <iframe width="100%"
+                                height="490"
+                                name="registerframe"
+                                scrolling="no"
+                                src="/backend/user/register?destination=callback4register"></iframe>
+
+                    </div>
+
+                </div>
+
+                <div class="omega-pane-1-of-30">
+                    &nbsp;
+                </div>
+
+            </div>
+
+            <div class="omega-pane-30-of-30">
+
+                &nbsp;
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div ng-if="shoppingorderinfo.show" ng-controller="ShoppingOrderPanelCtrl">
+
+        <div ng-include src="'/partials/shoppingorderpanel.html'"></div>
+
+    </div>
+
+    <!--<div ng-if="shoppingorderinfo.show">-->
+
+        <!--<div ng-include src="'/partials/shoppingorderpanel.html'"></div>-->
+
+    <!--</div>-->
+
+    <!--dialog-independent-pane-->
+
+</div>

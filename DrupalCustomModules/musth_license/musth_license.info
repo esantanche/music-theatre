@@ -1,0 +1,6 @@
+name = Musth License
+description = Commerce license for Musth
+package = Musth
+dependencies[] = commerce_license
+core = 7.x
+version = "7.x-0.1"

@@ -1,0 +1,931 @@
+<div id="shoppingorderpanel" class="shoppingorderpanel-pane-container text-for-tests temp-box">
+
+    <!-- @todo why is there an id for this div? -->
+
+    <!-- div ng-include src="'/includes/header.html'"></div -->
+
+    <!--<p>shoppingorderinfo.section_to_show: {{shoppingorderinfo.section_to_show}}</p>-->
+
+    <!--@todo refactor show_shopping_panel_close_button_on please-->
+
+    <div class="omega-pane-30-of-30">
+
+        &nbsp;
+
+    </div>
+
+    <div class="omega-pane-30-of-30">
+
+        <div class="non-omega-pane-28-of-30">
+            &nbsp;
+        </div>
+
+        <div class="non-omega-pane-1-of-30"
+                 ng-mouseover="show_shopping_panel_close_button_on = true"
+                 ng-mouseout="show_shopping_panel_close_button_on = false">
+
+                <img src="/images/close_button_off.png"
+                     class="button"
+                     ng-show="!show_shopping_panel_close_button_on">
+
+                <img src="/images/close_button_on.png"
+                     class="button"
+                     ng-show="show_shopping_panel_close_button_on"
+                     ng-click="shoppingorderinfo.show = false">
+
+        </div>
+
+        <div class="omega-pane-1-of-30">
+            &nbsp;
+        </div>
+
+    </div>
+
+    <div class="omega-pane-30-of-30">
+
+        &nbsp;
+
+    </div>
+
+    <div ng-show="shoppingorderinfo.section_to_show === 'buy_or_subscribe'">
+
+        <div ng-if="tagring_content_type_selector == 'library'">
+
+            <p>In the Library section this panel shouldn't come up at all
+            because the tagring shouldn't have any play movie button</p>
+
+        </div>
+
+        <!--Start of section about buying single tracks-->
+
+        <div ng-if="shoppingorderinfo.track_to_buy != null">
+
+            <div ng-show="!user.subscriber || tagring_content_type_selector == 'audio'">
+
+                <div class="omega-pane-30-of-30">
+
+                    <div class="non-omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                    <!--<div class="non-omega-pane-4-of-30 dark-gre">-->
+                    <!--{{product.sku}}-->
+                    <!--</div>-->
+
+                    <div class="non-omega-pane-20-of-30 dark-grey-text">
+                        {{shoppingorderinfo.track_to_buy.title}}
+                    </div>
+
+                    <div class="non-omega-pane-3-of-30 dark-grey-text" style="text-align: right">
+                        {{shoppingorderinfo.track_to_buy.price | price}}
+                    </div>
+
+                    <div class="non-omega-pane-5-of-30">
+
+                        <button ng-click="buy_programme_or_track(programme, shoppingorderinfo.track_to_buy, false)"
+                                class="info-text light-grey-mini-button"
+                                style="padding-top: 0; padding-left: 8px; padding-right: 10px">Add to shopping cart</button>
+
+                    </div>
+
+                    <div class="omega-pane-1-of-30">
+
+                        &nbsp;
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--End of section about buying single tracks-->
+
+        <!--Start of section about buying a programme-->
+
+        <div ng-if="shoppingorderinfo.track_to_buy == null">
+
+            <div ng-show="!user.subscriber || tagring_content_type_selector == 'audio'">
+
+                <ul>
+
+                    <li ng-repeat="product in programme.array_products_track_0000"
+                        class="omega-pane-30-of-30 info-text">
+
+                        <div class="non-omega-pane-1-of-30">
+                            &nbsp;
+                        </div>
+
+                        <!--<div class="non-omega-pane-4-of-30 dark-gre">-->
+                            <!--{{product.sku}}-->
+                        <!--</div>-->
+
+                        <div class="non-omega-pane-20-of-30 dark-grey-text">
+                            {{product.title}}
+                        </div>
+
+                        <div class="non-omega-pane-3-of-30 dark-grey-text" style="text-align: right">
+                            {{product.price_amount | price}}
+                        </div>
+
+                        <div class="non-omega-pane-5-of-30">
+
+                            <button ng-click="buy_product_by_sku(product.sku)"
+                                    class="info-text light-grey-mini-button"
+                                    style="padding-top: 0; padding-left: 8px; padding-right: 10px">Add to shopping cart</button>
+
+                        </div>
+
+                        <div class="omega-pane-1-of-30">
+
+                            &nbsp;
+
+                        </div>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+        <!--End of section about buying a programme-->
+
+        <div class="omega-pane-30-of-30">
+            &nbsp;
+        </div>
+
+        <div ng-show="!user.subscriber && tagring_content_type_selector == 'video'">
+
+            <div class="omega-pane-30-of-30">
+
+                <div class="non-omega-pane-1-of-30">
+                    &nbsp;
+                </div>
+
+                <div class="non-omega-pane-23-of-30 header3-text" style="padding-top: 3px">
+                    What about buying a subscription and enjoy unlimited streaming?
+                </div>
+
+                <div class="non-omega-pane-5-of-30">
+
+                    <button ng-click="buy_subscription('S00010000-S-r01m')"
+                            class="blue-button" style="padding-top: 4px">
+                        Buy subscription
+                    </button>
+
+                </div>
+
+                <div class="omega-pane-1-of-30">
+                    &nbsp;
+                </div>
+
+            </div>
+
+            <div class="omega-pane-30-of-30">
+                &nbsp;
+            </div>
+
+            <div class="omega-pane-30-of-30">
+                &nbsp;
+            </div>
+
+        </div>
+
+        <!--<div ng-show="user.uid == 0">-->
+
+            <!--<p>@todo If you are registered, please login by using the button above</p>-->
+
+        <!--</div>-->
+
+        <!--<button ng-click="shoppingorderinfo.show = false">Cancel</button>-->
+
+    </div>
+
+    <!--End of div ng-show="shoppingorderinfo.section_to_show === 'buy_or_subscribe'"-->
+
+    <div class="omega-pane-30-of-30" ng-show="shoppingorderinfo.section_to_show === 'shopping_order'">
+
+        <div class="omega-pane-30-of-30" ng-if="!line_items.length">
+
+            <div class="non-omega-pane-1-of-30">
+                &nbsp;
+            </div>
+
+            <div class="non-omega-pane-28-of-30 header3-text">
+                Your shopping cart is empty
+            </div>
+
+            <div class="omega-pane-1-of-30">
+                &nbsp;
+            </div>
+
+        </div>
+
+        <div class="omega-pane-30-of-30">
+
+            &nbsp;
+
+        </div>
+
+        <div class="order-row soft-text" ng-if="line_items.length">
+
+            <div class="non-omega-pane-1-of-30">
+                &nbsp;
+            </div>
+
+            <div class="non-omega-pane-17-of-30">
+                Description
+            </div>
+
+            <div class="non-omega-pane-3-of-30 right-aligned-text">
+                Quantity
+            </div>
+
+            <div class="non-omega-pane-3-of-30 right-aligned-text">
+                Unit Price
+            </div>
+
+            <div class="non-omega-pane-3-of-30 right-aligned-text">
+                Line total
+            </div>
+
+            <div class="omega-pane-3-of-30">
+
+                &nbsp;
+
+            </div>
+
+        </div>
+
+        <ul ng-if="line_items.length">
+
+            <li ng-repeat="line_item in line_items" class="order-row dark-grey-text">
+
+                <div class="non-omega-pane-1-of-30">
+                    &nbsp;
+                </div>
+
+                <div class="non-omega-pane-17-of-30">
+                    {{line_item.product_title}}
+                </div>
+
+                <div class="non-omega-pane-3-of-30 right-aligned-text">
+                    {{line_item.quantity | number : 0}}
+                </div>
+
+                <div class="non-omega-pane-3-of-30 right-aligned-text">
+                    {{line_item.unit_price_amount | price}}
+                </div>
+
+                <div class="non-omega-pane-3-of-30 right-aligned-text">
+                    {{line_item.total_amount | price}}
+                </div>
+
+                <div class="non-omega-pane-2-of-30">
+
+                    <div ng-if="shopping_order.status == 'cart'">
+                        <button ng-click="remove_line_item(line_item.line_item_id)">
+                            <i class="fa fa-trash-o bluish-small-icon-text"></i>
+                        </button>
+                    </div>
+
+                    <div ng-if="shopping_order.status != 'cart'">
+                        &nbsp;
+                    </div>
+
+                </div>
+
+                <div class="omega-pane-1-of-30">
+
+                    &nbsp;
+
+                </div>
+
+            </li>
+
+        </ul>
+
+        <div class="order-row" ng-if="line_items.length">
+
+            <div class="non-omega-pane-22-of-30">
+
+                &nbsp;
+
+            </div>
+
+            <div class="non-omega-pane-5-of-30 right-aligned-text dark-grey-text">
+
+                Order total: {{shopping_order.total_amount | price}}
+
+            </div>
+
+            <div class="omega-pane-3-of-30">
+
+                &nbsp;
+
+            </div>
+
+        </div>
+
+        <div class="omega-pane-30-of-30">
+
+            &nbsp;
+
+        </div>
+
+        <div class="omega-pane-30-of-30">
+
+            <div class="non-omega-pane-24-of-30">
+                &nbsp;
+            </div>
+
+            <div class="non-omega-pane-5-of-30">
+
+                <div ng-if="shopping_order.status == 'cart' && line_items.length">
+                    <button ng-click="process_workflow_to_move_order_to_next_status()"
+                            class="blue-button">Go to checkout</button>
+                </div>
+
+            </div>
+
+            <div class="omega-pane-1-of-30">
+                &nbsp;
+            </div>
+
+        </div>
+
+        <div class="omega-pane-30-of-30">
+
+            &nbsp;
+
+        </div>
+
+        <div ng-if="shopping_order.status == 'checkout_checkout'">
+
+            <div ng-form="checkout_checkoutForm" ng-controller="Checkout_checkoutFormCtrl" novalidate>
+
+                <div class="omega-pane-30-of-30" ng-if="user.uid">
+
+                    <div class="non-omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                    <div class="non-omega-pane-5-of-30">
+
+                        <button ng-click="populate_checkout_form_with_most_recent_customer_profile()"
+                                class="blue-button">
+                            Use my details
+                        </button>
+
+                    </div>
+
+                    <div class="omega-pane-24-of-30">
+                        &nbsp;
+                    </div>
+
+                    <div class="omega-pane-30-of-30">
+                        &nbsp;
+                    </div>
+
+                </div>
+
+                <div class="omega-pane-30-of-30" ng-if="!user.uid">
+
+                    <div class="non-omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                    <div class="label-for-customer-profile-field-pane header3-text">
+                        Email:
+                    </div>
+
+                    <div class="non-omega-pane-15-of-30">
+                        <input type="email" name="email" style="width:312px"
+                               ng-model="checkout_checkout_info.email"
+                               class="inputfield"
+                               required/>
+                        <span class="red-text">*</span>
+                    </div>
+
+                    <div class="non-omega-pane-10-of-30 dark-grey-text">
+                        <div ng-show="checkout_checkoutForm.email.$dirty && checkout_checkoutForm.email.$invalid">
+                            <span ng-show="checkout_checkoutForm.email.$error.required">Please enter your email address</span>
+                            <span ng-show="checkout_checkoutForm.email.$error.email">Invalid email</span>
+                        </div>
+                    </div>
+
+                    <div class="omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                </div>
+
+                <div class="omega-pane-30-of-30">
+
+                    <div class="non-omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                    <div class="label-for-customer-profile-field-pane header3-text">
+                        Name:
+                    </div>
+
+                    <div class="non-omega-pane-15-of-30">
+                        <input type="text" name="name_line" style="width:312px"
+                               ng-model="checkout_checkout_info.name_line"
+                               ng-pattern="text_validation_regex_pattern"
+                               class="inputfield"
+                               required/>
+                        <span class="red-text">*</span>
+                    </div>
+
+                    <div class="non-omega-pane-10-of-30 dark-grey-text">
+                        <div ng-show="checkout_checkoutForm.name_line.$dirty && checkout_checkoutForm.name_line.$invalid">
+                            <span ng-show="checkout_checkoutForm.name_line.$error.required">Plese enter your name</span>
+                            <span ng-show="checkout_checkoutForm.name_line.$error.pattern">Invalid characters entered</span>
+                        </div>
+                    </div>
+
+                    <div class="omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                </div>
+
+                <div class="omega-pane-30-of-30">
+
+                    <div class="non-omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                    <div class="label-for-customer-profile-field-pane header3-text">
+                        Country:
+                    </div>
+
+                    <div class="non-omega-pane-15-of-30">
+                        <select name="country" style="width:312px"
+                                data-ng-model="selected_country"
+                                ng-options="country.name for country in list_of_countries"
+                                ng-change="load_country_info_on_change(selected_country.isocode)"
+                                class="inputfield"
+                                required></select>
+                        <span class="red-text">*</span>
+                    </div>
+
+                    <div class="non-omega-pane-10-of-30 dark-grey-text">
+                        <div ng-show="checkout_checkoutForm.country.$dirty && checkout_checkoutForm.country.$invalid">
+                            <span ng-show="checkout_checkoutForm.country.$error.required">Please select a country</span>
+                        </div>
+                    </div>
+
+                    <div class="omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                </div>
+
+                <div class="omega-pane-30-of-30">
+
+                    <div class="non-omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                    <div class="label-for-customer-profile-field-pane header3-text">
+                        Address line 1:
+                    </div>
+
+                    <div class="non-omega-pane-15-of-30">
+
+                        <input type="text" name="premise"
+                               style="width:312px"
+                               ng-model="checkout_checkout_info.premise"
+                               ng-pattern="text_validation_regex_pattern"
+                               class="inputfield"
+                               required/>
+
+                        <span class="red-text">*</span>
+
+                    </div>
+
+                    <div class="non-omega-pane-10-of-30 dark-grey-text">
+
+                        <div ng-show="checkout_checkoutForm.premise.$dirty && checkout_checkoutForm.premise.$invalid">
+                            <span ng-show="checkout_checkoutForm.premise.$error.required">Plese enter your address</span>
+                            <span ng-show="checkout_checkoutForm.premise.$error.pattern">Invalid characters entered</span>
+                        </div>
+
+                    </div>
+
+                    <div class="omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                </div>
+
+                <div class="omega-pane-30-of-30">
+
+                    <div class="non-omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                    <div class="label-for-customer-profile-field-pane header3-text">
+                        Address line 2:
+                    </div>
+
+                    <div class="non-omega-pane-15-of-30">
+
+                        <input type="text" name="thoroughfare"
+                               style="width:312px"
+                               ng-model="checkout_checkout_info.thoroughfare"
+                               class="inputfield"
+                               ng-pattern="text_validation_regex_pattern"/>
+
+                    </div>
+
+                    <div class="non-omega-pane-10-of-30 dark-grey-text">
+
+                        <div ng-show="checkout_checkoutForm.thoroughfare.$dirty && checkout_checkoutForm.thoroughfare.$invalid">
+                            <span ng-show="checkout_checkoutForm.thoroughfare.$error.pattern">Invalid characters entered</span>
+                        </div>
+
+                    </div>
+
+                    <div class="omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                </div>
+
+                <div class="omega-pane-30-of-30"
+                     ng-if="country_info.administrative_area_used">
+
+                    <div ng-if="country_info.administrative_areas">
+
+                        <div class="non-omega-pane-1-of-30">
+                            &nbsp;
+                        </div>
+
+                        <div class="label-for-customer-profile-field-pane header3-text">
+                            {{country_info.administrative_area_label}}:
+                        </div>
+
+                        <div class="non-omega-pane-15-of-30">
+
+                            <select name="administrative_area_object"
+                                    style="width:312px"
+                                    ng-model="checkout_checkout_info.administrative_area_object"
+                                    ng-options="administrative_area.full_name for administrative_area
+                                            in country_info.administrative_areas"
+                                    class="inputfield"
+                                    ng-required="country_info.administrative_area_required"></select>
+
+                            <span class="red-text" ng-if="country_info.administrative_area_required">
+                                *
+                            </span>
+
+                        </div>
+
+                        <div class="non-omega-pane-10-of-30 dark-grey-text">
+
+                            <div ng-show="checkout_checkoutForm.administrative_area_object.$dirty &&
+                                      checkout_checkoutForm.administrative_area_object.$invalid">
+                                <span ng-show="checkout_checkoutForm.administrative_area_object.$error.required">
+                                    Please select a {{country_info.administrative_area_label}}
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="omega-pane-1-of-30">
+                            &nbsp;
+                        </div>
+
+                    </div>
+
+                    <div ng-if="country_info.administrative_areas == null">
+
+                        <div class="non-omega-pane-1-of-30">
+                            &nbsp;
+                        </div>
+
+                        <div class="label-for-customer-profile-field-pane header3-text">
+                            {{country_info.administrative_area_label}}:
+                        </div>
+
+                        <div class="non-omega-pane-15-of-30">
+
+                            <input type="text"
+                                   name="administrative_area_freetext_field"
+                                   style="width:312px"
+                                   ng-model="checkout_checkout_info.administrative_area_free_field"
+                                   ng-pattern="text_validation_regex_pattern"
+                                   class="inputfield"
+                                   ng-required="country_info.administrative_area_required"/>
+
+                            <span class="red-text" ng-if="country_info.administrative_area_required">
+                                *
+                            </span>
+
+                        </div>
+
+                        <div class="non-omega-pane-10-of-30 dark-grey-text">
+
+                            <div ng-show="checkout_checkoutForm.administrative_area_freetext_field.$dirty &&
+                                          checkout_checkoutForm.administrative_area_freetext_field.$invalid">
+                                <span ng-show="checkout_checkoutForm.administrative_area_freetext_field.$error.required">
+                                    Please enter the {{country_info.administrative_area_label}}
+                                </span>
+                                <span ng-show="checkout_checkoutForm.administrative_area_freetext_field.$error.pattern">Invalid characters entered</span>
+                            </div>
+
+                        </div>
+
+                        <div class="omega-pane-1-of-30">
+                            &nbsp;
+                        </div>
+
+                    </div>
+
+                </div> <!-- end ng-if="country_info.administrative_area_used"-->
+
+                <div class="omega-pane-30-of-30"
+                     ng-if="country_info.locality_label">
+
+                    <div class="non-omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                    <div class="label-for-customer-profile-field-pane header3-text">
+                        {{country_info.locality_label}}:
+                    </div>
+
+                    <div class="non-omega-pane-15-of-30">
+
+                        <input type="text"
+                               name="locality"
+                               style="width:312px"
+                               ng-model="checkout_checkout_info.locality"
+                               ng-pattern="text_validation_regex_pattern"
+                               class="inputfield"
+                               required/>
+
+                        <span class="red-text">
+                            *
+                        </span>
+
+                    </div>
+
+                    <div class="non-omega-pane-10-of-30 dark-grey-text">
+
+                        <div ng-show="checkout_checkoutForm.locality.$dirty &&
+                                      checkout_checkoutForm.locality.$invalid">
+                            <span ng-show="checkout_checkoutForm.locality.$error.required">Please enter the {{country_info.locality_label}}</span>
+                            <span ng-show="checkout_checkoutForm.locality.$error.pattern">Invalid characters entered</span>
+                        </div>
+
+                        &nbsp;
+
+                    </div>
+
+                    <div class="omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                </div>
+
+                <div class="omega-pane-30-of-30"
+                     ng-if="country_info.postal_code_label">
+
+                    <div class="non-omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                    <div class="label-for-customer-profile-field-pane header3-text">
+                        {{country_info.postal_code_label}}:
+                    </div>
+
+                    <div class="non-omega-pane-15-of-30">
+
+                        <input type="text"
+                               name="postal_code"
+                               style="width:312px"
+                               ng-model="checkout_checkout_info.postal_code"
+                               ng-pattern="text_validation_regex_pattern"
+                               class="inputfield"
+                               uppercase
+                               required/>
+
+                        <span class="red-text">
+                            *
+                        </span>
+
+                    </div>
+
+                    <div class="non-omega-pane-10-of-30 dark-grey-text">
+
+                        <div ng-show="checkout_checkoutForm.postal_code.$dirty && checkout_checkoutForm.postal_code.$invalid">
+                            <span ng-show="checkout_checkoutForm.postal_code.$error.required">Please enter the {{country_info.postal_code_label}}</span>
+                            <span ng-show="checkout_checkoutForm.postal_code.$error.pattern">Invalid characters entered</span>
+                        </div>
+
+                    </div>
+
+                    <div class="omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                </div>
+
+                <div class="omega-pane-30-of-30">
+
+                    &nbsp;
+
+                </div>
+
+                <div class="omega-pane-30-of-30">
+
+                    <div class="non-omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                    <div class="non-omega-pane-28-of-30 dark-grey-text">
+
+                        <span class="red-text">*</span> = required field
+
+                    </div>
+
+                    <div class="omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                </div>
+
+                <div class="omega-pane-30-of-30">
+
+                    <div class="non-omega-pane-19-of-30">
+                        &nbsp;
+                    </div>
+
+                    <div class="non-omega-pane-10-of-30">
+
+                        <button ng-click="submit_checkout_checkout_info()"
+                                class="blue-button" style="float: right"
+                                ng-disabled="checkout_checkoutForm.$invalid">Next</button>
+
+                        <button ng-click="cancel_and_go_back_to_the_cart()"
+                                class="blue-button" style="float: right; margin-right: 10px">Back to shopping cart</button>
+
+                    </div>
+
+                    <div class="omega-pane-1-of-30">
+                        &nbsp;
+                    </div>
+
+                </div>
+
+            </div> <!-- end of div ng-form="checkout_checkoutForm" -->
+
+            <div class="omega-pane-30-of-30">
+                &nbsp;
+            </div>
+
+        </div> <!--end of <div ng-if="shopping_order.status == 'checkout_checkout'">-->
+
+        <div ng-if="shopping_order.status == 'checkout_review'">
+
+            <div class="omega-pane-30-of-30">
+
+                <div class="non-omega-pane-1-of-30">
+                    &nbsp;
+                </div>
+
+                <div class="non-omega-pane-28-of-30 header3-text">
+
+                    Please review your order.
+
+                </div>
+
+                <div class="omega-pane-1-of-30">
+
+                    &nbsp;
+
+                </div>
+
+                <div class="omega-pane-30-of-30">
+
+                    &nbsp;
+
+                </div>
+
+            </div>
+
+            <div class="omega-pane-30-of-30">
+
+                <div class="non-omega-pane-14-of-30">
+                    &nbsp;
+                </div>
+
+                <div class="non-omega-pane-15-of-30">
+
+                    <button ng-click="process_workflow_to_move_order_to_next_status()"
+                            class="blue-button" style="float: right">Start payment process</button>
+
+                    <button ng-click="cancel_and_go_back_to_the_cart()"
+                            class="blue-button" style="float: right; margin-right: 10px">Cancel and go back to the shopping cart</button>
+
+                </div>
+
+                <div class="omega-pane-1-of-30">
+                    &nbsp;
+                </div>
+
+            </div>
+
+            <div class="omega-pane-30-of-30">
+                &nbsp;
+            </div>
+
+        </div>
+
+        <div ng-if="shopping_order.status == 'checkout_payment'">
+
+            <div class="omega-pane-30-of-30">
+
+                <div class="non-omega-pane-1-of-30">
+                    &nbsp;
+                </div>
+
+                <div class="non-omega-pane-28-of-30 header3-text">
+
+                    Ready to start payment.
+
+                </div>
+
+                <div class="omega-pane-1-of-30">
+                    &nbsp;
+                </div>
+
+                <div class="omega-pane-30-of-30">
+                    &nbsp;
+                </div>
+
+            </div>
+
+            <div class="omega-pane-30-of-30">
+
+                <div class="non-omega-pane-12-of-30">
+                    &nbsp;
+                </div>
+
+                <div class="non-omega-pane-17-of-30">
+
+                    <button ng-click="process_workflow_to_move_order_to_next_status()"
+                            class="blue-button" style="float: right">Simulate payment completion</button>
+
+                    <button ng-click="cancel_and_go_back_to_the_cart()"
+                            class="blue-button" style="float: right; margin-right: 10px">Cancel and go back to the shopping cart</button>
+
+                </div>
+
+                <div class="omega-pane-1-of-30">
+                    &nbsp;
+                </div>
+
+            </div>
+
+            <div class="omega-pane-1-of-30">
+                &nbsp;
+            </div>
+
+        </div>
+
+        <div ng-if="shopping_order.status.indexOf('checkout') == -1 && shopping_order.status != 'cart'">
+
+            <p>We are now in {{shopping_order.status}}</p>
+
+            <p>Order not in cart or checkout</p>
+
+            <p>Thank you for your order!</p>
+
+            <p>You will find it in your profile page etc etc</p>
+
+            <p>Should we get here at all anyway?</p>
+
+        </div>
+
+        <!-- div ng-if="shopping_order.status != 'cart'">
+            rthis is wrong
+            here we want different messages for each status
+            <button ng-click="">Back to the shopping cart</button>
+        </div -->
+
+    </div>
+
+    <div class="omega-pane-30-of-30">
+        &nbsp;
+    </div>
+
+</div>

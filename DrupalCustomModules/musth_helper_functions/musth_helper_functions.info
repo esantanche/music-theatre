@@ -1,0 +1,5 @@
+name = Musth Helper Functions
+description = Functions used by other Musth modules
+package = Musth
+core = 7.x
+version = "7.x-0.1"

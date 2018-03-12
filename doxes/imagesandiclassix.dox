@@ -1,0 +1,13 @@
+/** 
+ * @page imagesandmusictheatre Images and MusicTheatre
+ *
+ * @todo to be completed
+ *
+ * @section imagessizesandformats Images sizes and formats
+ *
+ * Image name | Format | Width | Height | Where its path is assembled
+ * ---------- | :----: | :---: | :----: | ---
+ * Tagring icon | jpg | 240 | 135 | musth_amf_service.tagring_apis.inc
+ * Summary Panel Image | jpg | 225 | any | musth_restws.programme.ctrl.inc
+ *
+ */

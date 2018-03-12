@@ -1,0 +1,13 @@
+<span ng-repeat="iter in [1,2,3,4,5]">
+
+    <span>
+
+        <img src="/images/white-heart.png"
+             ng-show="(item.user_vote.value < (iter * 20) && user.uid != 0)">
+
+        <img src="/images/red-heart.png"
+             ng-show="(item.user_vote.value >= (iter * 20) && user.uid != 0)">
+
+    </span>
+
+</span>

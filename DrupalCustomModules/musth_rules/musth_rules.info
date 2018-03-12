@@ -1,0 +1,6 @@
+name = Musth rules
+description = Module containing all the custom rules used by the application.
+package = Musth
+dependencies[] = rules
+core = 7.x
+version = "7.x-0.1"

@@ -1,0 +1,962 @@
+<div>
+
+    <div ng-include src="'/includes/header.html'"></div>
+
+    <div class="userprofileview-wrapper">
+
+        <div ng-include src="'/includes/tabs-horizontal-menu.html'"></div>
+
+        <div class="userprofileview-pane-container">
+
+            <div class="vertical-left-bar-pane">
+                &nbsp;
+            </div>
+
+            <div class="slanting-lines-pane">
+                &nbsp;
+            </div>
+
+            <div class="omega-pane-30-of-30">
+                &nbsp;
+
+            </div>
+
+            <!-- @todo transparent url("../images/left-column-shadow-dark.png") no-repeat scroll right top-->
+
+            <!--@todo here it has to be a 28 col with an empty col on the right and one on the left-->
+
+            <div class="non-omega-pane-1-of-30">
+
+                &nbsp;
+
+            </div>
+
+            <div ng-if="userviewinfo.current_function == 'view'" class="non-omega-pane-5-of-30">
+
+                <div ng-click="userviewinfo.section_to_show = 'mydetails'; refresh_scrollbar();"
+                     ng-mouseover="mouseover_on_user_profile_vertical_menu_item_mydetails = true"
+                     ng-mouseout="mouseover_on_user_profile_vertical_menu_item_mydetails = false"
+                     ng-class="{'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseover bluish-button-text': mouseover_on_user_profile_vertical_menu_item_mydetails
+                                                     || userviewinfo.section_to_show == 'mydetails',
+                                'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseout bluish-button-text': !mouseover_on_user_profile_vertical_menu_item_mydetails}">
+                    My details
+                </div>
+
+                <div ng-click="userviewinfo.section_to_show = 'myvideos'; refresh_scrollbar();"
+                     ng-show="!userviewinfo.showing_a_public_profile && userviewinfo.user_profile_to_show.uid"
+                     ng-mouseover="mouseover_on_user_profile_vertical_menu_item_myvideos = true"
+                     ng-mouseout="mouseover_on_user_profile_vertical_menu_item_myvideos = false"
+                     ng-class="{'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseover bluish-button-text': mouseover_on_user_profile_vertical_menu_item_myvideos
+                                                     || userviewinfo.section_to_show == 'myvideos',
+                                'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseout bluish-button-text': !mouseover_on_user_profile_vertical_menu_item_myvideos}">
+                    My videos
+                </div>
+
+                <div ng-click="userviewinfo.section_to_show = 'myaudios'; refresh_scrollbar();"
+                     ng-show="!userviewinfo.showing_a_public_profile && userviewinfo.user_profile_to_show.uid"
+                     ng-mouseover="mouseover_on_user_profile_vertical_menu_item_myaudios = true"
+                     ng-mouseout="mouseover_on_user_profile_vertical_menu_item_myaudios = false"
+                     ng-class="{'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseover bluish-button-text': mouseover_on_user_profile_vertical_menu_item_myaudios
+                                                     || userviewinfo.section_to_show == 'myaudios',
+                                'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseout bluish-button-text': !mouseover_on_user_profile_vertical_menu_item_myaudios}">
+                    My audios
+                </div>
+
+                <div ng-click="userviewinfo.section_to_show = 'mysubscriptions'; refresh_scrollbar();"
+                     ng-show="!userviewinfo.showing_a_public_profile && userviewinfo.user_profile_to_show.uid"
+                     ng-mouseover="mouseover_on_user_profile_vertical_menu_item_mysubscriptions = true"
+                     ng-mouseout="mouseover_on_user_profile_vertical_menu_item_mysubscriptions = false"
+                     ng-class="{'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseover bluish-button-text': mouseover_on_user_profile_vertical_menu_item_mysubscriptions
+                                                     || userviewinfo.section_to_show == 'mysubscriptions',
+                                'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseout bluish-button-text': !mouseover_on_user_profile_vertical_menu_item_mysubscriptions}">
+                    My subscriptions
+                </div>
+
+                <div ng-click="userviewinfo.section_to_show = 'myorders'; load_orders_for_the_current_user(); refresh_scrollbar();"
+                     ng-show="!userviewinfo.showing_a_public_profile && userviewinfo.user_profile_to_show.uid"
+                     ng-mouseover="mouseover_on_user_profile_vertical_menu_item_myorders = true"
+                     ng-mouseout="mouseover_on_user_profile_vertical_menu_item_myorders = false"
+                     ng-class="{'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseover bluish-button-text': mouseover_on_user_profile_vertical_menu_item_myorders
+                                                     || userviewinfo.section_to_show == 'myorders',
+                                'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseout bluish-button-text': !mouseover_on_user_profile_vertical_menu_item_myorders}">
+                    My orders
+                </div>
+
+                <div ng-click="userviewinfo.section_to_show = 'mygroups'; refresh_scrollbar();"
+                     ng-mouseover="mouseover_on_user_profile_vertical_menu_item_mygroups = true"
+                     ng-mouseout="mouseover_on_user_profile_vertical_menu_item_mygroups = false"
+                     ng-class="{'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseover bluish-button-text': mouseover_on_user_profile_vertical_menu_item_mygroups
+                                                     || userviewinfo.section_to_show == 'mygroups',
+                                'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseout bluish-button-text': !mouseover_on_user_profile_vertical_menu_item_mygroups}">
+                    My groups
+                </div>
+
+                <div ng-click="userviewinfo.section_to_show = 'myreviews'; refresh_scrollbar();"
+                     ng-show="!userviewinfo.showing_a_public_profile && userviewinfo.user_profile_to_show.uid"
+                     ng-mouseover="mouseover_on_user_profile_vertical_menu_item_myreviews = true"
+                     ng-mouseout="mouseover_on_user_profile_vertical_menu_item_myreviews = false"
+                     ng-class="{'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseover bluish-button-text': mouseover_on_user_profile_vertical_menu_item_myreviews
+                                                     || userviewinfo.section_to_show == 'myreviews',
+                                'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseout bluish-button-text': !mouseover_on_user_profile_vertical_menu_item_myreviews}">
+                    My reviews
+                </div>
+
+                <div ng-click="userviewinfo.section_to_show = 'fanof'; load_items_user_is_fan_of(); refresh_scrollbar();"
+                     ng-show="!userviewinfo.showing_a_public_profile && userviewinfo.user_profile_to_show.uid"
+                     ng-mouseover="mouseover_on_user_profile_vertical_menu_item_fanof = true"
+                     ng-mouseout="mouseover_on_user_profile_vertical_menu_item_fanof = false"
+                     ng-class="{'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseover bluish-button-text': mouseover_on_user_profile_vertical_menu_item_fanof
+                                                     || userviewinfo.section_to_show == 'fanof',
+                                'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseout bluish-button-text': !mouseover_on_user_profile_vertical_menu_item_fanof}">
+                    I am a fan of ...
+                </div>
+
+            </div>
+
+            <div ng-if="userviewinfo.current_function == 'edit'" class="non-omega-pane-5-of-30">
+
+                <div ng-click="userviewinfo.section_to_show = 'editdetails'; refresh_scrollbar();"
+                     ng-mouseover="mouseover_on_user_profile_vertical_menu_item_editdetails = true"
+                     ng-mouseout="mouseover_on_user_profile_vertical_menu_item_editdetails = false"
+                     ng-class="{'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseover bluish-button-text': mouseover_on_user_profile_vertical_menu_item_editdetails
+                                                     || userviewinfo.section_to_show == 'editdetails',
+                                'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseout bluish-button-text': !mouseover_on_user_profile_vertical_menu_item_editdetails}">
+                    Edit details
+                </div>
+
+                <div ng-click="userviewinfo.section_to_show = 'editavatar'; refresh_scrollbar();"
+                     ng-show="!userviewinfo.showing_a_public_profile && userviewinfo.user_profile_to_show.uid"
+                     ng-mouseover="mouseover_on_user_profile_vertical_menu_item_editavatar = true"
+                     ng-mouseout="mouseover_on_user_profile_vertical_menu_item_editavatar = false"
+                     ng-class="{'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseover bluish-button-text': mouseover_on_user_profile_vertical_menu_item_editavatar
+                                                     || userviewinfo.section_to_show == 'editavatar',
+                                'vertical-left-menu-button vertical-left-menu-parent-no-children-mouseout bluish-button-text': !mouseover_on_user_profile_vertical_menu_item_editavatar}">
+                    Edit avatar
+                </div>
+
+            </div>
+
+            <div class="non-omega-pane-23-of-30">
+
+                <div class="scrollable-user-profile-parent">
+
+                    <div id="scrollable-user-profile">
+
+                        <div class="omega-pane-23-of-23">
+
+                            <div class="non-omega-pane-1-of-23">
+
+                                &nbsp;
+
+                            </div>
+
+                            <div class="non-omega-pane-21-of-23">
+
+                                <div ng-show="userviewinfo.section_to_show === 'mydetails'">
+
+                                    <div class="omega-pane-21-of-21">
+
+                                        <!--<p>uid {{userviewinfo.user_profile_to_show.uid}}</p>-->
+
+                                        <!--<div ng-if="!userviewinfo.user_profile_to_show.uid">-->
+                                            <!--This message should never appear-->
+                                            <!--If it appears, there is a bug-->
+                                        <!--</div>-->
+
+                                        <div ng-show="userviewinfo.user_profile_to_show.uid">
+
+                                            <div class="non-omega-pane-7-of-21">
+
+                                                <span ng-if="userviewinfo.user_profile_to_show.avatar">
+                                                    <img ng-src="{{userviewinfo.user_profile_to_show.avatar}}"/>
+                                                </span>
+
+                                                <span ng-if="!userviewinfo.user_profile_to_show.avatar">
+                                                    <img ng-src="/backend/sites/default/files/pictures/noavatarchosen.png"/>
+                                                </span>
+
+                                            </div>
+
+                                            <div class="omega-pane-14-of-21">
+
+                                                <div class="header-text">
+                                                    {{userviewinfo.user_profile_to_show.name}}
+                                                </div>
+
+                                                <div ng-show="!userviewinfo.showing_a_public_profile && userviewinfo.user_profile_to_show.uid"
+                                                     class="dark-grey-text">
+
+                                                    {{userviewinfo.user_profile_to_show.mail}}
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div ng-show="userviewinfo.section_to_show === 'myvideos'">
+
+                                    <div ng-if="!(userviewinfo.user_profile_to_show.licenses | filter:licenseVideoPredicateFunction).length"
+                                         class="dark-grey-text">
+
+                                        You have no video products
+
+                                    </div>
+
+                                    <div ng-if="!userviewinfo.showing_a_public_profile && userviewinfo.user_profile_to_show.uid">
+
+                                        <div class="omega-pane-21-of-21">
+
+                                            <ul>
+
+                                                <li ng-repeat="license in filtered_licenses = (userviewinfo.user_profile_to_show.licenses | filter:licenseVideoPredicateFunction | orderBy:expires)">
+
+                                                    <div class="omega-pane-21-of-21">
+
+                                                        <div class="one-column-of-21-with-top-margin-pane">
+
+                                                            <button class="play-button"
+                                                                    ng-click="go_to_url('/en/v/' + license.programme_id)">
+                                                                &nbsp;
+                                                            </button>
+
+                                                        </div>
+
+                                                        <div class="omega-pane-20-of-21">
+
+                                                            <div>
+
+                                                                <a ng-href="/en/v/{{license.programme_id}}"
+                                                                   class="left-menu-text">
+                                                                    {{license.title}}
+                                                                </a>
+
+                                                            </div>
+
+                                                            <div class="dark-grey-text">
+
+                                                                Expires on {{license.expires * 1000 | date:date_time_format_for_userview}}
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </li>
+
+                                            </ul>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div ng-show="userviewinfo.section_to_show === 'myaudios'">
+
+                                    <div ng-if="!userviewinfo.showing_a_public_profile && userviewinfo.user_profile_to_show.uid">
+
+                                        <!--http://fortawesome.github.io/Font-Awesome/icon/download/  fa-download  -->
+
+                                        <div ng-if="!(userviewinfo.user_profile_to_show.licenses | filter:licenseAudioDownloadsPredicateFunction).length"
+                                             class="dark-grey-text">
+
+                                            You have no audio products
+
+                                        </div>
+
+                                        <ul>
+
+                                            <li ng-repeat="license in filtered_licenses = (userviewinfo.user_profile_to_show.licenses | filter:licenseAudioDownloadsPredicateFunction)">
+
+                                                <div class="omega-pane-21-of-21">
+
+                                                    <div class="one-column-of-21-with-top-margin-pane">
+
+                                                        <i ng-click="download_a_downloadable_from_user_panel(license.sku)"
+                                                           class="fa fa-download bluish-medium-icon-text"></i>
+
+                                                        <!--<button class="play-button"-->
+                                                                <!--ng-click="go_to_url('/en/v/' + license.programme_id)">-->
+                                                            <!--&nbsp;-->
+                                                        <!--</button>-->
+
+                                                    </div>
+
+                                                    <div class="omega-pane-20-of-21">
+
+                                                        <div>
+
+                                                            <!--@todo here, when you click the link, it's going to "jump"-->
+
+                                                            <a ng-href="/en/a/{{license.programme_id}}"
+                                                               class="left-menu-text">
+                                                                {{license.title}}
+                                                            </a>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+
+                                </div>
+
+                                <div ng-show="userviewinfo.section_to_show === 'mysubscriptions'">
+
+                                    <div ng-if="!userviewinfo.showing_a_public_profile && userviewinfo.user_profile_to_show.uid">
+
+                                        <div class="omega-pane-21-of-21">
+
+                                            <div ng-if="!(userviewinfo.user_profile_to_show.licenses | filter:licenseSubscriptionsPredicateFunction).length"
+                                                    class="dark-grey-text">
+
+                                                You have no subscriptions
+
+                                            </div>
+
+                                            <ul>
+
+                                                <li ng-repeat="license in filtered_licenses = (userviewinfo.user_profile_to_show.licenses | filter:licenseSubscriptionsPredicateFunction)">
+
+                                                    <div class="omega-pane-21-of-21">
+
+                                                        <!--<div class="one-column-of-21-with-top-margin-pane">-->
+
+                                                            <!--<button class="play-button"-->
+                                                                    <!--ng-click="go_to_url('/en/v/' + license.programme_id)">-->
+
+                                                                <!--&nbsp;-->
+
+                                                            <!--</button>-->
+
+                                                        <!--</div>-->
+
+                                                        <div>
+
+                                                            <div class="dark-grey-text">
+
+                                                                {{license.title}}
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!--@todo maybe we don't want the expiration date to show up
+                                                            or maybe you have to show the expiry date if the subscrition
+                                                            is not automatic maybe because it can't be automatic
+                                                        -->
+
+                                                        <div class="dark-grey-text">
+
+                                                            Expires on {{license.expires * 1000 | date:date_time_format_for_userview}}
+
+                                                        </div>
+
+                                                        <!--<div class="omega-pane-21-of-21">-->
+
+                                                            <!-- -->
+
+                                                        <!--</div>-->
+
+                                                    </div>
+
+                                                </li>
+
+                                            </ul>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div ng-show="userviewinfo.section_to_show === 'myorders'">
+
+                                    <div ng-if="!userviewinfo.showing_a_public_profile && userviewinfo.user_profile_to_show.uid">
+
+                                        <div ng-if="!user.user_orders_list.length"
+                                             class="dark-grey-text">
+
+                                            You have no orders
+
+                                        </div>
+
+                                        <div ng-if="(user.user_orders_list | filter:orderCartOrCheckoutPredicateFunction).length"
+                                             class="dark-grey-text">
+
+                                            You have uncompleted shopping carts. Relax, we will clean them up after
+                                            a while if you don't complete them.
+
+                                        </div>
+
+                                        <ul>
+
+                                            <li ng-repeat="order in ordered_orders_list = (user.user_orders_list | orderBy:'created':true)">
+
+                                                <div class="omega-pane-21-of-21">
+
+                                                    <div class="one-column-of-21-with-top-margin-pane">
+
+                                                        <button class="info-button"
+                                                                ng-click="show_additional_line = !show_additional_line;
+                                                                          get_line_items_and_add_them_to_order(order);">
+                                                            &nbsp;
+                                                        </button>
+
+                                                    </div>
+
+                                                    <div class="order-row-details-side-pane">
+
+                                                        <div class="non-omega-pane-3-of-20 dark-grey-text">
+
+                                                            N. {{order.order_id}}
+
+                                                        </div>
+
+                                                        <div class="non-omega-pane-5-of-20 dark-grey-text">
+
+                                                            {{order.created * 1000 | date:date_time_format_for_userview}}
+
+                                                        </div>
+
+                                                        <div class="non-omega-pane-4-of-20 dark-grey-text right-aligned-text">
+
+                                                            {{order.total_amount / 100 | currency:"£"}}
+
+                                                        </div>
+
+                                                        <div class="status-in-order-details-row-pane bluish-bold-text">
+
+                                                            {{order.readable_status}}
+
+                                                        </div>
+
+                                                        <div class="omega-pane-5-of-20">
+
+                                                            <span ng-click="use_this_order_as_cart(order)"
+                                                                  ng-show="!order.not_a_shopping_order && order.readable_status != 'CURRENT CART'"
+                                                                  class="info-text light-grey-mini-button">Use as current cart</span>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="omega-pane-21-of-21"
+                                                     ng-show="show_additional_line">
+
+                                                    <div class="non-omega-pane-1-of-21">
+                                                        &nbsp;
+                                                    </div>
+
+                                                    <div class="non-omega-pane-19-of-21">
+
+                                                        <div ng-if="!order.line_items.length"
+                                                             class="dark-grey-text">
+
+                                                            Empty order
+
+                                                        </div>
+
+                                                        <ul>
+
+                                                            <li ng-repeat="line_item in order.line_items">
+
+                                                                <div class="omega-pane-19-of-19">
+
+                                                                    <div class="non-omega-pane-15-of-19 dark-grey-text">
+
+                                                                        {{line_item.product_title}}
+
+                                                                    </div>
+
+                                                                    <div class="omega-pane-4-of-19 dark-grey-text right-aligned-text">
+
+                                                                        {{line_item.total_amount / 100 | currency:"£"}}
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </li>
+
+                                                        </ul>
+
+                                                    </div>
+
+                                                    <div class="omega-pane-1-of-21">
+
+                                                        &nbsp;
+
+                                                    </div>
+
+                                                </div>
+
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+
+                                </div>
+
+                                <div ng-show="userviewinfo.section_to_show === 'mygroups'">
+
+                                    <div ng-if="!user.groups.length"
+                                         class="dark-grey-text">
+
+                                        You are a member of no group
+
+                                    </div>
+
+                                    <ul>
+
+                                        <li ng-repeat="group in user.groups">
+
+                                            <div class="my-groups-list-in-user-profile-pane">
+
+                                                <div class="one-column-and-left-margin-in-user-profile-pane">
+
+                                                    <button class="info-button"
+                                                            ng-click="go_to_url('/social/en/groups/group/' + group.id)">
+                                                        &nbsp;
+                                                    </button>
+
+                                                </div>
+
+                                                <div class="my-groups-group-title-in-user-profile-pane">
+
+                                                    <a ng-href="/social/en/groups/group/{{group.id}}"
+                                                       class="left-menu-text">{{group.title}}</a>
+
+                                                    &nbsp;
+
+                                                </div>
+
+                                                <div class="omega-pane-1-of-21">
+
+                                                    &nbsp;
+
+                                                </div>
+
+                                            </div>
+
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+
+                                <div ng-show="userviewinfo.section_to_show === 'myreviews'">
+
+                                    <div ng-if="reviewsforminfo.showing_user_reviews && userviewinfo.user_profile_to_show.uid"
+                                         ng-controller="ReviewsFormCtrl">
+
+                                        <ul>
+
+                                            <div ng-if="reviewsforminfo.reviews.length == 0"
+                                                 class="dark-grey-text">
+
+                                                You created no reviews
+
+                                            </div>
+
+                                            <li ng-repeat="review in reviewsforminfo.reviews">
+
+                                                <div ng-review
+                                                     review="review"
+                                                     user="user"
+                                                     totalnumberofcolumns="21"
+                                                     on-save="save(review)"
+                                                     on-submit="submit(review)"
+                                                     on-delete="delete(review)">
+                                                </div>
+
+                                            </li>
+
+                                        </ul>
+
+                                        <div class="omega-pane-21-of-21">
+
+                                            <div class="non-omega-pane-14-of-21">
+
+                                                &nbsp;
+
+                                            </div>
+
+                                            <div class="non-omega-pane-5-of-21">
+
+                                                <span ng-click="reviewsforminfo.page = 0; load_reviews(reviewsforminfo.page)"
+                                                      ng-show="reviewsforminfo.page > 0"
+                                                      class="link-bold-text blue-link">First</span>
+
+                                                <span ng-show="reviewsforminfo.page > 0"
+                                                      class="link-bold-text blue-link"> - </span>
+
+                                                <span ng-click="reviewsforminfo.page = reviewsforminfo.page - 1; load_reviews(reviewsforminfo.page)"
+                                                      ng-show="reviewsforminfo.page > 0"
+                                                      class="link-bold-text blue-link">Back</span>
+
+                                                <span ng-show="reviewsforminfo.more_pages_available && reviewsforminfo.page > 0"
+                                                      class="link-bold-text blue-link"> - </span>
+
+                                                <span ng-click="reviewsforminfo.page = reviewsforminfo.page + 1; load_reviews(reviewsforminfo.page)"
+                                                      ng-show="reviewsforminfo.more_pages_available"
+                                                      class="link-bold-text blue-link">See more</span>
+
+                                                &nbsp;
+
+                                            </div>
+
+                                            <div class="omega-pane-2-of-21">
+
+                                                &nbsp;
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div ng-show="userviewinfo.section_to_show === 'fanof'">
+
+                                    <div ng-if="userviewinfo.list_of_items_user_is_fan_of.length == 0"
+                                         class="dark-grey-text">
+
+                                        You are a fan of no item
+
+                                    </div>
+
+                                    <div ng-if="(userviewinfo.list_of_items_user_is_fan_of | filter:fanVideoPredicateFunction).length"
+                                         class="fan-of-section-in-user-profile-pane">
+
+                                        <div class="header2-text">Video programmes</div>
+
+                                        <ul>
+
+                                            <li ng-repeat="item in (userviewinfo.list_of_items_user_is_fan_of | filter:fanVideoPredicateFunction)">
+
+                                                <div class="fan-of-row-in-user-profile-pane">
+
+                                                    <div class="non-omega-pane-18-of-21">
+
+                                                        <a ng-href="{{item.permalink}}"
+                                                           class="left-menu-text">{{item.display_title}}</a>
+
+                                                    </div>
+
+                                                    <div class="omega-pane-3-of-21"
+                                                         ng-include src="'/partials/item_user_is_fan_of_vote_panel.html'"></div>
+
+                                                </div>
+
+                                            </li>
+
+                                            <!--fanVideoPredicateFunction-->
+
+                                            <!--<li ng-repeat="item in userviewinfo.list_of_items_user_is_fan_of">-->
+
+                                            <!--<tr ng-repeat="license in filtered_licenses = (userviewinfo.user_profile_to_show.licenses | filter:licenseSubscriptionsPredicateFunction)">-->
+
+                                        </ul>
+
+                                    </div>
+
+                                    <div ng-if="(userviewinfo.list_of_items_user_is_fan_of | filter:fanAudioPredicateFunction).length"
+                                         class="fan-of-section-in-user-profile-pane">
+
+                                        <div class="header2-text">Audio programmes</div>
+
+                                        <ul>
+
+                                            <li ng-repeat="item in (userviewinfo.list_of_items_user_is_fan_of | filter:fanAudioPredicateFunction)">
+
+                                                <div class="fan-of-row-in-user-profile-pane">
+
+                                                    <div class="non-omega-pane-18-of-21">
+
+                                                        <a ng-href="{{item.permalink}}"
+                                                           class="left-menu-text">{{item.display_title}}</a>
+
+                                                    </div>
+
+                                                    <div class="omega-pane-3-of-21"
+                                                         ng-include src="'/partials/item_user_is_fan_of_vote_panel.html'"></div>
+
+                                                </div>
+
+                                            </li>
+
+                                            <!--fanVideoPredicateFunction-->
+
+                                            <!--<li ng-repeat="item in userviewinfo.list_of_items_user_is_fan_of">-->
+
+                                            <!--<tr ng-repeat="license in filtered_licenses = (userviewinfo.user_profile_to_show.licenses | filter:licenseSubscriptionsPredicateFunction)">-->
+
+                                        </ul>
+
+                                    </div>
+
+                                    <div ng-if="(userviewinfo.list_of_items_user_is_fan_of | filter:fanPartnerPredicateFunction).length"
+                                         class="fan-of-section-in-user-profile-pane">
+
+                                        <div class="header2-text">Partners</div>
+
+                                        <ul>
+
+                                            <li ng-repeat="item in (userviewinfo.list_of_items_user_is_fan_of | filter:fanPartnerPredicateFunction)">
+
+                                                <div class="fan-of-row-in-user-profile-pane">
+
+                                                    <div class="non-omega-pane-18-of-21">
+
+                                                        <a ng-href="{{item.permalink}}"
+                                                           class="left-menu-text">{{item.display_title}}</a>
+
+                                                    </div>
+
+                                                    <div class="omega-pane-3-of-21"
+                                                         ng-include src="'/partials/item_user_is_fan_of_vote_panel.html'"></div>
+
+                                                </div>
+
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+
+                                </div>
+
+                                <div ng-show="userviewinfo.section_to_show === 'editdetails'">
+
+                                    <div ng-form="realnameForm" novalidate>
+
+                                        <!--<button ng-click="can_edit = true">Edit</button>-->
+
+                                        <div class="omega-pane-21-of-21">
+
+                                            <div class="non-omega-pane-4-of-21 header2-text">
+
+                                                First name:
+
+                                            </div>
+
+                                            <div class="omega-pane-17-of-21">
+
+                                                <div class="omega-pane-17-of-17">
+
+                                                    <input type="text"
+                                                           name="first_name"
+                                                           ng-model="userviewinfo.user_profile_to_show.first_name"
+                                                           ng-pattern="text_validation_regex_pattern"
+                                                           class="inputfield"
+                                                           required/>
+
+                                                </div>
+
+                                                <div class="omega-pane-17-of-17 dark-grey-text"
+                                                     ng-show="realnameForm.first_name.$dirty && realnameForm.first_name.$invalid">
+
+                                                    <span ng-show="realnameForm.first_name.$error.required">Please enter your first name</span>
+
+                                                    <span ng-show="realnameForm.first_name.$error.pattern">Invalid characters entered</span>
+
+                                                </div>
+
+                                                <div class="omega-pane-17-of-17 dark-grey-text"
+                                                     ng-show="!(realnameForm.first_name.$dirty && realnameForm.first_name.$invalid)">
+
+                                                    &nbsp;
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="omega-pane-21-of-21">
+
+                                            <div class="non-omega-pane-4-of-21 header2-text">
+
+                                                Middle names:
+
+                                            </div>
+
+                                            <div class="omega-pane-17-of-21">
+
+                                                <div class="omega-pane-17-of-17">
+
+                                                    <input type="text"
+                                                           name="middle_names"
+                                                           ng-model="userviewinfo.user_profile_to_show.middle_names"
+                                                           ng-pattern="text_validation_regex_pattern"
+                                                           class="inputfield"/>
+
+                                                </div>
+
+                                                <!--<div ng-show="realnameForm.middle_names.$dirty && realnameForm.middle_names.$invalid">-->
+                                                    <!--<span ng-show="realnameForm.middle_names.$error.required">Please enter your middle_names</span>-->
+                                                    <!--<span ng-show="realnameForm.middle_names.$error.pattern">Invalid characters entered or missing ones (like @)</span>-->
+                                                <!--</div>-->
+
+                                                <div class="omega-pane-17-of-17 dark-grey-text"
+                                                     ng-show="realnameForm.middle_names.$dirty && realnameForm.middle_names.$invalid">
+
+                                                    <!--<span ng-show="realnameForm.middle_names.$error.required">Please enter your middle names</span>-->
+
+                                                    <span ng-show="realnameForm.middle_names.$error.pattern">Invalid characters entered</span>
+
+                                                </div>
+
+                                                <div class="omega-pane-17-of-17 dark-grey-text"
+                                                     ng-show="!(realnameForm.middle_names.$dirty && realnameForm.middle_names.$invalid)">
+
+                                                    &nbsp;
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="omega-pane-21-of-21">
+
+                                            <div class="non-omega-pane-4-of-21 header2-text">
+
+                                                Family name:
+
+                                            </div>
+
+                                            <div class="omega-pane-17-of-21">
+
+                                                <div class="omega-pane-17-of-17">
+
+                                                    <input type="text"
+                                                           name="family_name"
+                                                           ng-model="userviewinfo.user_profile_to_show.family_name"
+                                                           ng-pattern="text_validation_regex_pattern"
+                                                           class="inputfield"
+                                                           required/>
+
+                                                </div>
+
+                                                <div class="omega-pane-17-of-17 dark-grey-text"
+                                                     ng-show="realnameForm.family_name.$dirty && realnameForm.family_name.$invalid">
+
+                                                    <span ng-show="realnameForm.family_name.$error.required">Please enter your family name</span>
+
+                                                    <span ng-show="realnameForm.family_name.$error.pattern">Invalid characters entered</span>
+
+                                                </div>
+
+                                                <div class="omega-pane-17-of-17 dark-grey-text"
+                                                     ng-show="!(realnameForm.family_name.$dirty && realnameForm.family_name.$invalid)">
+
+                                                    &nbsp;
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="omega-pane-21-of-21">
+
+                                            <button ng-click="update_user_details(userviewinfo.user_profile_to_show); can_edit = false"
+                                                    ng-disabled="realnameForm.$invalid"
+                                                    class="blue-button">Update</button>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div ng-show="userviewinfo.section_to_show === 'editavatar'">
+
+                                    <div class="header2-text">1. Select an image from your computer</div>
+
+                                    <div class="dark-grey-text">Select an image: <input type="file" id="fileInput" class="fileinput"/></div>
+
+                                    <div class="header2-text">2. Crop it</div>
+
+                                    <div class="omega-pane-21-of-21">
+
+                                        <div class="non-omega-pane-10-of-21">
+
+                                            <div class="cropArea">
+                                                <img-crop image="userviewinfo.user_profile_to_show.rawavatar"
+                                                          result-image="userviewinfo.user_profile_to_show.croppedavatar"
+                                                          result-image-size="220"
+                                                          area-min-size="150"></img-crop>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="omega-pane-11-of-21">
+
+                                            <img ng-src="{{userviewinfo.user_profile_to_show.croppedavatar}}"
+                                                 class="preview-area-pane"/>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="header2-text">3. When you are happy with it, upload it</div>
+
+                                    <div class="omega-pane-21-of-21">
+
+                                        <button ng-click="testing_avatar(userviewinfo.user_profile_to_show.croppedavatar)"
+                                                class="blue-button">Upload avatar</button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="omega-pane-1-of-23">
+
+                                &nbsp;
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="omega-pane-1-of-30">
+
+                &nbsp;
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div ng-include src="'/includes/footer.html'"></div>
+
+</div>
+
+<script type="text/javascript-lazy" src="/lib/scrollbar/scrollbar.js"></script>

@@ -1,0 +1,21 @@
+<?php
+/**
+ * @file musth_license.install
+ *
+ * @brief Actions to perform in case this module is uninstalled
+ *
+ * @ingroup musthlicense
+ *
+ * Created by PhpStorm.
+ * User: www-data
+ * Date: 20/05/14
+ * Time: 18:50
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function musth_license_uninstall() {
+    // Delete the fields created and attached to this module's bundles.
+    field_attach_delete_bundle('commerce_license', 'musth_license');
+}

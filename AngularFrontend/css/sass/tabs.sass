@@ -1,0 +1,85 @@
+.tab
+  cursor: pointer
+  display: block
+
+.left-part-base-tab
+  @extend .tab
+  float: left
+  height: 41px
+  margin-top: -20px
+  padding: 20px 8px 0 14px
+  //vertical-align: baseline
+  text-decoration: none // @todo no text attributes here
+  font-size: 11.2px  // @todo font attributes shouldn't be here
+  font-weight: bold  // @todo font attributes shouldn't be here
+  font-family: Helvetica, Arial, sans-serif  // @todo font attributes shouldn't be here
+
+.left-part-inactive-tab
+  @extend .left-part-base-tab
+  background: transparent url("/images/tab-left.png") no-repeat scroll left top !important
+  color: #2D6297  // @todo or maybe #444
+
+.left-part-active-tab
+  @extend .left-part-base-tab
+  background: url("/images/tab-left-blue-active.png") no-repeat scroll left top !important
+  text-shadow: 1px 1px #2F6398, -1px -1px #21476E // @todo shouldn't be here
+  color: white !important
+
+.right-part-base-tab
+  @extend .tab
+  height: 41px
+  //vertical-align: baseline
+  //text-decoration: none // @todo no text attributes here
+  padding: 20px 4px 1px 0
+
+.right-part-inactive-tab
+  @extend .right-part-base-tab
+  background: transparent url("/images/tab-right.png") no-repeat scroll right top !important
+
+.right-part-active-tab
+  @extend .right-part-base-tab
+  background: url("/images/tab-right-blue-active.png") no-repeat scroll right top !important
+  //text-shadow: 1px 1px #2F6398, -1px -1px #21476E // @todo shouldn't be here
+  //color: white
+
+.left-part-inactive-red-tab
+  @extend .left-part-base-tab
+  background: transparent url("/images/tab-left.png") no-repeat scroll left top !important
+  color: red  // @todo or maybe #444
+
+.left-part-active-red-tab
+  @extend .left-part-base-tab
+  background: url("/images/tab-left-red-active.png") no-repeat scroll left top !important
+  text-shadow: 1px 1px #2F6398, -1px -1px #21476E // @todo shouldn't be here (and is it ok?)
+  color: white !important
+
+.right-part-active-red-tab
+  @extend .right-part-base-tab
+  background: url("/images/tab-right-red-active.png") no-repeat scroll right top !important
+
+//
+//
+//.left-part-tab
+//  @extend .tab
+//  float: left
+//  background: transparent url("/images/tab-left.png") no-repeat scroll left top !important
+//  height: 41px
+//  //outline: 0px none
+//  margin-top: -20px
+//  //margin-left: 0
+//  //margin-right: 0
+//  padding: 20px 8px 0 14px
+//  vertical-align: baseline
+//  text-decoration: none // @todo no text attributes here
+//  //width: 100px // @todo remove after testing
+//  //z-index: 0
+//
+//.right-part-tab
+//  cursor: auto
+//  display: block
+//  background: transparent url("/images/tab-right.png") no-repeat scroll right top !important
+//  height: 41px
+//  vertical-align: baseline
+//  text-decoration: none // @todo no text attributes here
+//  padding: 20px 4px 1px 0
+//

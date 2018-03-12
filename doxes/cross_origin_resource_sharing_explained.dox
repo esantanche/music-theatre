@@ -1,0 +1,94 @@
+/**
+ * @page corsexplained Cross Origin Resource Sharing explained
+ *
+ * THIS DOCUMENT IS LIKELY TO BE OBSOLETE
+ *
+ * This page describes the solution to the problem of cross origin resource sharing
+ *
+ * @section cors What the CORS mechanism is
+ *
+ * When we perform an http query that includes a basic authentication, if the source
+ * and the destination domains are different, there will be an OPTIONS http query
+ * first whose purpose is to asj the server if cross-domain queries are allowed.
+ *
+ * If the respose is positive, there will be the actual GET or POST query.
+ *
+ * @see http://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+ *
+ * @section tomakeitwork What we need to make it work
+ *
+ * There are many ingredients needed to make our CORS queries work
+ *
+ * @subsection initfunction musth_restws_init
+ *
+ * In the module musth_restws, file musth_restws.module, there is the function
+ * musth_restws_init.
+ *
+ * This is an implementation of the hook hook_init()
+ * @see https://api.drupal.org/api/drupal/modules%21system%21system.api.php/function/hook_init/7
+ *
+ * This function replies to *every* OPTIONS http request that Drupal receives.
+ * OPTIONS requests are sent from clients if the request is cross-origin, which means
+ * that the request originates from a different domain from the one the server belongs to.
+ *
+ * In our case the frontend site makes a request to the backend. http://musictheatre-production-ng/
+ * makes a request to http://musictheatre-production/. These are two different domains.
+ *
+ * When the incoming request is an OPTIONS query, this functions sends back only the necessary
+ * headers for the client to believe to be authorised to send the subsequent GET or POST
+ * requests.
+ *
+ * There will be no OPTIONS http query if no 'Authorization' http header is passed. If no login
+ * is required, no such header is passed and there is no OPTIONS query.
+ *
+ * @subsection corsmodule CORS module
+ *
+ * It looks like we need the CORS module as well.
+ * You find it here: https://drupal.org/project/cors
+ *
+ * It's not clear why we need it. Anyway it's configured with one line only:
+ *
+ * @code
+ *
+ * *|http://musictheatre-production-ng
+ *
+ * @endcode
+ *
+ * It means that access is allowed to any server url from http://musictheatre-production-ng.
+ *
+ * @subsection xmlfile crossdomain.xml
+ *
+ * We need the server to provide a crossdomain.xml file as well where access is allowed only from
+ * musictheatre-production-ng
+ *
+ * You find this file in the repository. It's in the root folder.
+ *
+ * This is how it looks like:
+ *
+ * @code
+ *
+ * <?xml version="1.0"?>
+ * <!DOCTYPE cross-domain-policy SYSTEM "
+ * http://www.macromedia.com/xml/dtds/cross-domain-policy.dtd">
+ * <cross-domain-policy>
+ *    <site-control permitted-cross-domain-policies="all" />
+ *     <allow-access-from domain="musictheatre-production-ng" to-ports="*" secure="true"/>
+ *        <!-- localhost -->
+ *    <allow-http-request-headers-from domain="http://musictheatre-production-ng"/>
+ * </cross-domain-policy>
+ *
+ * @endcode
+ *
+ * @subsection ngside Angular side
+ *
+ * On the angular side, we need the http basic authentication headers set.
+ * The rest resources have this property:
+ *
+ * @code
+ *
+ * withCredentials: false
+ *
+ * @endcode
+ *
+ * This is quite counter-intuitive, but that's it.
+ */

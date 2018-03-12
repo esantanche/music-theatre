@@ -1,0 +1,5610 @@
+/**
+ * @page errorcodes Error codes
+ *
+ * See error coding conventions: @ref errorcodingconventions
+ *
+ * @section W3E_Error Error level errors
+ *
+ * @subsection W3E001 W3E001 Unknow term
+ *
+ * @descr An unknow term has been found
+ * Scanning the programmes, we encountered a taxonomy term that we didn't get when loading the entire taxonomy.
+ * It should never happen unless some strange event or someone changing programmes while the software above is
+ * running.
+ * It happens here:
+ * @see musth_rules.taxonomy_apes_build.inc
+ *
+ * @cause It may also happen that a term has been deleted but it is still used in a programme
+ * @action Reset the taxonomy apes and rebuild them
+ * @see musth_rules_action_apes_resetting_taxonomies
+ * @see musth_rules_action_apes_building_taxonomies
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E002 W3E002 Parent not found
+ *
+ * @descr Parent term not found
+ * When we compute the number of occurrences of a term in programmes, we have to add these occurrences to any parent the term has.
+ * When this error happens, it's because we didn't find the parent term.
+ * The parent term should exist because the api taxonomy_get_tree is supposed to return it
+ * It happens here:
+ * @see musth_rules.taxonomy_apes_build.inc
+ *
+ * @cause I don't know, maybe the database went corrupted... good luck!
+ * @action Investigate carefully
+ * @action I would reset and rebuild the taxonomy apes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E003 W3E003 No programmes found
+ *
+ * @descr No programmes found
+ * Loading the programmes to scan them for taxonomy term occurrences, I found no programmes!
+ * Did anyone delete the entire database?
+ * It happens here:
+ * @see musth_rules_programmes_scan
+ *
+ * @cause I don't know, maybe the database went corrupted... good luck!
+ * @action Investigate carefully
+ * @action I would reset and rebuild the taxonomy apes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E004 W3E004 Error in loading taxonomy tree
+ *
+ * @descr Error in loading taxonomy tree
+ * Loading the taxonomy tree, something went wrong. See the message given by watchdog
+ * It happens here:
+ * @see musth_rules_load_taxonomy_tree
+ *
+ * @cause I don't know, see the message
+ * @action Investigate carefully
+ * @action I would reset and rebuild the taxonomy apes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E005 W3E005 Error in checking if an ape already exists
+ *
+ * @descr Error in checking if an ape already exists
+ * When I have the programmes count for a term, I have to update the corresponding ape or
+ * I have to create a new one.
+ * If this error happens I don't do that, I just escape...
+ * It happens here:
+ * @see musth_rules_create_or_update_apes
+ *
+ * @cause I don't know, see the message
+ * @action Investigate carefully
+ * @action I would reset and rebuild the taxonomy apes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E006 W3E006 Error in loading every ape nid for a taxonomy
+ *
+ * @descr Error in loading every ape nid for a taxonomy
+ * I was loading all the ape nids for a taxonomy because I have to delete all of them,
+ * but something went wrong.
+ * It happens here:
+ * @see musth_rules_action_apes_resetting_taxonomies
+ *
+ * @cause I don't know, see the message
+ * @action Investigate carefully
+ * @action I would reset and rebuild the taxonomy apes as soon as I can
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E007 W3E007 Empty credit lists
+ *
+ * @descr Error in loading the credit lists
+ * I was loading all the credit lists to count the occurrences of credit elements in programmes
+ * but something went wrong and I got an empty array of credit elements
+ * It happens here:
+ * @see musth_rules_programmes_scan_credits_variant
+ *
+ * @cause I don't know, there should be at least one credit element obviously
+ * @action Investigate carefully
+ * @action I would reset and rebuild the credit apes as soon as I can
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E008 W3E008 No result from EFQ used to get all credit elements
+ *
+ * @descr No result from EFQ used to get all credit elements
+ * I was loading all the credit lists to count the occurrences of credit elements in programmes
+ * but something went wrong and I got no result at all from the EntityFieldQuery
+ * It happens here:
+ * @see musth_rules_programmes_scan_credits_variant
+ *
+ * @cause I don't know, if an EntityFieldQuery doesn't work there is something seriously wrong
+ * @action Investigate carefully
+ * @action I would reset and rebuild the credit apes as soon as I can
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E009 W3E009 Credit element not found when it should exist
+ *
+ * @descr Credit element not found when it should exist
+ * I was loading the credit element for which I have to get the name or names to compose
+ * a label but something went wrong and I got an empty result
+ * The label is used by the tagring or by a restws api.
+ * It happens here:
+ * @see musth_helper_functions_get_label_for_credit_element
+ *
+ * @cause I don't know. To be sure, the node should have been retrieved, is the db down?
+ * @action Investigate carefully
+ * @action I would reset and rebuild the credit apes as soon as I can
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E010 W3E010 Credit element type not supported
+ *
+ * @descr Credit element type not supported
+ * I found a credit element of a type that I don't support
+ * I support only person and organisation as credit types
+ * It happens here:
+ * @see musth_helper_functions_get_label_for_credit_element
+ *
+ * @cause Maybe someone defined a new type of node to be used in credit lists
+ * and the code hasn't been updated
+ * @action Just write the code to support the new credit type...
+ * @action Consider that I treat the unknown type as if it was an organisation
+ * This might be good enough (anyway, fix the code)
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E011 W3E011 Error in checking if an ape already exists
+ *
+ * @descr Error in checking if an ape already exists
+ * When I have the programmes count for a credit element, I have to update the corresponding ape or
+ * I have to create a new one.
+ * If this error happens I don't do that, I just escape...
+ * It happens here:
+ * @see musth_rules_create_or_update_credit_apes
+ *
+ * @cause I don't know, see the message
+ * @action Investigate carefully
+ * @action I would reset and rebuild the credit list apes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E012 W3E012 Error in loading every ape nid for a credit type
+ *
+ * @descr Error in loading every ape nid for a credit type
+ * I was loading all the ape nids for a credit type because I have to delete all of them,
+ * but something went wrong.
+ * It happens here:
+ * @see musth_rules_action_apes_resetting_credits
+ *
+ * @cause I don't know, see the message
+ * @action Investigate carefully
+ * @action I would reset and rebuild the credit apes as soon as I can
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E013 W3E013 Error in loading the default playlist for the tagring
+ *
+ * @descr Error in loading the default playlist for the tagring
+ * I was loading the default playlist for the tagring, but something went wrong.
+ * It happens here:
+ * @see musth_amf_service_tagring_api_get_queuemediaids
+ *
+ * @cause I don't know, see the message
+ * @action Investigate carefully
+ * @action See if there actually is a default playlist defined
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E014 W3E014 Can't find any default playlist
+ *
+ * @descr Can't find any default playlist
+ * I was loading the default playlist for the tagring, but I couldn't find any
+ * It happens here:
+ * @see musth_amf_service_tagring_api_get_queuemediaids
+ *
+ * @cause Is there any default playlist defined for the tagring?
+ * @action See Structure » Entity types » Tagring playlist
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E015 W3E015 The nids have to be passed in an array
+ *
+ * @descr The nids have to be passed in an array
+ * The tagring has to pass the nids of the programmes it wants to know about
+ * in an array. We don't support comma-delimited string any more
+ * It happens here:
+ * @see musth_amf_service_tagring_api_get_items_by_id
+ *
+ * @cause The tagring is sending nids not in an array as required
+ * @action Fix the tagring
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E016 W3E016 Programme not found! It should be there!
+ *
+ * @descr Programme not found! It should be there!
+ * This is serious. We attempted to load a programme the tagring requested
+ * If the tagring requested that programme, it means that it got the nid
+ * of that programme from us.
+ * If the programme isn't there either the database if off or there is
+ * some corruption in the database.
+ * It happens here:
+ * @see musth_amf_service_tagring_api_get_items_by_id
+ *
+ * @cause I don't know. Maybe a database corruption
+ * @action Investigate carefully
+ * @action Set that programme unpublished so that it doesn't show in the
+ * query results
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E017 W3E017 The tagring sent an empty array of ids
+ *
+ * @descr The tagring sent an empty array of ids
+ * The tagring requested for some programmes, but the array that should contain
+ * the node ids of the wanted programmes is empty.
+ * Actually we discovered that the tagring does send empty arrays sometimes
+ * and that we have just to ignore it.
+ * So, this error shouldn't be used any more.
+ * It happens here:
+ * @see musth_amf_service_tagring_api_get_items_by_id
+ *
+ * @cause It could be a problem in the tagring or one in the transmission
+ * of the nids to this api
+ * @action Use SoapUI to see if the api works well and the problem is in the tagring
+ * or the opposite
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E018 W3E018 Empty query string
+ *
+ * @descr The tagring sent an empty query string
+ * The tagring sent an empty query string when asking for the
+ * nids of programmes filtered
+ * The tagring never does this.
+ * It happens here:
+ * @see musth_amf_service_tagring_api_get_item_ids
+ *
+ * @cause It could be a problem in the tagring or one in the transmission
+ * of the query string to this api
+ * @action Use SoapUI to see if the api works well and the problem is in the tagring
+ * or the opposite
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E019 W3E019 Invalid vid in "function name"
+ *
+ * @descr The tagring sent an invalid vocabulary id
+ * This can be a transmission error or maybe there have been some
+ * changes in the code and the tagring apis haven't been updated
+ * It happens here:
+ * @see musth_amf_service_get_ape_name_for_a_vocabulary
+ * or here:
+ * @see musth_amf_service_get_ape_type_for_a_vocabulary
+ *
+ * @cause It could be a problem in the tagring or one in the transmission
+ * of the vid
+ * @action Use SoapUI to see if the api works well and the problem is in the tagring
+ * or the opposite
+ * @action see if there has been any change that should have been followed by a corresponding
+ * change somewhere else in the code
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E020 W3E020 Error in loading every ape of a given type
+ *
+ * @descr Error in loading every ape of a given type
+ * I was loading every ape of a given type. I need them when the tagring wants a full
+ * vocabulary or it's doing a combine search. Something went wrong.
+ * It happens here:
+ * @see musth_amf_service_get_all_apes_for_a_taxonomy_or_credits_type
+ *
+ * @cause I don't know, see the message
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E021 W3E021 No apes found
+ *
+ * @descr No apes found
+ * I was loading all the apes of a given type, for example 'genre'
+ * but I didn't find any
+ * It happens here:
+ * @see musth_amf_service_get_all_apes_for_a_taxonomy_or_credits_type
+ *
+ * @cause Maybe someone reset the apes and didn't rebuild them
+ * @cause Maybe the database is corrupt or down
+ * @action Check the error message, it will tell you which type of apes
+ * are missing
+ * @action Investigate carefully
+ * @action I would reset and rebuild the apes as soon as I can
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E022 W3E022 Cant load an ape that should exist!
+ *
+ * @descr Cant load an ape that should exist!
+ * We attempted to load an ape that we need to filter programmes.
+ * It should exist because the tagring passed its eid to us for we to
+ * use it as a filter.
+ * We can't find that ape, which means that the database is corrupt
+ * or there are problems with the apes.
+ * It happens here:
+ * @see musth_amf_service_get_nids_lists_and_intersect_them
+ *
+ * @cause I don't know. Maybe a database corruption
+ * @cause Maybe the apes are not correct?
+ * @action I would reset and rebuild the apes
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E023 W3E023 The requested programme doesnt exist or is not published
+ *
+ * @descr The requested programme doesnt exist or is not published
+ * A programme has been requested that doesn't exist or is not published
+ * This shouldn't happen because the api is called by angular that should have
+ * good programme nids
+ * It happens here:
+ * @see ProgrammeResourceController::query
+ *
+ * @cause Transmission error
+ * @cause Database not working
+ * @cause Database corruption
+ * @cause Angular code not aligned with the rest apis
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E024 W3E024 Angular called this api passing no nid at all
+ *
+ * @descr Angular called this api passing no nid at all
+ * Angular called the api musth_restws_programme passing no nid
+ * It happens here:
+ * @see ProgrammeResourceController::query
+ *
+ * @cause Transmission error when calling the api
+ * @cause Problem in the call code on the angular side
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E025 W3E025 Cant load field collections that should exist!
+ *
+ * @descr Cant load field collections that should exist!
+ * Trying to load field collections, we got nothing. But the field collections
+ * should exist because we got their eids from the programme or track
+ * It happens here:
+ * @see ProgrammeResourceController::read
+ * @see musth_restws_make_credits_elements_array
+ *
+ * @cause I don't know. To be sure, the field colelctions should have been retrieved, is the db down?
+ * @cause The db may be corrupted and the field collections got deleted when still referenced in the
+ * programme or track
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E026 W3E026 Angular called this api passing no nid at all
+ *
+ * @attention THIS ERROR CODE IS NO LONGER USED
+ * @descr Angular called this api passing no nid at all
+ * Angular called the api musth_restws_track passing no nid
+ * It happens here:
+ * @see TrackResourceController::query
+ *
+ * @cause Transmission error when calling the api
+ * @cause Problem in the call code on the angular side
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E027 W3E027 No result from EFQ used to get a programme
+ *
+ * @attention THIS ERROR CODE IS NO LONGER USED
+ * @descr No result from EFQ used to get a programme
+ * I was loading a programme to see if it exists and is published
+ * but something went wrong and I got no result at all from the EntityFieldQuery
+ * It happens here:
+ * @see TrackResourceController::query
+ *
+ * @cause I don't know, if an EntityFieldQuery doesn't work there is something seriously wrong
+ * @cause Maybe the db is down or corrupt
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E028 W3E028 The requested programme doesnt exist or is not published
+ *
+ * @attention THIS ERROR CODE IS NO LONGER USED
+ * @descr The requested programme doesnt exist or is not published
+ * A programme has been requested that doesn't exist or is not published
+ * This shouldn't happen because the api is called by angular that should have
+ * good programme nids
+ * It happens here:
+ * @see TrackResourceController::query
+ *
+ * @cause Transmission error
+ * @cause Database not working
+ * @cause Database corruption
+ * @cause Angular code not aligned with the rest apis
+ * @action Investigate carefully
+ *
+ * @subsection W3E029 W3E029 No tracks for this programme
+ *
+ * @descr No tracks for this programme
+ * A programme has been requested that has no tracks.
+ * How can it be!
+ * It happens here:
+ * @see TrackResourceController::query
+ *
+ * @cause Database corruption
+ * @cause Tracks have not been entered for this programme
+ * @action Check if there are tracks for this programme
+ * @action Investigate database corruptions
+ *
+ * @subsection W3E030 W3E030 Missing or empty system title
+ *
+ * @descr Missing or empty system title
+ * Angular wants the signed urls for a programme but it's sending
+ * an empty system title, or the system title is missing
+ * It happens here:
+ * @see URLsKitResourceController::query
+ *
+ * @cause Transmission error
+ * @cause Angular is not populating the system title properly
+ * @cause Angular didn't get the system title when it loaded the programme
+ * @action Check the value of the $filter variable given in the watchdog
+ * message to see if the system title is empty or missing
+ * @action Investigate transmission problems by using soapui
+ * @action See if the system title is defined for this programme
+ *
+ * @subsection W3E031 W3E031 Urlskit not loaded
+ *
+ * @descr Urlskit not loaded
+ * Error in calling the URLsKit REST api
+ * It happens here:
+ * @see event_from_tagring
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @subsection W3E032 W3E032 Programme not loaded
+ *
+ * @descr Programme not loaded
+ * Error in calling the Programme REST api
+ * It happens here:
+ * @see event_from_tagring
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @subsection W3E033 W3E033 Urlskit not loaded
+ *
+ * @descr Urlskit not loaded
+ * Error in calling the URLsKit REST api
+ * It happens here:
+ * @see play_track
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @subsection W3E034 W3E034 User not loaded
+ *
+ * @descr User not loaded
+ * Error in calling the User REST api
+ * We were attempting a login, but there has been a problem
+ * in calling the api
+ * It happens here:
+ * @see login
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @subsection W3E035 W3E035 Programme not found, empty response
+ *
+ * @descr Programme not found, empty response
+ * Error in calling the musth_restws_programme REST api
+ * The programme we wanted has not been found
+ * This shouldn't happen because the node id of the programme
+ * has been provided by the tagring, so it should exist
+ * It happens here:
+ * @see load_programme
+ *
+ * @cause Database failure
+ * @cause Problem with the programme having been deleted or unpublished
+ * @cause Software bug
+ * @action Investigate carefully
+ *
+ * @subsection W3E036 W3E036 Programme not loaded
+ *
+ * @descr Programme not loaded
+ * Error in calling the Programme REST api
+ * We were loading a programme, but there has been a problem
+ * in calling the api
+ * It happens here:
+ * @see load_programme
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @subsection W3E037 W3E037 User not returned, empty response
+ *
+ * @descr User not returned, empty response
+ * Error in calling the musth_restws_user REST api
+ * An empty response has been returned
+ * Here it's even stranger because the musth_restws_user should
+ * always return something, even if an user with user id zero
+ * It happens here:
+ * @see user_login
+ *
+ * @cause Database failure
+ * @cause Failure in RESTws
+ * @cause Software bug
+ * @action Investigate carefully
+ *
+ * @subsection W3E038 W3E038 User not loaded
+ *
+ * @descr User not loaded
+ * Error in calling the User REST api
+ * We were loading a User, which means that we were attempting a login,
+ * but there has been a problem in calling the api
+ * It happens here:
+ * @see user_login
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @subsection W3E039 W3E039 No credentials to send
+ *
+ * @descr No credentials to send
+ * We want to make a REST call with credentials because we need to
+ * check the user authorisations. Unfortunataly there are no credentials
+ * to send. This is a bug. Maybe the code changed and it's not performing
+ * login at the right time, or it's not handling logoff correctly.
+ * It happens here:
+ * @see prepare_for_call_with_credentials
+ *
+ * @cause Code bug
+ * @action Investigate code changes
+ *
+ * @subsection W3E040 W3E040 Event not handled
+ *
+ * @descr Event not handled
+ * The videoplayer hander has been called in order for it to handle an event
+ * like 'play a preview', 'play a track', etc.
+ * The problem is that the event that we should handle is an unknown one.
+ * This is definetely a bug. It may be caused by some code changes that
+ * have not taken into account the videoplayer.
+ * It happens here:
+ * @see initialise_player
+ *
+ * @cause Code bug
+ * @action Investigate code changes
+ *
+ * @subsection W3E041 W3E041 Flowplayer error
+ *
+ * @descr Flowplayer error
+ * Flowplayer threw an error whilst initialising
+ * It happens here:
+ * @see initialise_player
+ *
+ * @cause See the error code and its description here:
+ * http://flash.flowplayer.org/documentation/events/player.html
+ * @action Investigate the error code
+ *
+ * @subsection W3E042 W3E042 Track not found
+ *
+ * @descr Track not found
+ * We were calculating starting time and duration of a track but
+ * we couldn't find the track.
+ * It shouldn't happen, it's a bug.
+ * It happens here:
+ * @see start_time_and_duration_of_a_track
+ *
+ * @cause Code bug
+ * @action Investigate code changes
+ *
+ * @subsection W3E043 W3E043 No tracks found
+ *
+ * @descr No tracks found
+ * I was loading all tracks of all programmes but I didn't find any
+ * This can't be! Where are tracks?
+ * It happens here:
+ * @see musth_rules_action_products_creation
+ *
+ * @cause Maybe the database is corrupt or down
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E044 W3E044 Missing or empty catalogue no
+ *
+ * @descr Missing or empty catalogue no
+ * We are creating track products from track but we got
+ * a track that has no catalogue no
+ * We can't create a track product for such a track and we
+ * just jump it
+ * It happens here:
+ * @see musth_rules_action_products_creation
+ *
+ * @cause The catalogue no hasn't been filled in for this track
+ * @action Fill in the catalogue no and rerun the 'Creating products from tracks'
+ * rule
+ *
+ * @subsection W3E045 W3E045 Error in creating track product
+ *
+ * @descr Error in creating track product
+ * I was saving a commerce track product associated to a track but
+ * something went wrong.
+ * It happens here:
+ * @see musth_rules_create_product_if_it_doesnt_exist
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E046 W3E046 We discovered a track that doesnt belong to any programme
+ *
+ * @descr We discovered a track that doesnt belong to any programme
+ * We wanted to load the programme to which a track belongs. But the track
+ * belongs to no programme!
+ * This is quite serious. Every track should belong to a programme
+ * It happens here:
+ * @see musth_rules_action_products_creation
+ *
+ * @cause Database corruption
+ * @cause The entity reference from the track to the programme has not been entered
+ * @action Check that track
+ * @action Rerun the rule that creates the track products once the problem solved
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E047 W3E047 Cant load a programme that should exist
+ *
+ * @descr Cant load a programme that should exist
+ * Trying to load the programme to which a track belongs, but something went wrong
+ * It happens here:
+ * @see musth_rules_action_products_creation
+ *
+ * @cause I don't know. To be sure, the programme should have been retrieved, is the db down?
+ * @cause The db may be corrupted and the programme got deleted when still referenced in the
+ * track
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E048 W3E048 Cant load a product that should exist
+ *
+ * @descr Cant load a product that should exist
+ * Trying to load a product whose catalogue no is given, but we can't find it.
+ * It should exist otherwise how did we sell the license if there isn't
+ * a product for it?
+ * It happens here:
+ * @see musth_helper_check_for_license
+ *
+ * @cause I don't know. To be sure, the product should have been retrieved, is the db down?
+ * @cause It can be that Angular is sending wrong data
+ * @action Investigate carefully
+ * @action See if the product actually exists
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E049 W3E049 Error in querying licenses associated to products
+ *
+ * @descr Error in querying licenses associated to products
+ * I was counting the licenses a user owns to play or download stuff,
+ * but something went wrong.
+ * It happens here:
+ * @see musth_helper_check_for_license
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E050 W3E050 No subscription products found
+ *
+ * @descr No subscription products found
+ * Loading every available subscription product but finding none.
+ * It's impossible. At least the basic 1-month subscription should exist.
+ * It happens here:
+ * @see musth_restws_check_for_subscriptions
+ *
+ * @cause Database down?
+ * @cause Database corrupted
+ * @action Investigate carefully
+ * @action See if the subscription products actually exist
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E051 W3E051 Error in querying licenses associated to subscriptions
+ *
+ * @descr Error in querying licenses associated to subscriptions
+ * I was counting the licenses a user owns to play anything (subscription),
+ * but something went wrong.
+ * It happens here:
+ * @see musth_restws_check_for_subscriptions
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E052 W3E052 Angular called this api passing no profile_id at all
+ *
+ * @descr Angular called this api passing no profile_id at all
+ * Angular called the query api for the CustomerProfile resource passing no profile_id
+ * and the user is not logged-in
+ * It happens here:
+ * @see CustomerProfileResourceController::query
+ *
+ * @cause Transmission error when calling the api
+ * @cause Problem in the call code on the angular side
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E053 W3E053 Cant load a customer profile that should exist
+ *
+ * @descr Cant load a customer profile that should exist
+ * Trying to load a customer profile whose profile id is given, but we can't find it.
+ * It should exist because the Angular client is supposed to ask for existing customer profiles,
+ * not to guess if they exist or not
+ * It happens here:
+ * @see CustomerProfileResourceController::query
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Maybe Drupal db is down?
+ * @action Investigate carefully
+ * @action See if the customer profile actually exists
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E054 W3E054 Angular is asking for a customer profile the logged in user doesnt own
+ *
+ * @descr Angular is asking for a customer profile the logged in user doesnt own
+ * A user is not allowed to query a customer profile belonging to another user.
+ * It happens here:
+ * @see CustomerProfileResourceController::query
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E055 W3E055 Angular sent a security token that doesnt match with the stored one
+ *
+ * @descr Angular sent a security token that doesnt match with the stored one
+ * For anonymous users, we check the security token to be sure that they access only the customer
+ * profile they created. Angular is sending a security token that doesn't match with the one
+ * Angular sent
+ * It happens here:
+ * @see CustomerProfileResourceController::query
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack? It wasn't so successful if they sent the wrong security token
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E056 W3E056 Angular didnt send a security token
+ *
+ * @descr Angular didnt send a security token
+ * For anonymous users, we check the security token to be sure that they access only the customer
+ * profile they created. Angular is not sending any security token at all
+ * It happens here:
+ * @see CustomerProfileResourceController::query
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E057 W3E057 We cant create more than one customer profile per user
+ *
+ * @descr We cant create more than one customer profile per user
+ * The logged in user already has a customer profile. We can't create one more
+ * It happens here:
+ * @see CustomerProfileResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E058 W3E058 Angular should provide a security token
+ *
+ * @descr Angular should provide a security token
+ * Angular wants to create a customer profile for an anonymous user.
+ * In such a case, we need a security token to prevent other anonymous users
+ * from access other users' profiles
+ * It happens here:
+ * @see CustomerProfileResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E059 W3E059 Error in saving a customer profile
+ *
+ * @descr Error in saving a customer profile
+ * I was saving a commerce customer profile but
+ * something went wrong.
+ * It happens here:
+ * @see CustomerProfileResourceController::create
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E060 W3E060 Please, give the id of an existing line item
+ *
+ * @descr Please, give the id of an existing line item
+ * Angular wants to query a line item and gives us the line item id, but
+ * that line item doesn't exist
+ * It shouldn't happen, it's a bug. Angular should ask for existing line items only
+ * It happens here:
+ * @see LineItemResourceController::query
+ *
+ * @cause Code bug
+ * @cause Database corruption
+ * @cause Database down
+ * @action Investigate code changes
+ * @action See if the line item actually exists
+ * @action Check the database
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E061 W3E061 No line item id and no order id provided
+ *
+ * @descr No line item id and no order id provided
+ * Angular wants to query some line items so it should provide either a line item id or an order id,
+ * but neither of them is actually provided.
+ * It happens here:
+ * @see LineItemResourceController::query
+ *
+ * @cause Code bug
+ * @cause Error in transmission from Angular
+ * @action Investigate code changes
+ * @action Investigate the rest call
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E062 W3E062 No order id provided and no cart order found for the logged in user
+ *
+ * @descr No order id provided and no cart order found for the logged in user
+ * Angular wants to create a new line item. It has to provide the order id of the order the new
+ * line item will belong to.
+ * If Angular provides no order id, we look for the existence of a 'cart' order for the logged-in
+ * user. We will attach the new line item to such an order.
+ * In the case of this error, what happened is that we couldn't find any 'cart' order for the logged-in
+ * user.
+ * It happens here:
+ * @see LineItemResourceController::create
+ *
+ * @cause Code bug
+ * @cause Error in transmission from Angular
+ * @action Investigate code changes
+ * @action Investigate the rest call
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E063 W3E063 No order id provided and the user is not logged in
+ *
+ * @descr No order id provided and the user is not logged in
+ * Angular wants to create a new line item. It has to provide the order id of the order the new
+ * line item will belong to.
+ * If Angular provides no order id, we look for the existence of a 'cart' order for the logged-in
+ * user. We will attach the new line item to such an order.
+ * In the case of this error, what happened is that the user is not logged in.
+ * It happens here:
+ * @see LineItemResourceController::create
+ *
+ * @cause Code bug
+ * @cause Error in transmission from Angular
+ * @action Investigate code changes
+ * @action Investigate the rest call
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E064 W3E064 No product id and no SKU provided
+ *
+ * @descr No product id and no SKU provided
+ * Angular wants to create a new line item. It has to provide either the product id or the SKU of the
+ * product the line item is about.
+ * It happens here:
+ * @see LineItemResourceController::create
+ *
+ * @cause Code bug
+ * @cause Error in transmission from Angular
+ * @action Investigate code changes
+ * @action Investigate the rest call
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E065 W3E065 Please, give the id of an existing order
+ *
+ * @descr Please, give the id of an existing order
+ * Angular wants to add a line item to a given order but that order doesn't exists
+ * It happens here:
+ * @see LineItemResourceController::create
+ *
+ * @cause Code bug
+ * @cause Database corruption
+ * @cause Database down
+ * @action Investigate code changes
+ * @action See if the order actually exists
+ * @action Check the database
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E066 W3E066 Please, give the id of an existing product
+ *
+ * @descr Please, give the id of an existing product
+ * Angular wants to add a line item to a given order but the product that line item
+ * should be about doesn't exist
+ * It happens here:
+ * @see LineItemResourceController::create
+ *
+ * @cause Code bug
+ * @cause The entity_load went wrong because the database is corrupted
+ * @cause The entity_load went wrong because the database is down
+ * @action Investigate code changes
+ * @action See if the product actually exists
+ * @action Check the database
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E067 W3E067 Please, give the sku of an existing product
+ *
+ * @descr Please, give the sku of an existing product
+ * Angular wants to add a line item to a given order but the product that line item
+ * should be about doesn't exist
+ * It happens here:
+ * @see LineItemResourceController::create
+ *
+ * @cause Code bug
+ * @cause maybe the product exists but it's disabled
+ * @cause The EntityFieldQuery went wrong because the database is corrupted
+ * @cause The EntityFieldQuery went wrong because the database is down
+ * @action Investigate code changes
+ * @action See if the product actually exists
+ * @action Check the database
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E068 W3E068 Error in saving a line item
+ *
+ * @descr Error in saving a line item
+ * I was saving a commerce line item but
+ * something went wrong.
+ * It happens here:
+ * @see LineItemResourceController::create
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E069 W3E069 User not logged in, we cant send back the cart order
+ *
+ * @descr User not logged in, we cant send back the cart order
+ * Angular wants the 'cart' order for the logged-in user, but no user is logged-in or
+ * the credentials are wrong
+ * It happens here:
+ * @see OrderResourceController::query
+ *
+ * @cause It looks like a bug on the client side
+ * @cause Wrong credentials, why does Angular send wrong credentials? Hackers?
+ * @action Check the credentials
+ * @action Use Soapui to test this api
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E070 W3E070 Filtering on statuses other than cart not supported
+ *
+ * @descr Filtering on statuses other than cart not supported
+ * Angular wants to filter orders on a status other than 'cart', but we don't support this.
+ * It happens here:
+ * @see OrderResourceController::query
+ *
+ * @cause It looks like a bug on the client side
+ * @cause Hackers probing the api?
+ * @action Check Angular code for changes
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E071 W3E071 We send the full list of orders only to logged-in users
+ *
+ * @descr We send the full list of orders only to logged-in users
+ * Angular wants the full list of orders for an user, but the user is not logged in, or
+ * the credentials are wrong.
+ * It happens here:
+ * @see OrderResourceController::query
+ *
+ * @cause It looks like a bug on the client side
+ * @cause Angular not sending the right credentials
+ * @cause Hackers trying to login?
+ * @action Check Angular code for changes
+ * @action Test the api with Soapui to rule out api problems
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E072 W3E072 No orders found
+ *
+ * @descr No orders found
+ * Searching for the orders Angular wants, we found none of them
+ * It happens here:
+ * @see OrderResourceController::query
+ *
+ * @cause Angular bug
+ * @cause Problem in transmission
+ * @cause Database down
+ * @cause Database corrupted
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E073 W3E073 Please, give the id of an order
+ *
+ * @descr Please, give the id of an order
+ * Angular wants to update an order, but it provides no order id.
+ * It happens here:
+ * @see OrderResourceController::update
+ *
+ * @cause Code bug
+ * @cause Error in transmission from Angular
+ * @action Investigate code changes
+ * @action Investigate the rest call
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E074 W3E074 Please, give the id of an existing order
+ *
+ * @descr Please, give the id of an existing order
+ * Angular wants to update a order and gives us the order id, but
+ * that order doesn't exist
+ * It shouldn't happen, it's a bug. Angular should ask for existing orders only
+ * It happens here:
+ * @see OrderResourceController::update
+ *
+ * @cause Code bug
+ * @cause The entity_load function didnt work because the database is down or corrupted
+ * @action Investigate code changes
+ * @action See if the order actually exists
+ * @action Check the database
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E075 W3E075 Cant change order status
+ *
+ * @descr Cant change order status
+ * Angular wants to update a order by changing its status.
+ * For some reasons, this change can't be done.
+ * It happens here:
+ * @see OrderResourceController::update
+ *
+ * @cause There may be many reasons for which Commerce apis refuse to change order status
+ * @action See the function musth_restws_change_order_status to understand what could have happened
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E076 W3E076 Customer profile not found
+ *
+ * @descr Customer profile not found
+ * Angular wants to update a order and gives us the order id, but
+ * that order doesn't exist
+ * It shouldn't happen, it's a bug. Angular should ask for existing orders only
+ * It happens here:
+ * @see OrderResourceController::update
+ *
+ * @cause Code bug
+ * @cause The entity_load function didnt work because the database is down or corrupted
+ * @action Investigate code changes
+ * @action See if the order actually exists
+ * @action Check the database
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E077 W3E077 Error in saving an order
+ *
+ * @descr Error in saving an order
+ * I was saving a commerce order but something went wrong.
+ * It happens here:
+ * @see OrderResourceController::update
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E078 W3E078 The given order cant access checkout completion
+ *
+ * @descr The given order cant access checkout completion
+ * Attempting to change an order's status. Precisely we wanted to complete
+ * the checkout of an order, but we couldn't.
+ * Actually any order should be allowed to access checkout completion but there
+ * may be additional requirements.
+ * It happens here:
+ * @see OrderResourceController::update
+ *
+ * @cause The Commerce api commerce_checkout_complete_access didnt allow the order to access checkout completion
+ * @action What are the requirements for checkout completion? Are they met?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E079 W3E079 Please, give the id of an existing transaction
+ *
+ * @descr Please, give the id of an existing transaction
+ * Angular wants to query a transaction and gives us the transaction id, but
+ * that transaction doesn't exist
+ * It shouldn't happen, it's a bug. Angular should ask for existing transaction only
+ * It happens here:
+ * @see PaymentTransactionResourceController::query
+ *
+ * @cause Code bug
+ * @cause Database corruption
+ * @cause Database down
+ * @action Investigate code changes
+ * @action See if the transaction actually exists
+ * @action Check the database
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E080 W3E080 Please, give the id of a transaction
+ *
+ * @descr Please, give the id of a transaction
+ * Angular wants to query a transaction, but it provides no transaction id.
+ * It happens here:
+ * @see PaymentTransactionResourceController::query
+ *
+ * @cause Code bug
+ * @cause Error in transmission from Angular
+ * @action Investigate code changes
+ * @action Investigate the rest call
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E081 W3E081 The given values are invalid
+ *
+ * @descr The given values are invalid
+ * Angular wants to create a transaction, but it provides wrong values.
+ * It happens here:
+ * @see PaymentTransactionResourceController::create
+ *
+ * @cause Code bug
+ * @cause Error in transmission from Angular
+ * @action Investigate code changes
+ * @action Investigate the rest call
+ * @action Check the values
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E082 W3E082 Amount is zero
+ *
+ * @descr Amount is zero
+ * Angular wants to create a transaction, but the amount it gives is zero.
+ * We can't create a transaction with an amount equal to zero
+ * It happens here:
+ * @see PaymentTransactionResourceController::create
+ *
+ * @cause Code bug
+ * @cause Error in transmission from Angular
+ * @action Investigate code changes
+ * @action Investigate the rest call
+ * @action Check the amount
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E083 W3E083 Empty currency code
+ *
+ * @descr Amount is zero
+ * Angular wants to create a transaction, but the amount it gives is zero.
+ * We can't create a transaction with an amount equal to zero
+ * It happens here:
+ * @see PaymentTransactionResourceController::create
+ *
+ * @cause Code bug
+ * @cause Error in transmission from Angular
+ * @action Investigate code changes
+ * @action Investigate the rest call
+ * @action Check the amount
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E084 W3E084 Error in saving a transaction
+ *
+ * @descr Error in saving a transaction
+ * I was saving a commerce transaction but something went wrong.
+ * It happens here:
+ * @see PaymentTransactionResourceController::create
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E085 W3E085 Please, give the id of a transaction
+ *
+ * @descr Please, give the id of a transaction
+ * Angular wants to update a transaction, but it provides no transaction id.
+ * It happens here:
+ * @see PaymentTransactionResourceController::update
+ *
+ * @cause Code bug
+ * @cause Error in transmission from Angular
+ * @action Investigate code changes
+ * @action Investigate the rest call
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E086 W3E086 Please, give the id of an existing transaction
+ *
+ * @descr Please, give the id of an existing transaction
+ * Angular wants to update a transaction and gives us the transaction id, but
+ * that transaction doesn't exist
+ * It shouldn't happen, it's a bug. Angular should ask for existing transactions only
+ * It happens here:
+ * @see PaymentTransactionResourceController::update
+ *
+ * @cause Code bug
+ * @cause entity_load didn't work, maybe database is corrupt
+ * @cause entity_load didn't work, maybe database is down
+ * @action Investigate code changes
+ * @action See if the transaction actually exists
+ * @action Check the database
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E087 W3E087 The given status is invalid
+ *
+ * @descr The given status is invalid
+ * Angular wants to update the status of a transaction, but it provides an invalid status.
+ * It happens here:
+ * @see PaymentTransactionResourceController::update
+ *
+ * @cause Code bug
+ * @cause Error in transmission from Angular
+ * @cause Hackers messing with the api?
+ * @action Investigate code changes
+ * @action Investigate the rest call
+ * @action Check the values
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E088 W3E088 Error in saving a transaction
+ *
+ * @descr Error in saving a transaction
+ * I was saving a commerce transaction but something went wrong.
+ * It happens here:
+ * @see PaymentTransactionResourceController::update
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E089 W3E089 Missing or empty catalogue no
+ *
+ * @descr Missing or empty catalogue no
+ * Angular wants the signed urls for a downloadable but it's sending
+ * an empty catalogue no, or the catalogue no is missing
+ * It happens here:
+ * @see DownloadableUrlResourceController::query
+ *
+ * @cause Transmission error
+ * @cause Angular is not populating the catalogue no properly
+ * @cause Angular didn't get the catalogue no when it loaded the display product
+ * @action Check the value of the $filter variable given in the watchdog
+ * message to see if the catalogue no is empty or missing
+ * @action Investigate transmission problems by using soapui
+ * @action See if the catalogue no is defined for this display product
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E090 W3E090 Url available for lowest level items only
+ *
+ * @descr Url available for lowest level items only
+ * Angular wants the signed urls for a downloadable but it's sending
+ * the catalogue no for a segment or for a highest level item.
+ * We provide urls for lowest level items only
+ * It happens here:
+ * @see DownloadableUrlResourceController::query
+ *
+ * @cause Transmission error
+ * @cause Angular is not populating the catalogue no properly
+ * @cause Client side bug
+ * @action Check the value of the $filter variable given in the watchdog
+ * message to see what is wrong with the catalogue no
+ * @action Investigate transmission problems by using soapui
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E091 W3E091 We found a programme with no media type
+ *
+ * @descr We found a programme with no media type
+ * We were creating Commerce products from tracks and we found a
+ * programme with no media type, which means that the catalogue no
+ * is wrong
+ * It happens here:
+ * @see musth_rules_action_products_creation
+ *
+ * @cause Database corruption
+ * @cause The catalogue no is wrong
+ * @action Check the catalogue no for the programme
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E092 W3E092 Something went wrong when creating products from tracks
+ *
+ * @descr Something went wrong when creating products from tracks
+ * We were creating Commerce products from tracks and something
+ * went wrong
+ * It happens here:
+ * @see musth_rules_action_products_creation
+ *
+ * @action Check other error messages that should tell more about what happened
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E093 W3E093 Media type not valid
+ *
+ * @descr Media type not valid
+ * To build (or delete) taxonomy (or credits) apes we need a media type specified.
+ * We create (or delete) apes for video programmes and for audio programmes
+ * separately.
+ * In this case the specified media type is not valid.
+ * It happens here:
+ * @see musth_rules_action_apes_building_taxonomies
+ * @see musth_rules_action_apes_resetting_taxonomies
+ * @see musth_rules_action_apes_building_credits
+ * @see musth_rules_action_apes_resetting_credits
+ *
+ * @cause Wrong media type given
+ * @cause Problem with the database?
+ * @action Execute the rule again giving a correct media type, 'video' or 'audio'
+ * @action If the media type is correct, there may be a problem with the database, check it
+ * There has to be at least one programme of the given media type
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E094 W3E094 Search term in wrong format
+ *
+ * @descr Search term in wrong format
+ * Angular passed a search term that happens to be in a wrong format
+ * The right format is type:eid
+ * It happens here:
+ * @see musth_restws_nids_list_from_search_terms
+ *
+ * @cause Wrong search term given
+ * @cause Error in transmission
+ * @cause Bug in angular code
+ * @action Inspect angular code
+ * @action Use soapui to investigate
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E095 W3E095 Angular passed no filter
+ *
+ * @descr Angular passed no node id and no filter
+ * Angular passed no filter, we can't return anything
+ * It happens here:
+ * @see ProgrammeResourceController::query
+ *
+ * @cause Error in transmission
+ * @cause Bug in angular code
+ * @action Inspect angular code
+ * @action Use soapui to investigate
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E096 W3E096 Angular passed a node id equal to zero
+ *
+ * @descr Angular passed a node id equal to zero
+ * Angular passed a node id equal to zero, there is a problem
+ * It happens here:
+ * @see ProgrammeResourceController::query
+ *
+ * @cause Error in transmission
+ * @cause Bug in angular code
+ * @action Inspect angular code
+ * @action Use soapui to investigate
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E097 W3E097 Error in loading an ape
+ *
+ * @descr Error in loading an ape
+ * I was loading an ape but something went wrong.
+ * It happens here:
+ * @see musth_restws_nids_list_from_search_terms
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E098 W3E098 Angular passed no search term type
+ *
+ * @descr Angular passed no search term type
+ * Angular wants the list of the search terms of a given type, so
+ * it has to pass the type. It looks like Angular didn't pass any type.
+ * Types are: 'genre', 'form', 'period', 'instrument', 'film_type'
+ * It happens here:
+ * @see SearchTermResourceController::query
+ *
+ * @cause Error in transmission
+ * @cause Bug in angular code
+ * @action Inspect angular code
+ * @action Use soapui to investigate
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E099 W3E099 Error in loading all apes
+ *
+ * @descr Error in loading all apes
+ * I was loading all apes for a given type but something went wrong.
+ * It happens here:
+ * @see SearchTermResourceController::query
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E100 W3E100 Error in loading an ape
+ *
+ * @descr Error in loading an ape
+ * I was loading an ape but something went wrong.
+ * It happens here:
+ * @see SearchTermResourceController::read
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E101 W3E101 Item is not downloadable
+ *
+ * @descr Item is not downloadable
+ * Angular wants the url to download an item, typically a video or
+ * audio item.
+ * Unfortunately the first letter of the catalogue no Angular gives us
+ * tells that the item is not of a type that can be downloaded.
+ * It can also be that Angular is passing an incomplete catalogue no
+ * missing the first letter
+ * It happens here:
+ * @see DownloadableUrlResourceController::query
+ *
+ * @cause Error in transmission
+ * @cause Bug in angular code
+ * @action Inspect angular code
+ * @action Use soapui to investigate
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E102 W3E102 The requested playlist is not one of the two we have
+ *
+ * @descr The requested playlist is not one of the two we have
+ * Angular (or the tagring itsself?) wants the playlist of the programmes
+ * to show when no selection is made (yet).
+ * But we have only two playlists for now. One for the front tagring and one
+ * for the shop tagring.
+ * Angular asked for a playlist that we don't have.
+ * It happens here:
+ * @see musth_restws_nids_list_from_tagring_playlist
+ *
+ * @cause Error in transmission
+ * @cause Bug in angular/tagring code
+ * @action Inspect angular/tagring code
+ * @action Use soapui to investigate
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E103 W3E103 Cant find the required playlist
+ *
+ * @descr Cant find the required playlist
+ * Angular (or the tagring itsself?) wants the playlist of the programmes
+ * to show when no selection is made (yet).
+ * The playlist should be there. Something is wrong.
+ * It happens here:
+ * @see musth_restws_nids_list_from_tagring_playlist
+ *
+ * @cause Database down?
+ * @cause Has the playlist been defined?
+ * @cause Is the playlist set as default?
+ * @action Check database
+ * @action Check the playlist
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E104 W3E104 Error in loading an ape
+ *
+ * @descr Error in loading an ape
+ * I was loading an ape but something went wrong.
+ * It happens here:
+ * @see musth_restws_nids_list_from_search_terms
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E105 W3E105 Please, give the id of a line item
+ *
+ * @descr Please, give the id of a line item
+ * Angular wants to delete a line item but gives us no line item id
+ * It shouldn't happen, it's a bug. Angular should give us the id of the line
+ * item to delete
+ * It happens here:
+ * @see LineItemResourceController::delete
+ *
+ * @cause Code bug
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E106 W3E106 Please, give the id of an existing line item
+ *
+ * @descr Please, give the id of an existing line item
+ * Angular wants to delete a line item and gives us the line item id, but
+ * that line item doesn't exist
+ * It shouldn't happen, it's a bug. Angular should ask for existing line items only
+ * It happens here:
+ * @see LineItemResourceController::delete
+ *
+ * @cause Code bug
+ * @cause Database corruption
+ * @cause Database down
+ * @action Investigate code changes
+ * @action See if the line item actually exists
+ * @action Check the database
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E107 W3E107 The order the line item belongs to doesnt exist
+ *
+ * @descr The order the line item belongs to doesnt exist
+ * Angular wants to delete a line item. We found the line item and attempted to
+ * retrieve the order the line item belongs to.
+ * It happened that we couldn't find the order.
+ * This is a big problem because every line item should belong to an existing order.
+ * It looks like the database is corrupt.
+ * It happens here:
+ * @see LineItemResourceController::delete
+ *
+ * @cause Database corruption
+ * @action See if the order actually exists
+ * @action Check the database
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E108 W3E108 Error in deleting a line item
+ *
+ * @descr Error in deleting a line item
+ * I was deleting a commerce line item but
+ * something went wrong.
+ * It happens here:
+ * @see LineItemResourceController::delete
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E109 W3E109 Customer profile not created, empty response
+ *
+ * @descr Customer profile not created, empty response
+ * We were creating a Commerce customer profile, but we got an empty
+ * response from the REST api. If it works, it returns the id of the
+ * new customer profile.
+ * It happens here:
+ * @see create_customer_profile
+ *
+ * @cause Transmission problem
+ * @cause Maybe a problem with the database, but we don't have details
+ * @action See if the profile has been actually created
+ * @action Check Drupal watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E110 W3E110 Customer profile not created
+ *
+ * @descr Customer profile not created
+ * I was creating a commerce customer profile but
+ * something went wrong.
+ * It happens here:
+ * @see create_customer_profile
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E111 W3E111 Empty response when loading the line items of an order
+ *
+ * @descr Empty response when loading the line items of an order
+ * We were loading the line items belonging to an order but we got an empty response
+ * We didn't get an empty list of line items. It would have been something.
+ * We got an empty response.
+ * It happens here:
+ * @see load_line_items
+ *
+ * @cause Transmission problem
+ * @cause Maybe a problem with the database, but we don't have details
+ * @action Check Drupal watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E112 W3E112 Error when loading the line items of an order
+ *
+ * @descr Error when loading the line items of an order
+ * We were loading the line items belonging to an order
+ * but something went wrong.
+ * It happens here:
+ * @see load_line_items
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E113 W3E113 Empty response when creating a line item
+ *
+ * @descr Empty response when creating a line item
+ * We were creating a line item and we got an empty response.
+ * It happens here:
+ * @see create_line_item
+ *
+ * @cause Transmission problem
+ * @cause Maybe a problem with the database, but we don't have details
+ * @action Check Drupal watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E114 W3E114 Error when creating a line item
+ *
+ * @descr Error when creating a line item
+ * We were creating a line item
+ * but something went wrong.
+ * It happens here:
+ * @see create_line_item
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E115 W3E115 Cant ship a track
+ *
+ * @descr Cant ship a track
+ * This is a check that can be triggered only if there is a bug
+ * in the software.
+ * Tracks are not for shipping, they are only for downloading so
+ * this error shouldn't happen
+ * It happens here:
+ * @see build_the_sku
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E116 W3E116 The SKU cant be empty
+ *
+ * @descr The SKU cant be empty
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * The SKU calculated by the function build_the_sku can't be empty.
+ * If it is, it means that the function encountered a problem.
+ * It happens here:
+ * @see add_programme_or_track_to_the_cart
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E117 W3E117 Error when deleting a line item
+ *
+ * @descr Error when deleting a line item
+ * We were deleting a line item
+ * but something went wrong.
+ * It happens here:
+ * @see remove_line_item
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E118 W3E118 The method load_shopping_order shouldnt be used to retrieve non-shopping orders, we have a bug here
+ *
+ * @descr The method load_shopping_order shouldnt be used to retrieve non-shopping orders, we have a bug here
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * The method load_shopping_order should be used to get shopping orders only.
+ * Orders that are not in 'cart' or 'checkout' statuses shouldn't be retrieved using that method.
+ * It happens here:
+ * @see load_shopping_order
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E119 W3E119 Empty response when loading a shopping order
+ *
+ * @descr Empty response when loading a shopping order
+ * We were loading a shopping order and we got an empty response, which
+ * is not an empty list, it would be something, it's a completely empty
+ * response
+ * It happens here:
+ * @see load_shopping_order
+ *
+ * @cause Transmission problem
+ * @cause Maybe a problem with the database, but we don't have details
+ * @action Check Drupal watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E120 W3E120 Error when loading a shopping order
+ *
+ * @descr Error when loading a shopping order
+ * We were loading a shopping order
+ * but something went wrong.
+ * It happens here:
+ * @see load_shopping_order
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E121 W3E121 Empty response when creating a cart order
+ *
+ * @descr Empty response when creating a cart order
+ * We were creating a cart order and we got an empty response, which
+ * is not an empty list, it would be something, it's a completely empty
+ * response
+ * It happens here:
+ * @see create_order
+ *
+ * @cause Transmission problem
+ * @cause Maybe a problem with the database, but we don't have details
+ * @action Check Drupal watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E122 W3E122 Error when creating a cart order
+ *
+ * @descr Error when creating a cart order
+ * We were loading a shopping order
+ * but something went wrong.
+ * It happens here:
+ * @see create_order
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E123 W3E123 Error when calling the method create_order
+ *
+ * @descr Error when calling the method create_order
+ * We were calling the method create_order to create a cart order
+ * but something went wrong.
+ * It happens here:
+ * @see get_shopping_order_id_or_create_it
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action See previous error messages
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E124 W3E124 The shopping order has not been created yet, we cant update it
+ *
+ * @descr The shopping order has not been created yet, we cant update it
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * The method load_shopping_order should be used to get shopping orders only.
+ * Orders that are not in 'cart' or 'checkout' statuses shouldn't be retrieved using that method.
+ * It happens here:
+ * @see load_shopping_order
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E125 W3E125 Error when updating a shopping order
+ *
+ * @descr Error when updating a shopping order
+ * We were updating a shopping order
+ * but something went wrong.
+ * It happens here:
+ * @see update_order
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E126 W3E126 The shopping order has not been created yet, we cant update it
+ *
+ * @descr The shopping order has not been created yet, we cant update it
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * The method load_shopping_order should be used to get shopping orders only.
+ * Orders that are not in 'cart' or 'checkout' statuses shouldn't be retrieved using that method.
+ * It happens here:
+ * @see go_to_next_order_status
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E127 W3E127 Error when moving a shopping order to the next status
+ *
+ * @descr Error when moving a shopping order to the next status
+ * We were moving a shopping order to the next status
+ * but something went wrong.
+ * It happens here:
+ * @see go_to_next_order_status
+ *
+ * @cause I don't know, see the message
+ * @action Search for previous error messages
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E128 W3E128 Function go_to_next_order_status called for a non-shopping order
+ *
+ * @descr Function go_to_next_order_status called for a non-shopping order
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * The method go_to_next_order_status should be used to move shopping orders only to the
+ * next status.
+ * In this case, it has been called for an order that is not a shopping order.
+ * It happens here:
+ * @see go_to_next_order_status
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E129 W3E129 The shopping order has not been created yet, we cant move it back to cart
+ *
+ * @descr The shopping order has not been created yet, we cant move it back to cart
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * We can't move the shopping order back to the 'cart' status because it hasn't been created yet.
+ * The method put_order_back_in_cart_status should be called only if a shopping order exists.
+ * It happens here:
+ * @see put_order_back_in_cart_status
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E130 W3E130 Error when moving a shopping order back to the cart status
+ *
+ * @descr Error when moving a shopping order back to the cart status
+ * We were moving a shopping order back to the cart status
+ * but something went wrong.
+ * It happens here:
+ * @see put_order_back_in_cart_status
+ *
+ * @cause I don't know, see the message
+ * @action Search for previous error messages
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E131 W3E131 Empty response when creating a payment transaction
+ *
+ * @descr Empty response when creating a payment transaction
+ * We were creating a payment transaction and we got an empty response, which
+ * is not a transaction id equal to zero, it would be something, it's a completely empty
+ * response
+ * It happens here:
+ * @see create_transaction
+ *
+ * @cause Transmission problem
+ * @cause Maybe a problem with the database, but we don't have details
+ * @action Check Drupal watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E132 W3E132 Error when creating a payment transaction
+ *
+ * @descr Error when creating a payment transaction
+ * We were creating a payment transaction
+ * but something went wrong.
+ * It happens here:
+ * @see create_transaction
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E133 W3E133 Content type not supported
+ *
+ * @descr Content type not supported
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * The function initialise_tagring has been called to initialise the tagring for it
+ * to display a content type that is not supported yet.
+ * It happens here:
+ * @see initialise_tagring
+ *
+ * @cause It's a bug. The requested content type is supported in other parts of the code maybe,
+ * but not in the function initialise_tagring
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E134 W3E134 Tagring initialisation failed
+ *
+ * @descr Tagring initialisation failed
+ * We attempted to initialise the tagring but the initialisation failed
+ * It happens here:
+ * @see initialise_tagring
+ *
+ * @cause It may be something browser related
+ * @action See if you can know the browser used and replicate the problem if possible
+ * @action Analyse updates of flash and of browsers
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E135 W3E135 Empty response when getting an urlskit
+ *
+ * @descr Empty response when getting an urlskit
+ * We were getting an urlskit and we got an empty response, which
+ * is not an empty list, it would be something, it's a completely empty
+ * response
+ * It happens here:
+ * @see load_urlskit
+ *
+ * @cause Transmission problem
+ * @cause Maybe a problem with the database, but we don't have details
+ * @action Check Drupal watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E136 W3E136 Error when getting an urlskit
+ *
+ * @descr Error when getting an urlskit
+ * We were getting an urlskit but something went wrong.
+ * It happens here:
+ * @see load_urlskit
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Check watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E137 W3E137 Error in querying licenses a user owns
+ *
+ * @descr Error in querying licenses a user owns
+ * We were getting the licenses a user owns but something went wrong.
+ * It happens here:
+ * @see musth_restws_load_licenses
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Check watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E138 W3E138 Empty array of licenses when it shouldnt be so
+ *
+ * @descr Empty array of licenses when it shouldnt be so
+ * I was loading all the licenses of which I already have the ids
+ * but something went wrong and I got an empty array of licenses
+ * It happens here:
+ * @see musth_restws_load_licenses
+ *
+ * @cause Database down
+ * @cause Database corruption
+ * @action See if the licenses whose ids are given in the message actually exist
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E139 W3E139 We found a license that is about no product
+ *
+ * @descr We found a license that is about no product
+ * We were searching for the licenses a user owns.
+ * We found one that is about no product. The product id was zero.
+ * This can't be
+ * It happens here:
+ * @see musth_restws_load_licenses
+ *
+ * @cause Database corruption
+ * @cause Problem in license creation
+ * @cause Bug in license creation
+ * @action Check the license
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E140 W3E140 Angular passed no sku
+ *
+ * @descrAngular passed no sku
+ * Angular passed no sku, we can't return products
+ * without a sku
+ * It happens here:
+ * @see ProductResourceController::query
+ *
+ * @cause Error in transmission
+ * @cause Bug in angular code
+ * @action Inspect angular code
+ * @action Use soapui to investigate
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E141 W3E141 No products found for the given sku
+ *
+ * @descr No products found for the given sku
+ * Angular asked for the products whose sku matches the given one
+ * It happens that there are none. This is an exception because there
+ * should be products if Angular is doing this query.
+ * It looks like Angular is querying about a programme that has no tracks,
+ * amd this can't be
+ * It happens here:
+ * @see ProductResourceController::query
+ *
+ * @cause Bug
+ * @cause Missing tracks or products
+ * @action See if tracks and products are all there for the given programme
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E142 W3E142 We found a product that is about no track
+ *
+ * @descr We found a product that is about no track
+ * We were searching for products given a sku.
+ * We were searching for track products only.
+ * This means that every product of these should have an associated track.
+ * One of them happen to be associated to no track and this is a problem
+ * It happens here:
+ * @see ProductResourceController::read
+ *
+ * @cause Database corruption
+ * @cause Problem in product creation
+ * @cause Bug in product creation
+ * @action Check the product
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E143 W3E143 Empty response when getting products
+ *
+ * @descr Empty response when getting products
+ * We were getting products given a (partial) sku and we got an empty response, which
+ * is not an empty list, it would be something, it's a completely empty
+ * response
+ * It happens here:
+ * @see load_products_and_key_them_by_tid
+ *
+ * @cause Transmission problem
+ * @cause Maybe a problem with the database, but we don't have details
+ * @action Check Drupal watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E144 W3E144 Error in querying products
+ *
+ * @descr Error in querying products
+ * We were getting products given a (partial) sku but something went wrong.
+ * It happens here:
+ * @see load_products_and_key_them_by_tid
+ *
+ * @cause Transmission problem
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Check watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E145 W3E145 Empty response when reloading user details
+ *
+ * @descr Empty response when reloading user details
+ * We were reloading user details and we got an empty response, which
+ * is not an empty list, it would be something, it's a completely empty
+ * response
+ * It happens here:
+ * @see reload_user_details
+ *
+ * @cause Transmission problem
+ * @cause Maybe a problem with the database, but we don't have details
+ * @action Check Drupal watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E146 W3E146 Error in reloading user details
+ *
+ * @descr Error in reloading user details
+ * We were reloading user details but something went wrong.
+ * It happens here:
+ * @see reload_user_details
+ *
+ * @cause Transmission problem
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Check watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E147 W3E147 No products found for the given catalogue no
+ *
+ * @descr No products found for the given catalogue no
+ * We are in the musth_helper_programme_or_track_is_free function here
+ * checking if a programme or track (or maybe a segment) whose catalogue
+ * no has been given, is free
+ * It happens that we found no products for the given catalogue no
+ * when every catalogue no should have a product instead
+ * It happens here:
+ * @see musth_helper_programme_or_track_is_free
+ *
+ * @cause Database failure
+ * @cause Missing products
+ * @action See if products are all there for the given catalogue no
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E148 W3E148 Values missing in calling REST api to create new account
+ *
+ * @descr Values missing in calling REST api to create new account
+ * Angular called the create api for the User resource but one or more required values
+ * are missing
+ * It happens here:
+ * @see UserResourceController::create
+ *
+ * @cause Transmission error when calling the api
+ * @cause Problem or bug in the call code on the angular side
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E149 W3E149 Attempt to read user details by unauthorised user
+ *
+ * @descr Attempt to read user details by unauthorised user
+ * The REST api that returns a user's details has been called by an unauthorised user
+ * Only the owner of an user profile is authorised to read it
+ * @see UserResourceController::read
+ *
+ * @cause Possible hacker attack
+ * @cause Problem or bug on the angular side that ends up in a direct call to the read method (unlikely)
+ * @action Secure the castle! :-)
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E150 W3E150 Error in loading a user's licenses
+ *
+ * @descr Error in loading a user's licenses
+ * We were loading the licenses a user owns to send them back with the user's profile
+ * We got no result, not even an empty array
+ * @see UserResourceController::read
+ *
+ * @cause Database failure or corruption
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E151 W3E151 Unauthorised attempt to update an user profile
+ *
+ * @descr Unauthorised attempt to update an user profile
+ * The REST api that updates an user profile has been called without authorisation
+ * It can be a bug on the angular side or a hacker attack
+ * @see UserResourceController::update
+ *
+ * @cause Possible hacker attack
+ * @cause Problem or bug on the angular side that ends up in a call with no credentials sent
+ * @action Secure the castle! :-)
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E152 W3E152 Error in updating a user profile
+ *
+ * @descr Error in updating a user profile
+ * I was saving a user profile after having updated it, but something went wrong.
+ * It happens here:
+ * @see UserResourceController::update
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E153 W3E153 We found a product that is about no track
+ *
+ * @descr We found a product that is about no track
+ * We were loading the licenses a user owns.
+ * We were fetching the product a license is about and from the product, the track
+ * it's related to.
+ * We found a product that is about no track.
+ * We made sure that the product wasn't a subscription, which of course has no
+ * associated track.
+ * It happens here:
+ * @see musth_restws_load_licenses
+ *
+ * @cause Database corruption
+ * @cause Problem happened when creating the product
+ * @cause Bug in product creation
+ * @cause Can it be that products have been introduced that are not about tracks and
+ * the code has not been updated to deal with such a case?
+ * @cause We ruled out subscriptions, which are about no track, but there may be
+ * other products that are about no track.
+ * @action Check the product
+ * @action Check the database
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E154 W3E154 We retrieve the last customer profile for logged in users only
+ *
+ * @descr We retrieve the last customer profile for logged in users only
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * We were in the process of retrieving the last customer profile entered
+ * by a user.
+ * But the user is not logged-in, so the last customer profile can't be retrieved.
+ * It happens here:
+ * @see load_most_recent_customer_profile_for_logged_in_user
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E155 W3E155 Customer profile not returned, empty response
+ *
+ * @descr Customer profile not returned, empty response
+ * Error in calling the musth_restws_customer_profile REST api
+ * An empty response has been returned, which is not an empty list
+ * of customer profiles, it would still be something
+ * It happens here:
+ * @see load_most_recent_customer_profile_for_logged_in_user
+ *
+ * @cause Problems server side, see watchdogs
+ * @cause Transmission error
+ * @action Check watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E156 W3E156 Error in fetching the last customer profile entered by a user
+ *
+ * @descr Error in fetching the last customer profile entered by a user
+ * I was fetching the last customer profile entered by a user, but something went wrong.
+ * It happens here:
+ * @see load_most_recent_customer_profile_for_logged_in_user
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E157 W3E157 DownloadableUrl not returned, empty response
+ *
+ * @descr DownloadableUrl not returned, empty response
+ * Error in calling the musth_restws_downloadable_url REST api
+ * An empty response has been returned, which is not an empty list
+ * of DownloadableUrls, it would still be something
+ * It happens here:
+ * @see load_downloadableurl
+ *
+ * @cause Problems server side, see watchdogs
+ * @cause Transmission error
+ * @action Check watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E158 W3E158 Error in fetching a DownloadableUrl
+ *
+ * @descr Error in fetching a DownloadableUrl
+ * I was fetching a DownloadableUrl, but something went wrong.
+ * It happens here:
+ * @see load_downloadableurl
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E159 W3E159 Orders not returned, empty response
+ *
+ * @descr Orders not returned, empty response
+ * Error in calling the musth_restws_order REST api
+ * An empty response has been returned, which is not an empty list
+ * of orders, it would still be something
+ * It happens here:
+ * @see load_users_orders
+ *
+ * @cause Problems server side, see watchdogs
+ * @cause Transmission error
+ * @action Check watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E160 W3E160 Error in fetching a users' orders
+ *
+ * @descr Error in fetching a users' orders
+ * I was fetching a users' orders, but something went wrong.
+ * It happens here:
+ * @see load_users_orders
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E161 W3E161 The given order is not a shopping order
+ *
+ * @descr The given order is not a shopping order
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * The function set_the_given_order_as_shopping_order has been called to set a given order
+ * as the current shopping order
+ * This happens when the logged-in user wants to complete the given order, which is incomplete.
+ * The function set_the_given_order_as_shopping_order checked if the order is actually an
+ * incomplete order and it looks like it isn't.
+ * This is a bug because orders that are no longer in 'cart' or checkout statuses should
+ * not be used as shopping orders.
+ * It happens here:
+ * @see set_the_given_order_as_shopping_order
+ *
+ * @cause It's a bug in the Angular code
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E162 W3E162 New user id not returned, empty response
+ *
+ * @descr New user id not returned, empty response
+ * Error in calling the musth_restws_user REST api
+ * An empty response has been returned, which is not a user id equal to
+ * zero, it would still be something
+ * It happens here:
+ * @see create_new_user_account
+ *
+ * @cause Problems server side, see watchdogs
+ * @cause Transmission error
+ * @action Check watchdogs
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E163 W3E163 Error in creating a new user account
+ *
+ * @descr Error in creating a new user account
+ * I was creating a new user account, but something went wrong.
+ * It happens here:
+ * @see create_new_user_account
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E164 W3E164 No details are given when updating a user profile
+ *
+ * @descr No details are given when updating a user profile
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * The function user_update has been called to update a user profile
+ * but no details are given to update it.
+ * It happens here:
+ * @see user_update
+ *
+ * @cause It's a bug in the Angular code
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E165 W3E165 User not logged in when updating their profile
+ *
+ * @descr User not logged in when updating their profile
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * The function user_update has been called to update a user profile
+ * but the user is not logged-in.
+ * It happens here:
+ * @see user_update
+ *
+ * @cause It's a bug in the Angular code
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E166 W3E166 Error in updating a user account
+ *
+ * @descr Error in updating a user account
+ * I was updating a user account, but something went wrong.
+ * It happens here:
+ * @see user_update
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E167 W3E167 We dont allow anonymous users to create comments
+ *
+ * @descr We dont allow anonymous users to create comments
+ * Angular called the create api for the Comment resource when the user is not logged-in
+ * It happens here:
+ * @see CommentResourceController::create
+ *
+ * @cause Hackers trying to use the REST api without logging in
+ * @cause Problem in the call code on the angular side
+ * @cause Maybe the browser lost the session cookie or Angular destroyed it or Angular lost the token
+ * @action Check for code changes in Angular
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E168 W3E168 The node doesnt exist, we cant create a comment about nothing
+ *
+ * @descr The node doesnt exist, we cant create a comment about nothing
+ * Angular wants to create a comment about a node, but the node doesn't exist
+ * It happens here:
+ * @see CommentResourceController::create
+ *
+ * @cause Bug in Angular code
+ * @cause Database corruption
+ * @cause Database down
+ * @action Investigate code changes
+ * @action See if the programme exists or not
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E169 W3E169 No nid provided, we cant create a comment about nothing
+ *
+ * @descr No nid provided, we cant create a comment about nothing
+ * Angular wants to create a comment about a node, but it doesn't provide the node id
+ * It happens here:
+ * @see CommentResourceController::create
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E170 W3E170 No body provided, we cant create a comment with no body
+ *
+ * @descr No body provided, we cant create a comment with no body
+ * Angular wants to create a comment, but it doesn't provide the comment's body
+ * It happens here:
+ * @see CommentResourceController::create
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E171 W3E171 Error in checking text for spam
+ *
+ * @descr Error in checking text for spam
+ * I was checking a text for spam, but something went wrong when I called Mollom
+ * to perform the check.
+ * It happens here:
+ * @see musth_helper_functions_this_text_is_spammy
+ *
+ * @cause I don't know, see the message
+ * @cause Mollom service down
+ * @cause Transmission error with Mollom
+ * @cause Changes of Mollom service not reflected in the Drupal Mollom module/library
+ * @action Investigate carefully
+ * @action The comment has been marked spammy, so go to moderate it
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E172 W3E172 Error in saving a new comment
+ *
+ * @descr Error in saving a new comment
+ * I was saving a new comment, but something went wrong.
+ * It happens here:
+ * @see CommentResourceController::create
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E173 W3E173 Error in counting comments
+ *
+ * @descr Error in counting comments
+ * I was counting comments, but something went wrong.
+ * It happens here:
+ * @see CommentResourceController::count
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E174 W3E174 Comment not found, what is going on?
+ *
+ * @descr Comment not found, what is going on?
+ * The read method is supposed to always find the comment it has to return.
+ * Maybe there is a problem with the database or someone is using the read method
+ * directly and with a wrong comment id.
+ * This someone maybe a hacker or a developer doing some testing.
+ * It happens here:
+ * @see CommentResourceController::read
+ *
+ * @cause Database failure
+ * @cause Hackers or developers using the read method directly with wrong comment ids
+ * @action Investigate carefully
+ * @action Does the comment actually exist?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E175 W3E175 No body provided, a comment must have a non-empty one
+ *
+ * @descr No body provided, a comment must have a non-empty one
+ * Angular wants to update a comment, but it doesn't provide the comment's body
+ * It happens here:
+ * @see CommentResourceController::update
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E176 W3E176 Only the owner of a comment can update/delete it
+ *
+ * @descr Only the owner of a comment can update/delete it
+ * A user is not allowed to update/delete a comment if they don't own it
+ * If ever the comment to update/delete was about a post, we checked if the user
+ * had special authorizations. But they don't have them.
+ * It happens here:
+ * @see CommentResourceController::update
+ * @see CommentResourceController::delete
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate carefully
+ * @action Does the user actually own the comment?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E177 W3E177 Error in updating a comment
+ *
+ * @descr Error in updating a comment
+ * I was updating a comment, but something went wrong.
+ * It happens here:
+ * @see CommentResourceController::update
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E178 W3E178 Comment not found when updating
+ *
+ * @descr Comment not found when updating
+ * The update method has been called to update a comment but the comment
+ * has not been found.
+ * This shouldn't happen, Angular should sent the id of an existing comment and
+ * no other user should be able to change or delete the comment
+ * It happens here:
+ * @see CommentResourceController::update
+ *
+ * @cause Database failure
+ * @cause Error in Angular code, Angular sent a wrong comment id
+ * @action Check Angular code changes
+ * @action Does the comment actually exist?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E179 W3E179 Only the owner of a comment can delete it
+ *
+ * @descr Only the owner of a comment can delete it
+ * A user is not allowed to delete a comment if they don't own it
+ * It happens here:
+ * @see CommentResourceController::delete
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate code changes
+ * @action Does the user actually own the comment?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E180 W3E180 Error in deleting a comment
+ *
+ * @descr Error in deleting a comment
+ * I was deleting a comment, but something went wrong.
+ * It happens here:
+ * @see CommentResourceController::delete
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E181 W3E181 Comment not found when deleting
+ *
+ * @descr Comment not found when deleting
+ * The delete method has been called to delete a comment but the comment
+ * has not been found.
+ * This shouldn't happen, Angular should sent the id of an existing comment and
+ * no other user should be able to change or delete the comment
+ * It happens here:
+ * @see CommentResourceController::delete
+ *
+ * @cause Database failure
+ * @cause Error in Angular code, Angular sent a wrong comment id
+ * @action Check Angular code changes
+ * @action Does the comment actually exist?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E182 W3E182 We dont allow anonymous users to create reviews
+ *
+ * THIS ERROR IS NO LONGER USED, JUST KEEPING IT NOT TO BREAK THE NUMBERING
+ *
+ * @descr We dont allow anonymous users to create reviews
+ * Angular called the create api for the Review resource when the user is not logged-in
+ * It happens here:
+ * @see ReviewResourceController::create
+ *
+ * @cause Hackers trying to use the REST api without logging in
+ * @cause Problem in the call code on the angular side
+ * @cause Maybe the browser lost the session cookie or Angular destroyed it or Angular lost the token
+ * @action Check for code changes in Angular
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E183 W3E183 The node doesnt exist, we cant create a review about nothing
+ *
+ * @descr The node doesnt exist, we cant create a review about nothing
+ * Angular wants to create a review about a node, but the node doesn't exist
+ * It happens here:
+ * @see ReviewResourceController::create
+ *
+ * @cause Bug in Angular code
+ * @cause Database corruption
+ * @cause Database down
+ * @action Investigate code changes
+ * @action See if the programme exists or not
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E184 W3E184 No nid provided, we cant create a review about nothing
+ *
+ * @descr No nid provided, we cant create a review about nothing
+ * Angular wants to create a review about a node, but it doesn't provide the node id
+ * It happens here:
+ * @see ReviewResourceController::create
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E185 W3E185 No title provided, we cant create a review with no title
+ *
+ * @descr No title provided, we cant create a review with no title
+ * Angular wants to create a review about a node, but it doesn't provide the title
+ * It happens here:
+ * @see ReviewResourceController::create
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E186 W3E186 No body provided, we cant create a review with no body
+ *
+ * @descr No body provided, we cant create a review with no body
+ * Angular wants to create a review about a node, but it doesn't provide the body
+ * It happens here:
+ * @see ReviewResourceController::create
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E187 W3E187 Error in saving a new review
+ *
+ * @descr Error in saving a new review
+ * I was saving a new review, but something went wrong.
+ * It happens here:
+ * @see ReviewResourceController::create
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E188 W3E188 Error in counting reviews
+ *
+ * @descr Error in counting reviews
+ * I was counting reviews, but something went wrong.
+ * This is the case of counting the published reviews
+ * associated to a programme
+ * It happens here:
+ * @see ReviewResourceController::count
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E189 W3E189 Error in counting reviews
+ *
+ * @descr Error in counting reviews
+ * I was counting reviews, but something went wrong.
+ * This is the case of counting the reviews the logged-in user
+ * is author of.
+ * It happens here:
+ * @see ReviewResourceController::count
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E190 W3E190 Review not found, what is going on?
+ *
+ * @descr Review not found, what is going on?
+ * The read method is supposed to always find the review it has to return.
+ * Maybe there is a problem with the database or someone is using the read method
+ * directly and with a wrong review id.
+ * This someone maybe a hacker or a developer doing some testing.
+ * It happens here:
+ * @see ReviewResourceController::read
+ *
+ * @cause Database failure
+ * @cause Hackers or developers using the read method directly with wrong review ids
+ * @action Investigate carefully
+ * @action Does the review actually exist?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E191 W3E191 The user cant update a review that they submitted or that has been published
+ *
+ * @descr The user cant update a review that they submitted or that has been published
+ * Angular wants to update a review that has been submitted or published.
+ * Actually Angular should check this before calling the REST api, so it's a bug
+ * It happens here:
+ * @see ReviewResourceController::update
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E192 W3E192 The user cant rate a review that has not been published
+ *
+ * @descr The user cant rate a review that has not been published
+ * Angular wants to send the rating given by a user to a review but the review has not been published.
+ * Actually Angular should check this before calling the REST api, so it's a bug
+ * It happens here:
+ * @see ReviewResourceController::update
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E193 W3E193 We dont allow anonymous users to rate reviews
+ *
+ * @descr We dont allow anonymous users to rate reviews
+ * Angular called the update api for the Review resource when the user is not logged-in
+ * It happens here:
+ * @see ReviewResourceController::update
+ *
+ * @cause Hackers trying to use the REST api without logging in
+ * @cause Problem in the call code on the angular side
+ * @cause Maybe the browser lost the session cookie or Angular destroyed it or Angular lost the token
+ * @action Check for code changes in Angular
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E194 W3E194 Error in updating a review
+ *
+ * @descr Error in updating a review
+ * I was updating a review, but something went wrong.
+ * It happens here:
+ * @see ReviewResourceController::update
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E195 W3E195 Review not found when updating
+ *
+ * @descr Review not found when updating
+ * The update method has been called to update a review but the review
+ * has not been found.
+ * This shouldn't happen, Angular should sent the id of an existing review and
+ * no other user should be able to change or delete the review
+ * It happens here:
+ * @see ReviewResourceController::update
+ *
+ * @cause Database failure
+ * @cause Error in Angular code, Angular sent a wrong review id
+ * @action Check Angular code changes
+ * @action Does the review actually exist?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E196 W3E196 Only the owner of a review can delete it
+ *
+ * @descr Only the owner of a review can delete it
+ * A user is not allowed to delete a review if they don't own it
+ * It happens here:
+ * @see ReviewResourceController::delete
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate code changes
+ * @action Does the user actually own the review?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E197 W3E197 The user cant delete a review that they submitted or that has been published
+ *
+ * @descr The user cant delete a review that they submitted or that has been published
+ * Angular wants to delete a review that has been submitted or published.
+ * Actually Angular should check this before calling the REST api, so it's a bug
+ * It happens here:
+ * @see ReviewResourceController::delete
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E198 W3E198 Error in deleting a review
+ *
+ * @descr Error in deleting a review
+ * I was deleting a review, but something went wrong.
+ * It happens here:
+ * @see ReviewResourceController::delete
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E199 W3E199 Review not found when deleting
+ *
+ * @descr Review not found when deleting
+ * The delete method has been called to delete a review but the review
+ * has not been found.
+ * This shouldn't happen, Angular should sent the id of an existing review and
+ * no other user should be able to change or delete the review
+ * It happens here:
+ * @see ReviewResourceController::delete
+ *
+ * @cause Database failure
+ * @cause Error in Angular code, Angular sent a wrong review id
+ * @action Check Angular code changes
+ * @action Does the review actually exist?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E200 W3E200 Anonymous users cant vote
+ *
+ * @descr Anonymous users cant vote
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * The function musth_helper_functions_cast_vote can be called to cast
+ * a vote only by logged-in users.
+ * The code calling this function should have checked for the user
+ * to be logged-in.
+ * It happens here:
+ * @see musth_helper_functions_cast_vote
+ *
+ * @cause Bug in caller function
+ * @action check method VoteResourceController::create
+ * @action Check the parameters used to call the function musth_helper_functions_cast_vote
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E201 W3E201 Error in casting a vote
+ *
+ * @descr Error in casting a vote
+ * I was creating a vote on a node, but something went wrong.
+ * It happens here:
+ * @see musth_helper_functions_cast_vote
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ * @action You may want to use the information in the error message to create the vote anyway
+ * @action Consider that the user may have got no message and thinks that the vote has been registered
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E202 W3E202 Error in fetching votes aggregates
+ *
+ * @descr Error in fetching votes aggregates
+ * I was fetching votes aggregates for an entity, but something went wrong.
+ * It happens here:
+ * @see musth_helper_functions_get_voting_results
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E203 W3E203 Votes on an entity should have one tag only
+ *
+ * @descr Votes on an entity should have one tag only
+ * This is likely to be a bug, but it could be some strange database corruption as well
+ * The function musth_helper_functions_get_voting_results has been called to
+ * fetch votes aggregates related to an entity and more than one vote tag has been
+ * found. This is not expected. All votes given to an entity should have the same
+ * vote tag. We don't support more than one tag, at least for now.
+ * It happens here:
+ * @see musth_helper_functions_get_voting_results
+ *
+ * @cause Database corruption
+ * @cause A bug than caused the production of votes with different tags each for the same entity
+ * @action Are actually there votes with different tags for the same entity?
+ * @action Investigate all code producing votes for the given entity
+ * @action check tables votingapi_cache and votingapi_vote
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E204 W3E204 Votes on an entity should have one vote type only
+ *
+ * @descr Votes on an entity should have one vote type only
+ * This is likely to be a bug, but it could be some strange database corruption as well
+ * The function musth_helper_functions_get_voting_results has been called to
+ * fetch votes aggregates related to an entity and more than one vote type has been
+ * found. This is not expected. All votes given to an entity should have the same
+ * vote type. Votes can be 'points' (1 or -1) or 'percent' (between 0 and 100) but there shouldnt
+ * be both types of vote for the same entity. Either an entity is voted by giving thumbs up or down or
+ * it's voted by giving a vote between 0 and 100.
+ * It happens here:
+ * @see musth_helper_functions_get_voting_results
+ *
+ * @cause Database corruption
+ * @cause A bug than caused the production of votes with different types each for the same entity
+ * @action Are actually there votes with different types for the same entity?
+ * @action Investigate all code producing votes for the given entity
+ * @action check tables votingapi_cache and votingapi_vote
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E205 W3E205 Only authenticated users can flag a content as abusive or whatever
+ *
+ * @descr Only authenticated users can flag a content as abusive or whatever
+ * Angular wants to flag a content as abusive or in another way. But only logged-in users can flag content.
+ * It happens here:
+ * @see FlaggingResourceController::create
+ *
+ * @cause It looks like a bug on the client side
+ * @cause Angular not sending credentials
+ * @cause Hackers trying to login?
+ * @action Check Angular code for changes
+ * @action Test the api with Soapui to rule out api problems
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E206 W3E206 Error in fetching votes aggregates for a tag
+ *
+ * @descr Error in fetching votes aggregates for a tag
+ * I was fetching votes aggregates for a tag, but something went wrong.
+ * It happens here:
+ * @see musth_helper_functions_get_voting_results_by_tag
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E207 W3E207 Entities being voted should be all of the same type
+ *
+ * @descr Entities being voted should be all of the same type
+ * This is likely to be a bug, but it could be some strange database corruption as well
+ * The function musth_helper_functions_get_voting_results_by_tag has been called to
+ * fetch votes aggregates related to a tag and more than one type of entities seem to have been voted.
+ * Usually we allow votes to be given to nodes only. In this case votes have been given to entities
+ * of more than one type, for example nodes anc comments. This is not expected.
+ * All entities should have the same type at least for the given tag.
+ * It happens here:
+ * @see musth_helper_functions_get_voting_results_by_tag
+ *
+ * @cause Database corruption
+ * @cause A bug than caused entities being voted that are of more than one type, when the tag is the same
+ * @action Are actually there entities of different types voted by using the same tag?
+ * @action Investigate all code producing votes for the given tag
+ * @action check tables votingapi_cache and votingapi_vote
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E208 W3E208 Cant mix percent and points votes for the same tag
+ *
+ * @descr Cant mix percent and points votes for the same tag
+ * This is likely to be a bug, but it could be some strange database corruption as well
+ * The function musth_helper_functions_get_voting_results_by_tag has been called to
+ * fetch votes aggregates related to a tag and more than one type of vote (percent and points) seems to have been found.
+ * This is not expected. All votes that have the same tag should have the same type (percent or points) as well.
+ * Let me explain better what I mean for "votes for the same tag". Votes are not given to a tag. Votes are given to an entity.
+ * So, a collection of entities are voted and the same tag is used when voting. In this case, it's happening that some of these
+ * votes are percent votes and some are points votes. This shouldn't happen. All votes that are associated to the same tag
+ * should be either points votes or percent ones, not a mixture of the two types.
+ * It happens here:
+ * @see musth_helper_functions_get_voting_results_by_tag
+ *
+ * @cause Database corruption
+ * @cause A bug that produced votes of different types and the same tag
+ * @action Are actually there votes sharing the same tag but of different types (percent or points)?
+ * @action Investigate all code producing votes for the given tag
+ * @action check tables votingapi_cache and votingapi_vote
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E209 W3E209 Error in creating a flagging
+ *
+ * @descr Error in creating a flagging
+ * I was creating a flagging, but something went wrong.
+ * It happens here:
+ * @see musth_helper_functions_get_voting_results_by_tag
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E210 W3E210 Invalid entity id or flag name when creating a flagging
+ *
+ * @descr Invalid entity id or flag name when creating a flagging
+ * Angular wants to create a flagging. Typically it wants to flag a comment as abusive.
+ * The problem is that Angular is giving an invalid entity id or flag name. Or maybe both.
+ * It happens here:
+ * @see FlaggingResourceController::create
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E211 W3E211 Only the author can query all their reviews
+ *
+ * @descr Only the author can query all their reviews
+ * The user specified in the api filters is not the same and the logged-in one
+ * or no user is logged in.
+ * We can't send back the reviews created by the given user.
+ * This shouldn't happen. It's a bug on the client side or it's some attempt to
+ * gain access.
+ * Note that this same error is used in both the query and the count methods
+ * It happens here:
+ * @see ReviewResourceController::query
+ * @see ReviewResourceController::count
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E212 W3E212 The logged-in user is not the same as the review author specified in the given values
+ *
+ * @descr The logged-in user is not the same as the review author specified in the given values
+ * The user specified in the api values is not the same as the logged-in one.
+ * This is either a bug on the client side or an attempt to create a review whose author is different from
+ * the logged-in user.
+ * It happens here:
+ * @see ReviewResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E213 W3E213 No uid specified. We need the uid of the review author explicitly specified
+ *
+ * @descr No uid specified. We need the uid of the review author explicitly specified
+ * The uid of the review author has not been given. We need it explicitly specified and it can't be zero.
+ * It happens here:
+ * @see ReviewResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E214 W3E214 Error in querying votes
+ *
+ * @descr Error in querying votes
+ * I was querying votes, but something went wrong.
+ * It happens here:
+ * @see VoteResourceController::query
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E215 W3E215 No uid specified. We need the uid of the voter to retrieve their votes
+ *
+ * @descr No uid specified. We need the uid of the voter to retrieve their votes
+ * The uid of the voter has not been given. We need it explicitly specified and it can't be zero.
+ * It happens here:
+ * @see VoteResourceController::query
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E216 W3E216 The logged-in user is not the same as the voter specified in the given values
+ *
+ * @descr The logged-in user is not the same as the voter specified in the given values
+ * The user specified in the api values is not the same as the logged-in one.
+ * This is either a bug on the client side or an attempt to create a vote whose author is different from
+ * the logged-in user.
+ * It happens here:
+ * @see VoteResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E217 W3E217 No uid specified. We need the uid of the voter to create a vote
+ *
+ * @descr No uid specified. We need the uid of the voter to create a vote
+ * The uid of the voter has not been given. We need it explicitly specified and it can't be zero.
+ * It happens here:
+ * @see VoteResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E218 W3E218 The node doesnt exist, we cant create a vote about nothing
+ *
+ * @descr The node doesnt exist, we cant create a vote about nothing
+ * Angular wants to create a vote about a node, but the node doesn't exist
+ * It happens here:
+ * @see VoteResourceController::create
+ *
+ * @cause Bug in Angular code
+ * @cause Database corruption
+ * @cause Database down
+ * @action Investigate code changes
+ * @action See if the node exists or not
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E219 W3E219 Angular called this api passing no nid at all
+ *
+ * @descr Angular called this api passing no nid at all
+ * Angular called the api VoteResourceController::create passing no nid at all.
+ * We can't create a vote if the id of the voted node is not given
+ * It happens here:
+ * @see VoteResourceController::create
+ *
+ * @cause Transmission error when calling the api
+ * @cause Problem in the call code on the angular side
+ * @action Investigate carefully
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E220 W3E220 No value type specified. We need the value type to be specified to create a vote
+ *
+ * @descr No value type specified. We need the value type to be specified to create a vote
+ * The value type of the vote has not been given. We need it explicitly specified and it has to be either 'percent'
+ * or 'points'
+ * It happens here:
+ * @see VoteResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E221 W3E221 Wrong value type specified. We need the value type to be correct to create a vote
+ *
+ * @descr Wrong value type specified. We need the value type to be correct to create a vote
+ * The value type of the vote is wrong. It has to be either 'percent'
+ * or 'points'
+ * It happens here:
+ * @see VoteResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E222 W3E222 No value specified. We need the value of the vote to be specified to create a vote
+ *
+ * @descr No value specified. We need the value of the vote to be specified to create a vote
+ * The value of the vote has not been given. We need it of course
+ * It happens here:
+ * @see VoteResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E223 W3E223 Wrong value specified. We need the value to be correct to create a vote
+ *
+ * @descr Wrong value specified. We need the value to be correct to create a vote
+ * The value of the vote is wrong. It has to be 1 or -1 if it's a 'points' vote, or 0 to 100 if it's
+ * a percent vote.
+ * It happens here:
+ * @see VoteResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E224 W3E224 Attempt to read a vote by direct call
+ *
+ * @descr Attempt to read a vote by direct call
+ * The read method that returns a vote has been called directly and not by calling the query
+ * method first. This is not usually done by the client code and is likely to be a hacker attack
+ * @see VoteResourceController::read
+ *
+ * @cause Possible hacker attack
+ * @cause Problem or bug on the angular side that ends up in a direct call to the read method (unlikely)
+ * @action Secure the castle! :-)
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E225 W3E225 The node doesnt exist, we cant votes aggregates about a non-existing node
+ *
+ * @descr The node doesnt exist, we cant votes aggregates about a non-existing node
+ * Angular wants to know the voting results for a node, but the node doesn't exist.
+ * It can also be that the node is not published.
+ * It happens here:
+ * @see VotesAggregateResourceController::query
+ *
+ * @cause Bug in Angular code
+ * @cause Database corruption
+ * @cause Database down
+ * @action Investigate code changes
+ * @action See if the node exists or not
+ * @action Check database integrity
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E226 W3E226 No nid and no tag provided, what did you call this api for?
+ *
+ * @descr No nid and no tag provided, what did you call this api for?
+ * Angular called this api, but it gives no filters we can use.
+ * It's an Angular bug.
+ * It happens here:
+ * @see VotesAggregateResourceController::query
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E227 W3E227 Attempt to read a votes aggregate by direct call
+ *
+ * @descr Attempt to read a votes aggregate by direct call
+ * The read method that returns a votes aggregate has been called directly and not by calling the query
+ * method first. This is not usually done by the client code and is likely to be a hacker attack
+ * @see VotesAggregateResourceController::read
+ *
+ * @cause Possible hacker attack
+ * @cause Problem or bug on the angular side that ends up in a direct call to the read method (unlikely)
+ * @action Secure the castle! :-)
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E228 W3E228 When loading comments we got zero as node id
+ *
+ * @descr When loading comments we got zero as node id
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * A controller called the function load_comments in the Commenthelper service
+ * to load all comments for a given node.
+ * The passed node id is zero, but there is no node zero we can fetch comments for.
+ * It happens here:
+ * @see load_comments
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E229 W3E229 Empty response when fetching comments
+ *
+ * @descr Empty response when fetching comments
+ * Error in calling the musth_restws_comment REST api
+ * The response was empty and not even containing an empty list of comments
+ * It would be something
+ * It happens here:
+ * @see load_comments
+ *
+ * @cause Database failure
+ * @cause Transmission error
+ * @cause Failure in RESTws
+ * @cause Software bug
+ * @action Investigate carefully
+ * @action Check watchdogs
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E230 W3E230 Comments not loaded
+ *
+ * @descr Comments not loaded
+ * I was loading comments, but something went wrong.
+ * It happens here:
+ * @see load_comments
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E231 W3E231 Empty response when creating a comment
+ *
+ * @descr Empty response when creating a comment
+ * Error in calling the musth_restws_comment REST api
+ * The response was empty and there wasn't the id of the newly created comment
+ * It happens here:
+ * @see create_comment
+ *
+ * @cause Database failure
+ * @cause Transmission error
+ * @cause Failure in RESTws
+ * @cause Software bug
+ * @action Investigate carefully
+ * @action Check watchdogs
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E232 W3E232 Comment not created
+ *
+ * @descr Comment not created
+ * I was creating a comment, but something went wrong.
+ * It happens here:
+ * @see create_comment
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E233 W3E233 The comment id of the comment to update cant be zero
+ *
+ * @descr The comment id of the comment to update cant be zero
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * A controller called the function update_comment in the Commenthelper service
+ * to update a comment.
+ * It passed a comment id equal to zero, but we can't update comment zero because there is no
+ * such thing.
+ * It happens here:
+ * @see update_comment
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E234 W3E234 Comment not updated
+ *
+ * @descr Comment not updated
+ * I was updating a comment, but something went wrong.
+ * It happens here:
+ * @see update_comment
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E235 W3E235 The comment id of the comment to delete cant be zero
+ *
+ * @descr The comment id of the comment to delete cant be zero
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * A controller called the function delete_comment in the Commenthelper service
+ * to delete a comment.
+ * It passed a comment id equal to zero, but we can't delete comment zero because there is no
+ * such thing.
+ * It happens here:
+ * @see delete_comment
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E236 W3E236 Comment not deleted
+ *
+ * @descr Comment not deleted
+ * I was deleting a comment, but something went wrong.
+ * It happens here:
+ * @see delete_comment
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E237 W3E237 Flagging not created
+ *
+ * @descr Flagging not created
+ * I was creating a flagging, but something went wrong.
+ * It happens here:
+ * @see create_flagging
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E238 W3E238 Reviews not loaded
+ *
+ * @descr Reviews not loaded
+ * I was loading reviews, but something went wrong.
+ * It happens here:
+ * @see load_reviews
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E239 W3E239 Empty response when fetching reviews
+ *
+ * @descr Empty response when fetching reviews
+ * Error in calling the musth_restws_review REST api
+ * The response was empty and not even containing an empty list of reviews
+ * It would be something
+ * It happens here:
+ * @see load_reviews
+ *
+ * @cause Database failure
+ * @cause Transmission error
+ * @cause Failure in RESTws
+ * @cause Software bug
+ * @action Investigate carefully
+ * @action Check watchdogs
+ *
+ * @subsection W3E240 W3E240 Empty response when creating a review
+ *
+ * @descr Empty response when creating a review
+ * Error in calling the musth_restws_review REST api
+ * The response was empty. There wasn't the expected id of the created review
+ * It happens here:
+ * @see create_review
+ *
+ * @cause Database failure
+ * @cause Transmission error
+ * @cause Failure in RESTws
+ * @cause Software bug
+ * @action Investigate carefully
+ * @action Check watchdogs
+ *
+ * @subsection W3E241 W3E241 Review not created
+ *
+ * @descr Review not created
+ * I was creating a review, but something went wrong.
+ * It happens here:
+ * @see create_review
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E242 W3E242 The review id of the review to update cant be zero
+ *
+ * @descr The review id of the review to update cant be zero
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * A controller called the function update_review in the Reviewhelper service
+ * to update a review.
+ * It passed a review id equal to zero, but we can't update review zero because there is no
+ * such thing.
+ * It happens here:
+ * @see update_review
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E243 W3E243 Review not updated
+ *
+ * @descr Review not updated
+ * I was updating a review, but something went wrong.
+ * It happens here:
+ * @see update_review
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E244 W3E244 Review not submitted
+ *
+ * @descr Review not submitted
+ * I was submitting a review, but something went wrong.
+ * It happens here:
+ * @see submit_review
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E245 W3E245 The review id of the review to delete cant be zero
+ *
+ * @descr The review id of the review to delete cant be zero
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * A controller called the function delete_review in the Reviewhelper service
+ * to delete a review.
+ * It passed a review id equal to zero, but we can't delete review zero because there is no
+ * such thing.
+ * It happens here:
+ * @see delete_review
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E246 W3E246 Review not deleted
+ *
+ * @descr Review not deleted
+ * I was deleting a review, but something went wrong.
+ * It happens here:
+ * @see delete_review
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E247 W3E247 Error when getting the RESTws token
+ *
+ * @descr Error when getting the RESTws token
+ * I was performing the http query intended to retrieve the session token that
+ * the RESTws module needs when writing calls are made
+ * But something went wrong.
+ * It happens here:
+ * @see fetch_user_details
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E248 W3E248 Empty response when fetching votes
+ *
+ * @descr Empty response when fetching votes
+ * Error in calling the musth_restws_vote REST api
+ * The response was empty and not even containing an empty list of votes
+ * It would be something
+ * It happens here:
+ * @see load_votes
+ *
+ * @cause Database failure
+ * @cause Transmission error
+ * @cause Failure in RESTws
+ * @cause Software bug
+ * @action Investigate carefully
+ * @action Check watchdogs
+ *
+ * @subsection W3E249 W3E249 Votes not loaded
+ *
+ * @descr Votes not loaded
+ * I was loading all votes ever given by a user, but something went wrong.
+ * It happens here:
+ * @see load_votes
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E250 W3E250 Empty response when creating a vote
+ *
+ * @descr Empty response when creating a vote
+ * Error in calling the musth_restws_vote REST api to create a vote
+ * The response was empty and not containing the expected vote id
+ * (we ignore it, but it should be there)
+ * It would be something
+ * It happens here:
+ * @see vote_a_node
+ *
+ * @cause Database failure
+ * @cause Transmission error
+ * @cause Failure in RESTws
+ * @cause Software bug
+ * @action Investigate carefully
+ * @action Check watchdogs
+ *
+ * @subsection W3E251 W3E251 Votes not created
+ *
+ * @descr Votes not created
+ * I was creating a vote, but something went wrong.
+ * It happens here:
+ * @see vote_a_node
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E252 W3E252 Empty response when fetching a votes aggregate
+ *
+ * @descr Empty response when fetching a votes aggregate
+ * Error in calling the musth_restws_votesaggregate REST api
+ * The response was empty and not even containing an empty list of votes aggregates
+ * It would be something
+ * It happens here:
+ * @see load_votes_aggregate
+ *
+ * @cause Database failure
+ * @cause Transmission error
+ * @cause Failure in RESTws
+ * @cause Software bug
+ * @action Investigate carefully
+ * @action Check watchdogs
+ *
+ * @subsection W3E253 W3E253 Votes aggregate not loaded
+ *
+ * @descr Votes aggregate not loaded
+ * I was loading a votes aggregate, but something went wrong.
+ * It happens here:
+ * @see load_votes_aggregate
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E254 W3E254 Comments not loaded
+ *
+ * @descr Comments not loaded
+ * Error in calling the Comment REST api
+ * It happens here:
+ * @see load_comments
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @subsection W3E255 W3E255 Comment not created
+ *
+ * @descr Comment not created
+ * Error in calling the Comment REST api
+ * It happens here:
+ * @see post (in CommentsFormCtrl)
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @subsection W3E256 W3E256 Comment not updated
+ *
+ * @descr Comment not updated
+ * Error in calling the Comment REST api
+ * It happens here:
+ * @see post (in CommentsFormCtrl)
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @subsection W3E257 W3E257 comment.cid cant be zero when deleting a comment
+ *
+ * @descr comment.cid cant be zero when deleting a comment
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * From a partial (maybe /partials/video_and_audio_info_panel.html), the function
+ * delete in CommentsFormCtrl has been called.
+ * We got comment.cid == 0, but we can't delete comment zero because there is no such a thing
+ * It happens here:
+ * @see delete (in CommentsFormCtrl.js)
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E258 W3E258 Comment not deleted
+ *
+ * @descr Comment not deleted
+ * Error in calling the Comment REST api
+ * It happens here:
+ * @see delete (in CommentsFormCtrl)
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @subsection W3E259 W3E259 cid cant be zero when flagging a comment as abusive
+ *
+ * @descr cid cant be zero when flagging a comment as abusive
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * From a partial (maybe /partials/video_and_audio_info_panel.html), the function
+ * abuse in CommentsFormCtrl has been called.
+ * We got comment.cid == 0, but we can't flag as abusive comment zero because there is no such a thing
+ * It happens here:
+ * @see abuse (in CommentsFormCtrl.js)
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E260 W3E260 Comment not marked as abusive
+ *
+ * @descr Comment not marked as abusive
+ * Error in calling the Comment REST api
+ * It happens here:
+ * @see abuse (in CommentsFormCtrl)
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E261 W3E261 How can uid be zero?
+ *
+ * @descr How can uid be zero?
+ * After a login done in the iframe, the logged-in user's id shouldn't be zero
+ * Something went wrong in the iframe or somewhere else
+ * It happens here:
+ * @see login (in LoginFormCtrl.js)
+ *
+ * @cause A bug
+ * @cause A problem in the calls performed by the iframe to angular code
+ * @cause A bug in a browser update
+ * @cause Changes in security settings or implementation, again in the browser
+ * @action Analyse code changes
+ * @action Investigate browser updates
+ * @action Study browser security settings that may affect communications with iframes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E262 W3E262 User details not fetched
+ *
+ * @descr User details not fetched
+ * Error in calling the User REST api
+ * It happens here:
+ * @see login (in LoginFormCtrl.js)
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E263 W3E263 User id is zero when displaying reviews on the user profile
+ *
+ * @descr User id is zero when displaying reviews on the user profile
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * The function load_reviews has been called to show all reviews the logged-in user ever created.
+ * The problem is that the user id is zero when they should be logged in instead.
+ * It's a bug.
+ * It happens here:
+ * @see load_reviews (in ReviewsFormCtrl.js)
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E264 W3E264 Reviews not loaded
+ *
+ * @descr Reviews not loaded
+ * Error in calling the Review REST api
+ * It happens here:
+ * @see load_reviews (in ReviewsFormCtrl.js)
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E265 W3E265 Review not created
+ *
+ * @descr Review not created
+ * Error in calling the Review REST api
+ * It happens here:
+ * @see save (in ReviewsFormCtrl.js)
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E266 W3E266 Review not updated
+ *
+ * @descr Review not updated
+ * Error in calling the Review REST api
+ * It happens here:
+ * @see save (in ReviewsFormCtrl.js)
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E267 W3E267 We cant submit review zero
+ *
+ * @descr We cant submit review zero
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * The function submit has been called to submit a review.
+ * The problem is that the review id is zero and we can't submit review zero
+ * because there is not such a thing.
+ * It's a bug.
+ * It happens here:
+ * @see submit (in ReviewsFormCtrl.js)
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E268 W3E268 Review not submitted
+ *
+ * @descr Review not submitted
+ * Error in calling the Review REST api
+ * It happens here:
+ * @see submit (in ReviewsFormCtrl.js)
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E269 W3E269 Review vote not saved
+ *
+ * @descr Review vote not saved
+ * Error in calling the Vote REST api
+ * It happens here:
+ * @see rate (in ReviewsFormCtrl.js)
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E270 W3E270 Review not deleted
+ *
+ * @descr Review not deleted
+ * Error in calling the Review REST api
+ * It happens here:
+ * @see delete (in ReviewsFormCtrl.js)
+ *
+ * @cause Transmission error
+ * @cause See 'Reason' in error message
+ * @action It can be that the user lost connection
+ * @action Investigate transmission problems by using soapui
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E271 W3E271 No useful filter found
+ *
+ * @descr No useful filter found
+ * The query method of the rest api Review has been called with no useful filter
+ * It's likely to be a bug because Angular should send a user id to fetch all
+ * reviews authored by that user or a node id to fetch all reviews about that node
+ * It happens here:
+ * @see ReviewResourceController::query
+ *
+ * @cause Likely to be a bug
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api by using soapui
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E272 W3E272 Cant save a review with no uid or nid
+ *
+ * @descr Cant save a review with no uid or nid
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * The function save has been called to save a review. It may be a new
+ * review or one to update.
+ * The problem is that the author's user id or the node id of the programme
+ * are zero.
+ * It's a bug.
+ * It happens here:
+ * @see save (in ReviewsFormCtrl.js)
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ * @action Are there any changes in the timing of controllers loading?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E273 W3E273 User details not fetched
+ *
+ * @descr User details not fetched
+ * Error in calling the fetch_user_details method of the Userhelper service
+ * It happens here:
+ * @see controller_init (TagViewCtrl.js)
+ *
+ * @cause See 'Reason' in error message
+ * @cause See the error message produced by the fetch_user_details
+ * method of the Userhelper service
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E274 W3E274 Angular wants details about a group that doesnt exist
+ *
+ * @descr Angular wants details about a group that doesnt exist
+ * Angular is querying a single group and gives us its id
+ * The problem is that no group exists with that id
+ * This is very likely to be a bug because Angular thinks that the group exists
+ * It may be that the group has been just deleted, but this is unlikely
+ * Note that this same error is used in both the query and the count methods
+ * It happens here:
+ * @see GroupResourceController::query
+ * @see GroupResourceController::count
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @cause The group has been just deleted
+ * @action Does the group exist?
+ * @action Has the group been just deleted?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E275 W3E275 Title too short
+ *
+ * @descr Title too short
+ * The query method of the rest api Group has been called with a filter on title
+ * When we have a filter no title we return all group whose title matches
+ * But we want at least three characters to perform a query because less characters would
+ * make our query meaningless and a waste of time
+ * It's a bug because Angular should prevent less than three characters from being sent
+ * Note that this same error is used in both the query and the count methods
+ * It happens here:
+ * @see GroupResourceController::query
+ * @see GroupResourceController::count
+ *
+ * @cause Likely to be a bug
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api by using soapui
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E276 W3E276 About to send empty page because of RESTws bug
+ *
+ * @descr About to send empty page because of RESTws bug
+ * We are about to send an empty page of results because of a known bug in
+ * RESTws. The bug is documented in a page titled "Emergency fix to RESTws"
+ * in cmor-intranet.
+ * Maybe the RESTws module has been updated and the fix has gone lost.
+ * It happens here:
+ * @see GroupResourceController::query
+ *
+ * @cause Has the RESTws module just been updated?
+ * @action Check that the RESTws module fix is actually in place
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E277 W3E277 Anonymous users cannot create groups
+ *
+ * @descr Anonymous users cannot create groups
+ * Angular wants to create a group, but the user is not logged-in.
+ * This is either a bug on the client side or an attempt to create a group by hackers
+ * It happens here:
+ * @see GroupResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E278 W3E278 The logged-in user is not the same as the group creator specified in the given values
+ *
+ * @descr The logged-in user is not the same as the group creator specified in the given values
+ * The user specified in the api values is not the same as the logged-in one.
+ * This is either a bug on the client side or an attempt to create a group whose creator is different from
+ * the logged-in user.
+ * It happens here:
+ * @see GroupResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E279 W3E279 No uid specified. We need the uid of the group creator explicitly specified
+ *
+ * @descr No uid specified. We need the uid of the group creator explicitly specified
+ * The uid of the review author has not been given. We need it explicitly specified and it cannot be zero.
+ * It happens here:
+ * @see GroupResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E280 W3E280 No title provided, we cant create a group with no title
+ *
+ * @descr No title provided, we cant create a group with no title
+ * Angular wants to create a group, but it doesn't provide the title
+ * It happens here:
+ * @see GroupResourceController::create
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E281 W3E281 Title too short
+ *
+ * @descr Title too short
+ * Angular wants to create a group, but the title it provides is too short
+ * Group titles have to be at least three characters long
+ * It's an Angular bug because Angular should check titles before sending them
+ * It happens here:
+ * @see GroupResourceController::create
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ * @action See if Angular is messing with unicode characters
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E282 W3E282 No description provided, we cant create a group with no description
+ *
+ * @descr No description provided, we cant create a group with no description
+ * Angular wants to create a group, but it doesn't provide the description
+ * It happens here:
+ * @see GroupResourceController::create
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E283 W3E283 Error in saving a new group
+ *
+ * @descr Error in saving a new group
+ * I was saving a new group, but something went wrong.
+ * It happens here:
+ * @see GroupResourceController::create
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E284 W3E284 Error when searching for a group
+ *
+ * @descr Error when searching for a group
+ * I was searching for a group, but something went wrong.
+ * It happens here:
+ * @see GroupResourceController::count
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E285 W3E285 Error when counting groups
+ *
+ * @descr Error when counting groups
+ * I was counting how many groups to return, but something went wrong.
+ * It happens here:
+ * @see GroupResourceController::count
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E286 W3E286 The requested node is not a group
+ *
+ * @descr The requested node is not a group
+ * The read method has been called to fetch the details of a node which is not a group.
+ * This read method should be used to return groups only.
+ * Usually the read method is called after the query method, so all ids should be
+ * group ids.
+ * It can be a bug or a hacker attack.
+ * It happens here:
+ * @see GroupResourceController::read
+ *
+ * @cause Any Angular side bug? Unlikely
+ * @cause Hacker attack?
+ * @action If it happens frequently, you may want to see how to add security against hackers
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E287 W3E287 Group not found, what is going on?
+ *
+ * @descr Group not found, what is going on?
+ * The read method is supposed to always find the group it has to return.
+ * Maybe there is a problem with the database or someone is using the read method
+ * directly and with a wrong group id.
+ * This someone maybe a hacker or a developer doing some testing.
+ * It happens here:
+ * @see GroupResourceController::read
+ *
+ * @cause Database failure
+ * @cause Hackers or developers using the read method directly with wrong group ids
+ * @action Investigate carefully
+ * @action Does the review actually exist?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E288 W3E288 No title provided when updating a group
+ *
+ * @descr No title provided when updating a group
+ * Angular wants to update a group, but it doesn't provide the title
+ * It happens here:
+ * @see GroupResourceController::update
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E289 W3E289 Title too short
+ *
+ * @descr Title too short
+ * Angular wants to update a group, but the title it provides is too short
+ * Group titles have to be at least three characters long
+ * It's an Angular bug because Angular should check titles before sending them
+ * It happens here:
+ * @see GroupResourceController::update
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ * @action See if Angular is messing with unicode characters
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E290 W3E290 No description provided when updating a group
+ *
+ * @descr No description provided when updating a group
+ * Angular wants to update a group, but it doesn't provide the description
+ * It happens here:
+ * @see GroupResourceController::update
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E291 W3E291 The logged-in user is not the same as the group creator specified in the given values
+ *
+ * @descr The logged-in user is not the same as the group creator specified in the given values
+ * The user specified in the api values is not the same as the logged-in one.
+ * This is either a bug on the client side or an attempt to update a group whose creator is different from
+ * the logged-in user.
+ * It happens here:
+ * @see GroupResourceController::update
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E292 W3E292 Error in updating a group
+ *
+ * @descr Error in updating a group
+ * I was updating a group, but something went wrong.
+ * It happens here:
+ * @see GroupResourceController::update
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E293 W3E293 Group not found
+ *
+ * @descr Group not found
+ * Angular wants to update a group that doesn't exist.
+ * It may be a bug on Angular side or some malicious use of the REST api
+ * It happens here:
+ * @see GroupResourceController::update
+ *
+ * @cause Angular bug
+ * @cause Transmission error
+ * @cause Hackers or developers using the update method with a wrong group id
+ * @action Test the api with SoapUI
+ * @action Does the group actually exist?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E294 W3E294 The logged-in user is not the same as the group creator specified in the given values
+ *
+ * @descr The logged-in user is not the same as the group creator specified in the given values
+ * The user specified in the api values is not the same as the logged-in one.
+ * This is either a bug on the client side or an attempt to delete a group whose creator is different from
+ * the logged-in user.
+ * It happens here:
+ * @see GroupResourceController::delete
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E295 W3E295 Error in deleting a group
+ *
+ * @descr Error in deleting a group
+ * I was deleting a group, but something went wrong.
+ * It happens here:
+ * @see GroupResourceController::delete
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E296 W3E296 Group not found
+ *
+ * @descr Group not found
+ * Angular wants to delete a group that doesn't exist.
+ * It may be a bug on Angular side or some malicious use of the REST api
+ * It happens here:
+ * @see GroupResourceController::delete
+ *
+ * @cause Angular bug
+ * @cause Transmission error
+ * @cause Hackers or developers using the delete method with a wrong group id
+ * @action Test the api with SoapUI
+ * @action Does the group actually exist?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E297 W3E297 Angular wants the members of a group that does not exist
+ *
+ * @descr Angular wants the members of a group that does not exist
+ * Angular wants the members of a group and gives the group id
+ * The problem is that no group exists with that id. It may also be that the group is unpublished
+ * This is very likely to be a bug because Angular thinks that the group exists
+ * It may be that the group has been just deleted, but this is unlikely
+ * Note that this same error is used in both the query and the count methods
+ * It happens here:
+ * @see UserResourceController::query
+ * @see UserResourceController::count
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @cause The group has been just deleted
+ * @action Does the group exist?
+ * @action Has the group been just deleted?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E298 W3E298 Error when checking if a user exists
+ *
+ * @descr Error when checking if a user exists
+ * I was checking if a user exists before passing their user id to the
+ * read method, which would send back the user profile.
+ * But something went wrong.
+ * It happens here:
+ * @see UserResourceController::query
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E299 W3E299 Angular wants the user profile of a user who does not exist
+ *
+ * @descr Angular wants the user profile of a user who does not exist
+ * Angular is querying the user profile of a user and gives the user id
+ * The problem is that no user exists with that id
+ * This is very likely to be a bug because Angular thinks that the user exists
+ * It may be that the user has been just deleted, but this is unlikely
+ * It happens here:
+ * @see UserResourceController::query
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @cause The user has been just deleted
+ * @action Does the user exist?
+ * @action Has the user just been deleted?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E300 W3E300 Error when counting group members
+ *
+ * @descr Error when counting group members
+ * I was counting how many members there are in a group, but something went wrong.
+ * It happens here:
+ * @see UserResourceController::count
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E301 W3E301 User not found, what is going on?
+ *
+ * @descr User not found, what is going on?
+ * The read method is supposed to always find the user it has to return.
+ * Maybe there is a problem with the database or someone is using the read method
+ * directly and with a wrong user id.
+ * This someone maybe a hacker or a developer doing some testing.
+ * It happens here:
+ * @see UserResourceController::read
+ *
+ * @cause Database failure
+ * @cause Hackers or developers using the read method directly with wrong user ids
+ * @action Investigate carefully
+ * @action Does the user actually exist?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E302 W3E302 Error when loading user profile
+ *
+ * @descr Error when loading user profile
+ * I was loading a user profile to return, but something went wrong.
+ * It happens here:
+ * @see UserResourceController::read
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E303 W3E303 Angular wants to add a user to a group that does not exist
+ *
+ * @descr Angular wants to add a user to a group that does not exist
+ * Angular wants to add a user to a group and gives the group id
+ * The problem is that no group exists with that id
+ * This is very likely to be a bug because Angular thinks that the group exists
+ * It may be that the group has been just deleted, but this is unlikely
+ * To be precise, Angular may want to add a user to a group or it may want to have the user
+ * leave the group
+ * It happens here:
+ * @see UserResourceController::update
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @cause The group has been just deleted
+ * @action Does the group exist?
+ * @action Has the group been just deleted?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E304 W3E304 Error when adding a user to a group
+ *
+ * @descr Error when adding a user to a group
+ * I was adding a user to a group, but something went wrong.
+ * It happens here:
+ * @see UserResourceController::update
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E305 W3E305 Error when removing a user from a group
+ *
+ * @descr Error when removing a user from a group
+ * I was removing a user from a group, but something went wrong.
+ * It happens here:
+ * @see UserResourceController::update
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E306 W3E306 Error when getting groups a user belongs to
+ *
+ * @descr Error when getting groups a user belongs to
+ * I was fetching the groups a user belongs to, but something went wrong.
+ * It happens here:
+ * @see musth_restws_load_user_groups
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E307 W3E307 Error when getting the OG roles a user has
+ *
+ * @descr Error when getting the OG roles a user has
+ * I was fetching the OG roles a user has in a group, but something went wrong.
+ * It happens here:
+ * @see musth_restws_load_user_groups
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E308 W3E308 No group id given
+ *
+ * @descr No group id given
+ * Angular wants all posts that belong to a given group, but it sends no group id
+ * Likely to be a bug on Angular side
+ * It happens here:
+ * @see PostResourceController::query
+ * @see PostResourceController::count
+ *
+ * @cause Angular bug
+ * @cause Transmission error
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E309 W3E309 Anonymous users cannot create posts
+ *
+ * @descr Anonymous users cannot create posts
+ * Angular wants to create a posts, but the user is not logged-in.
+ * This is either a bug on the client side or an attempt to create a posts by hackers
+ * It happens here:
+ * @see PostResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E310 W3E310 The group does not exist or it exists as a node but it is not a group
+ *
+ * @descr The group does not exist or it exists as a node but it is not a group
+ * Angular wants to create a post and it gives the group id of the group the post would belong to
+ * The problem is that the group does not exist or it exists as a node but it is not a group
+ * This is likely to be a bug on the client side. It may be that the group has been deleted seconds ago
+ * It happens here:
+ * @see PostResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E311 W3E311 No gid provided, we cannot create a post about no group
+ *
+ * @descr No gid provided, we cannot create a post about no group
+ * Angular wants to create a post, but it does not give the group id of the group the post
+ * would belong to.
+ * It happens here:
+ * @see PostResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E312 W3E312 The logged-in user is not the same as the post creator specified in the given values
+ *
+ * @descr The logged-in user is not the same as the post creator specified in the given values
+ * The user specified in the api values is not the same as the logged-in one.
+ * This is either a bug on the client side or an attempt to create a post whose creator is different from
+ * the logged-in user.
+ * It happens here:
+ * @see PostResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E313 W3E313 Post author is not a member of the group the post would belong to
+ *
+ * @descr Post author is not a member of the group the post would belong to
+ * Angular wants to create a posts, but the post author is not a member of the group
+ * the post would belong to.
+ * This is likely to be a bug on the client side
+ * It happens here:
+ * @see PostResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E314 W3E314 No uid specified. We need the uid of the post author explicitly specified
+ *
+ * @descr No uid specified. We need the uid of the post author explicitly specified
+ * The uid of the post author has not been given. We need it explicitly specified and it cannot be zero.
+ * It happens here:
+ * @see PostResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E315 W3E315 No body provided, we cant create a post with no body
+ *
+ * @descr No body provided, we cant create a post with no body
+ * Angular wants to create a post, but it doesn't provide the post's body
+ * It happens here:
+ * @see PostResourceController::create
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E316 W3E316 Error when saving a post
+ *
+ * @descr Error when saving a post
+ * I was saving a post, but something went wrong.
+ * It happens here:
+ * @see PostResourceController::create
+ * @see PostResourceController::update
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E317 W3E317 Error when assigning a post to a group
+ *
+ * @descr Error when assigning a post to a group
+ * I was assigning a post to a group, but something went wrong.
+ * It happens here:
+ * @see PostResourceController::create
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E318 W3E318 Error in counting posts
+ *
+ * @descr Error in counting posts
+ * I was counting posts, but something went wrong.
+ * It happens here:
+ * @see PostResourceController::count
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E319 W3E319 Error in loading post
+ *
+ * @descr Error in loading post
+ * I was loading a post, but something went wrong.
+ * It happens here:
+ * @see PostResourceController::read
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E320 W3E320 Error in counting comments
+ *
+ * @descr Error in counting comments
+ * I was counting how many comments a post has, but something went wrong.
+ * It happens here:
+ * @see PostResourceController::read
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E321 W3E321 Post not found, what is going on?
+ *
+ * @descr Post not found, what is going on?
+ * The read method is supposed to always find the post it has to return.
+ * Maybe there is a problem with the database or someone is using the read method
+ * directly and with a wrong post id.
+ * This someone maybe a hacker or a developer doing some testing.
+ * It happens here:
+ * @see PostResourceController::read
+ *
+ * @cause Database failure
+ * @cause Hackers or developers using the read method directly with wrong post ids
+ * @action Investigate carefully
+ * @action Does the post actually exist?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E322 W3E322 No body provided, a post must have a non-empty one
+ *
+ * @descr No body provided, a post must have a non-empty one
+ * Angular wants to update a post, but it doesn't provide the post's body
+ * It happens here:
+ * @see PostResourceController::update
+ *
+ * @cause Bug in Angular code
+ * @cause Transmission error
+ * @action Investigate code changes
+ * @action Test the api with SoapUI
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E323 W3E323 Error in loading post
+ *
+ * @descr Error in loading post
+ * I was loading a post, but something went wrong.
+ * It happens here:
+ * @see PostResourceController::update
+ * @see PostResourceController::delete
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E324 W3E324 A user wants to update a post but they have no permission
+ *
+ * @descr A user wants to update a post but they have no permission
+ * A user wants to update a post but they have no permission because they don't own the post
+ * and they have no 'update any post content' permission
+ * This is likely to be a bug on the client side because Angular should know in advance
+ * if a user has permission or not.
+ * It happens here:
+ * @see PostResourceController::update
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E325 W3E325 Post not found when updating
+ *
+ * @descr Post not found when updating
+ * The update method has been called to update a post but the post
+ * has not been found.
+ * This shouldn't happen, Angular should sent the id of an existing post and
+ * no other user should be able to change or delete the post
+ * It happens here:
+ * @see PostResourceController::update
+ *
+ * @cause Database failure
+ * @cause Error in Angular code, Angular sent a wrong comment id
+ * @action Check Angular code changes
+ * @action Does the comment actually exist?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E326 W3E326 A user wants to delete a post but they have no permission
+ *
+ * @descr A user wants to delete a post but they have no permission
+ * A user wants to delete a post but they have no permission because they don't own the post
+ * and they have no 'delete any post content' permission
+ * This is likely to be a bug on the client side because Angular should know in advance
+ * if a user has permission or not.
+ * It happens here:
+ * @see PostResourceController::delete
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E327 W3E327 Error when deleting a post
+ *
+ * @descr Error when deleting a post
+ * I was deleting a post, but something went wrong.
+ * It happens here:
+ * @see PostResourceController::delete
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E328 W3E328 Post not found when deleting
+ *
+ * @descr Post not found when deleting
+ * The delete method has been called to delete a post but the post
+ * has not been found.
+ * This shouldn't happen, Angular should send the id of an existing post and
+ * no other user should be able to change or delete the post
+ * It happens here:
+ * @see PostResourceController::delete
+ *
+ * @cause Database failure
+ * @cause Error in Angular code, Angular sent a wrong post id
+ * @action Check Angular code changes
+ * @action Does the post actually exist?
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E329 W3E329 Error when calling og_get_entity_groups
+ *
+ * @descr Error when calling og_get_entity_groups
+ * I was calling the function og_get_entity_groups to find the group a post is
+ * member of, but something went wrong.
+ * It happens here:
+ * @see musth_restws_find_post_group
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E330 W3E330 Found a post that belongs to two or more groups
+ *
+ * @descr Found a post that belongs to two or more groups
+ * When figuring out which group a post belongs to, we found that it belongs to more than
+ * one group. In our architecture this should not happen because each post should belong
+ * to one group only.
+ * It happens here:
+ * @see musth_restws_find_post_group
+ *
+ * @cause Any bug that affected the membership of posts to groups?
+ * @cause Database corruption?
+ * @cause Any left test data?
+ * @cause
+ * @action See the post from the backend and check if it actually belongs to more than one group
+ * @action Investigate code changes for bugs affecting post membership
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E331 W3E331 Angular wants comments made on a node that does not exist or is unpublished
+ *
+ * @descr Angular wants comments made on a node that does not exist or is unpublished
+ * Angular is querying all comments made on a node, but that node does not exist or is unpublished
+ * It may be that the node has been just deleted or unpublished, but this is unlikely
+ * It happens here:
+ * @see CommentResourceController::query
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @cause Hacker attack?
+ * @cause The node has been just deleted or unpublished
+ * @action Does the node exist? Is it published?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E332 W3E332 No node id given
+ *
+ * @descr No node id given
+ * Angular wants to query comments made on a node, but it does not give the node id of the node
+ * It happens here:
+ * @see CommentResourceController::query
+ *
+ * @cause Any Angular side bug?
+ * @cause It can be that Angular is sending wrong data
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E333 W3E333 Error when checking node type
+ *
+ * @descr Error when checking node type
+ * I was checking if the node a comment is about is actually a post
+ * But something went wrong
+ * It happens here:
+ * @see CommentResourceController::create
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E334 W3E334 Error in loading post
+ *
+ * @descr Error in loading post
+ * I was loading the post a comment is about
+ * But something went wrong
+ * It happens here:
+ * @see CommentResourceController::create
+ * @see CommentResourceController::update
+ * @see CommentResourceController::delete
+ *
+ * @cause I don't know, see the message
+ * @cause Database down?
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E335 W3E335 Comment author is not a member of the group the commented post belongs to
+ *
+ * @descr Comment author is not a member of the group the commented post belongs to
+ * Angular wants to create a comment on behalf of a user. Unfortunately that user is not a member
+ * of the group the commented post belongs to.
+ * This is likely to be a bug on the client side because Angular should know in advance if a user
+ * does not have the required permissions.
+ * It happens here:
+ * @see CommentResourceController::create
+ *
+ * @cause Any Angular side bug?
+ * @cause Any change occurred on permissions and which Angular wasn't aware of?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E336 W3E336 User not logged in, we cant delete any comment
+ *
+ * @descr User not logged in, we cant delete any comment
+ * Angular wants to delete a comment but the user is not even logged-in
+ * It's an Angular bug, Angular should not ask for deletion of a comment when
+ * no user is logged in.
+ * It happens here:
+ * @see CommentResourceController::delete
+ *
+ * @cause It looks like a bug on the client side
+ * @action Use Soapui to test this api
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E337 W3E337 A user wants to delete a comment but they have no permission
+ *
+ * @descr A user wants to delete a comment but they have no permission
+ * Angular wants to delete a comment on behalf of a user. Unfortunately that user is not an admin
+ * of the group the commented post belongs to and they don't own the comment.
+ * This is likely to be a bug on the client side because Angular should know in advance if a user
+ * does not have the required permissions.
+ * It happens here:
+ * @see CommentResourceController::delete
+ *
+ * @cause Any Angular side bug?
+ * @cause Any change occurred on permissions and which Angular wasn't aware of?
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E338 W3E338 RESTws bug when paging
+ *
+ * @descr RESTws bug when paging
+ * This is a known bug in RESTws that happens when paging. We fixed it but maybe the fix has gone lost
+ * because of an update.
+ * See page titled "Emergency fix to RESTws" in cmort-intranet
+ * It happens here:
+ * @see CommentResourceController::query
+ *
+ * @cause RESTws bug
+ * @action Check if the fix is still there
+ * @action Redo the fix
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E339 W3E339 Title too short
+ *
+ * @descr Title too short
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * A controller called the function load_groups in the Grouphelper service
+ * to load groups.
+ * It passed a partial title to fetch all matching groups.
+ * The problem is that it passed a title less than three chars long
+ * It happens here:
+ * @see load_groups
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E340 W3E340 Empty response when fetching groups
+ *
+ * @descr Empty response when fetching groups
+ * Error in calling the musth_restws_group REST api
+ * The response was empty and not even containing an empty list of groups
+ * It would be something
+ * It happens here:
+ * @see load_groups
+ *
+ * @cause Database failure
+ * @cause Transmission error
+ * @cause Failure in RESTws
+ * @cause Software bug
+ * @action Investigate carefully
+ * @action Check watchdogs
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E341 W3E341 Groups not loaded
+ *
+ * @descr Groups not loaded
+ * I was loading groups, but something went wrong.
+ * It happens here:
+ * @see load_groups
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E342 W3E342 Empty response when creating a group
+ *
+ * @descr Empty response when creating a group
+ * Error in calling the musth_restws_group REST api
+ * The response was empty and not containing the expected group id
+ * It happens here:
+ * @see create_group
+ *
+ * @cause Database failure
+ * @cause Transmission error
+ * @cause Failure in RESTws
+ * @cause Software bug
+ * @action Investigate carefully
+ * @action Check watchdogs
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E343 W3E343 Group not created
+ *
+ * @descr Group not created
+ * I was creating a group, but something went wrong.
+ * It happens here:
+ * @see create_group
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E344 W3E344 The node id of the group to update cant be zero
+ *
+ * @descr The node id of the group to update cant be zero
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * A controller called the function update_group in the Grouphelper service
+ * to update a group.
+ * It passed the node id of the group to update.
+ * The problem is that it passed zero as node id
+ * It happens here:
+ * @see update_group
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E345 W3E345 Group not updated
+ *
+ * @descr Group not updated
+ * I was updating a group, but something went wrong.
+ * It happens here:
+ * @see update_group
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E346 W3E346 The node id of the group to delete cant be zero
+ *
+ * @descr The node id of the group to delete cant be zero
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * A controller called the function delete_group in the Grouphelper service
+ * to delete a group.
+ * It passed the node id of the group to delete.
+ * The problem is that it passed zero as node id
+ * It happens here:
+ * @see delete_group
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E347 W3E347 Group not deleted
+ *
+ * @descr Group not deleted
+ * I was deleting a group, but something went wrong.
+ * It happens here:
+ * @see delete_group
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E348 W3E348 Empty response when fetching group members
+ *
+ * @descr Empty response when fetching group members
+ * Error in calling the musth_restws_user REST api
+ * The response was empty and not containing the expected list of group
+ * members, not even an empty one
+ * It happens here:
+ * @see return_members_of_a_group
+ *
+ * @cause Database failure
+ * @cause Transmission error
+ * @cause Failure in RESTws
+ * @cause Software bug
+ * @action Investigate carefully
+ * @action Check watchdogs
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E349 W3E349 Group members not returned
+ *
+ * @descr Group members not returned
+ * I was fetching a group's members, but something went wrong.
+ * It happens here:
+ * @see return_members_of_a_group
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E350 W3E350 Group id not specified
+ *
+ * @descr Group id not specified
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * A controller called the function add_or_remove_user_from_group in the Userhelper service
+ * to add or remove a user to/from a group.
+ * It passed the node id of the group to which to add/remove the user.
+ * The problem is that it passed zero or null as node id
+ * It happens here:
+ * @see add_or_remove_user_from_group
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E351 W3E351 User not logged in
+ *
+ * @descr User not logged in
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * A controller called the function add_or_remove_user_from_group in the Userhelper service
+ * to add or remove a user to/from a group.
+ * But the user is not logged in. We cannot add a user to a group if they are not logged in.
+ * It happens here:
+ * @see add_or_remove_user_from_group
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E352 W3E352 Cannot remove a group admin from the group
+ *
+ * @descr Cannot remove a group admin from the group
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * A controller called the function add_or_remove_user_from_group in the Userhelper service
+ * to add or remove a user to/from a group.
+ * But the user is the group admin. We cannot remove them from the group
+ * It happens here:
+ * @see add_or_remove_user_from_group
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E353 W3E353 User not added or removed from group
+ *
+ * @descr User not added or removed from group
+ * I was adding or removing the logged-in user from a group, but something went wrong.
+ * It happens here:
+ * @see add_or_remove_user_from_group
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E354 W3E354 Group id not specified
+ *
+ * @descr Group id not specified
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * The function user_is_admin has been called to know if the logged-in user
+ * is the admin of a given group, but the group id is missing.
+ * It happens here:
+ * @see user_is_admin
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E355 W3E355 User not logged in
+ *
+ * @descr User not logged in
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * A controller called the function user_is_admin in the Userhelper service
+ * to know if the logged-in user is the admin of a given group
+ * But the user is not logged in.
+ * It happens here:
+ * @see user_is_admin
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E356 W3E356 When loading posts we got zero as group id
+ *
+ * @descr When loading posts we got zero as group id
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * A controller called the function load_posts in the Posthelper service
+ * to load all posts for a given group.
+ * The passed group id is zero, but there is no group zero we can fetch posts for.
+ * It happens here:
+ * @see load_posts
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E357 W3E357 Empty response when fetching posts
+ *
+ * @descr Empty response when fetching posts
+ * Error in calling the musth_restws_post REST api
+ * The response was empty and not even containing an empty list of posts
+ * It would be something
+ * It happens here:
+ * @see load_posts
+ *
+ * @cause Database failure
+ * @cause Transmission error
+ * @cause Failure in RESTws
+ * @cause Software bug
+ * @action Investigate carefully
+ * @action Check watchdogs
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E358 W3E358 Posts not loaded
+ *
+ * @descr Posts not loaded
+ * I was loading posts, but something went wrong.
+ * It happens here:
+ * @see load_posts
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E359 W3E359 Empty response when creating a post
+ *
+ * @descr Empty response when creating a post
+ * Error in calling the musth_restws_post REST api
+ * The response was empty and there wasn't the id of the newly created post
+ * It happens here:
+ * @see create_post
+ *
+ * @cause Database failure
+ * @cause Transmission error
+ * @cause Failure in RESTws
+ * @cause Software bug
+ * @action Investigate carefully
+ * @action Check watchdogs
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E360 W3E360 Post not created
+ *
+ * @descr Post not created
+ * I was creating a post, but something went wrong.
+ * It happens here:
+ * @see create_post
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E361 W3E361 The node id of the post to update cant be zero
+ *
+ * @descr The node id of the post to update cant be zero
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * A controller called the function update_post in the Posthelper service
+ * to update a post.
+ * It passed a post id equal to zero, but we can't update post zero because there is no
+ * such thing.
+ * It happens here:
+ * @see update_post
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E362 W3E362 Post not updated
+ *
+ * @descr Post not updated
+ * I was updating a post, but something went wrong.
+ * It happens here:
+ * @see update_post
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E363 W3E363 The post id of the post to delete cant be zero
+ *
+ * @descr The post id of the post to delete cant be zero
+ * This is a safety check that can be triggered only if there is a bug
+ * in the software.
+ * A controller called the function delete_post in the Posthelper service
+ * to delete a post.
+ * It passed a post id equal to zero, but we can't delete post zero because there is no
+ * such thing.
+ * It happens here:
+ * @see delete_post
+ *
+ * @cause It's a bug.
+ * @action Investigate code changes
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E364 W3E364 Post not deleted
+ *
+ * @descr Post not deleted
+ * I was deleting a post, but something went wrong.
+ * It happens here:
+ * @see delete_post
+ *
+ * @cause I don't know, see the message
+ * @cause Transmission error
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+ *
+ * @subsection W3E365 W3E365 The requested post does not exist or is not published
+ *
+ * @descr The requested post does not exist or is not published
+ * A post has been requested that does not exist or is not published
+ * This shouldn't happen because the api is called by angular that should have
+ * good post nids
+ * It happens here:
+ * @see PostResourceController::query
+ *
+ * @cause Transmission error
+ * @cause Database not working
+ * @cause Database corruption
+ * @cause Angular code not aligned with the rest apis
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+
+
+
+
+
+ * @subsection W3E366 W3E366 No programmes found
+ *
+ * @descr No programmes found
+ * Loading programmes to generate their sitemap, I found no programmes!
+ * Did anyone delete the entire database?
+ * It's not possible that there are no programmes for a given media type.
+ * There should be at least one video programme, one audio, one library and
+ * one partner.
+ * It happens here:
+ * @see musth_rules_action_programmes_sitemap_generation
+ *
+ * @cause I don't know, maybe the database went corrupted... good luck!
+ * @action Investigate carefully
+ *
+ * @case No cases yet...
+
+
+
+
+
+
+
+
+
+
+
+
+
+ *
+ * @section W5N_Notice Notice level errors
+ *
+ * @subsection W5N001 W5N001 No apes to delete
+ *
+ * @descr Error in loading every ape nid for a taxonomy
+ * I was about to delete all taxonomy apes, but I found none
+ * It happens here:
+ * @see musth_rules_action_apes_resetting_taxonomies
+ *
+ * @cause It may be that the action has been started when there are no apes to delete actually
+ * or maybe something went wrong in the database
+ * @action Investigate
+ * @action I would reset and rebuild the taxonomy apes as soon as I can
+ * @see musth_rules_action_apes_resetting_taxonomies
+ * @see musth_rules_action_apes_building_taxonomies
+ *
+ * @case No cases yet...
+ *
+ * @subsection W5N002 W5N002 No apes to delete
+ *
+ * @descr Error in loading every ape nid for a credit type
+ * I was about to delete all credit apes, but I found none
+ * It happens here:
+ * @see musth_rules_action_apes_resetting_credits
+ *
+ * @cause It may be that the action has been started when there are no apes to delete actually
+ * or maybe something went wrong in the database
+ * @action Investigate
+ * @action I would reset and rebuild the credit apes as soon as I can
+ * @see musth_rules_action_apes_resetting_credits
+ * @see musth_rules_action_apes_building_credits
+ *
+ * @case No cases yet...
+ *
+ * @subsection W5N003 W5N003 No line item found for the given order
+ *
+ * @descr No line item found for the given order
+ * It's a bit strange that Angular asks for the line items of an order
+ * and there aren't any. We reply with an empty response, but it may be
+ * interesting to investigate.
+ * Maybe it happens just after an order has been created and there are no
+ * line items. In such a case, there is no problem.
+ * It happens here:
+ * @see LineItemResourceController::query
+ *
+ * @cause Any bug?
+ * @action Investigate
+ *
+ * @case No cases yet...
+ *
+ */

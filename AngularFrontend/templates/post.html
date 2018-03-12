@@ -1,0 +1,127 @@
+<div class="omega-pane-{{totalnumberofcolumns}}-of-{{totalnumberofcolumns}}">
+
+    <!--<div class="non-omega-pane-1-of-{{totalnumberofcolumns}}">-->
+
+        <!--&nbsp;-->
+
+    <!--</div>-->
+
+    <div class="large-avatar-pane-{{totalnumberofcolumns}}" ng-show="!alwaysonedit">
+
+        <img ng-show="!post.avatar" src="/backend/sites/default/files/pictures/noavatarchosen.png" width="30"/>
+
+        <img ng-show="post.avatar" ng-src="{{post.avatar}}" width="30"/>
+
+    </div>
+
+    <div class="large-avatar-pane-{{totalnumberofcolumns}}" ng-show="alwaysonedit">
+
+        <img ng-src="{{user.avatar}}" width="30"/>
+
+    </div>
+
+    <div class="omega-pane-{{totalnumberofcolumns - 2}}-of-{{totalnumberofcolumns}}">
+
+        <div class="omega-pane-{{totalnumberofcolumns - 2}}-of-{{totalnumberofcolumns - 2}}">
+
+            <div ng-if="post.uid == user.uid" class="dark-grey-text">
+
+                {{ post.name }}
+
+            </div>
+
+            <div ng-if="post.uid != user.uid">
+
+                <a ng-href="{{post.user_profile_permalink}}"
+                   class="left-menu-text">{{ post.name }}</a>
+
+            </div>
+
+            <!--dark-grey-text-->
+
+            <span ng-if="post.changed" class="dark-grey-for-detail-text">
+
+                <time am-time-ago="post.changed * 1000"></time>
+
+                <!--Last change: {{ post.changed * 1000 | date:date_time_format_for_post_last_change_timestamp }}-->
+            </span>
+
+        </div>
+
+        <div class="omega-pane-{{totalnumberofcolumns - 2}}-of-{{totalnumberofcolumns - 2}}">
+
+            <div ng-if="oneditmode">
+
+                <textarea rows="3"
+                          cols="{{100 * (totalnumberofcolumns / 30)}}"
+                          name="postbody"
+                          ng-model="post.body"
+                          class="standardtextarea"></textarea>
+
+            </div>
+
+            <div ng-if="!oneditmode"
+                 ng-click="showfullpost = (!showfullpost || post.body.length <= 123); refresh_scrollbar();"
+                 ng-class="{'clickable': post.body.length > 123}">
+
+                <!--ng-class="{'omega-pane-2-of-26': !infopanelinfo.no_prices,-->
+                <!--'omega-pane-4-of-26': infopanelinfo.no_prices}">-->
+
+                <!--<div class="dark-grey-text margin-for-group-title-field">{{ group.description }}</div>-->
+
+                <!--<div class="dark-grey-text">Since {{group.created * 1000 | date:date_time_format_for_group_creation_timestamp}}</div>-->
+
+                <div ng-show="showfullpost" class="dark-grey-text" style="white-space: pre-wrap">{{ post.body }}</div>
+
+                <div ng-show="!showfullpost" class="dark-grey-text" style="white-space: pre-wrap">{{ post.body | truncate:120 }}</div>
+
+            </div>
+        </div>
+
+        <!--@todo this style thing has to go  style="text-align: right; font-weight: bold; cursor: pointer"  -->
+
+        <div class="omega-pane-{{totalnumberofcolumns - 2}}-of-{{totalnumberofcolumns - 2}} margin-for-buttons">
+
+            <div class="non-omega-pane-{{totalnumberofcolumns - 7}}-of-{{totalnumberofcolumns - 2}}">
+
+                &nbsp;
+
+            </div>
+
+            <div class="omega-pane-5-of-{{totalnumberofcolumns - 2}}">
+
+                <span ng-click="do_edit_mode()"
+                      ng-if="post.uid == user.uid && user.uid && !oneditmode"
+                      class="info-text light-grey-fixed-width-mini-button" style="float: right">Edit</span>
+
+                <span ng-click="delete()"
+                      ng-if="post.uid == user.uid && user.uid && !oneditmode"
+                      class="info-text light-grey-fixed-width-mini-button" style="float: right">Delete</span>
+
+                <span ng-click="do_save()"
+                      ng-if="oneditmode"
+                      class="info-text light-grey-fixed-width-mini-button" style="float: right">Post</span>
+
+                <span ng-click="do_cancel()"
+                      ng-if="oneditmode && !alwaysonedit"
+                      class="info-text light-grey-fixed-width-mini-button" style="float: right">Cancel</span>
+
+                <span ng-click="abuse()"
+                      ng-if="post.uid != user.uid && user.uid && !oneditmode"
+                      class="info-text light-grey-fixed-width-mini-button" style="float: right">Abuse</span>
+
+                <span ng-click="reply()"
+                      ng-if="post.uid != user.uid && user.uid && !oneditmode && enablereply"
+                      class="info-text light-grey-fixed-width-mini-button" style="float: right">Reply</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--<div class="omega-pane-1-of-{{totalnumberofcolumns}}">-->
+        <!--&nbsp;-->
+    <!--</div>-->
+
+</div>

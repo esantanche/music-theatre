@@ -1,0 +1,1147 @@
+<?php
+/**
+ * @file musth_helper_functions.module
+ *
+ * @brief Helper functions used by many modules
+ *
+ * These functions are here to avoid writing duplicate code
+ *
+ * @ingroup musthhelperfunctions
+ *
+ * Created by PhpStorm.
+ * User: www-data
+ * Date: 17/03/14
+ * Time: 18:06
+ */
+
+/**
+ * Get the full name for a person and the name for an organisation
+ * Note that here we define how the tagring displays the name of a person or organisation
+ * Is it "first name, surname"? Is it "surname middle names first name"? Do we use initials
+ * or full names?
+ *
+ * This function is used also in the restws api ProgrammeResourceController::read to create the
+ * label for angular. This label is used in the infopanel.
+ *
+ * @param[in] $credit_element_person_or_organisation_nid The nid of the person or organisation node
+ * we want the name of
+ * @param string $credit_element_role_title The name has to be composed in a different way if the role title
+ * is 'Composer'
+ * @param bool $abbreviate_names TRUE if we have to abbreviate middle names and the first name (for the tagring)
+ * @return bool|string $label_to_be_returned The name of the person or organisation
+ */
+function musth_helper_functions_get_label_for_credit_element($credit_element_person_or_organisation_nid,
+                                                              $credit_element_role_title = '',
+                                                              $abbreviate_names = FALSE)  {
+
+    // If $abbreviate_names is true we have to abbreviate middle names and the first name
+
+    $node_types_a_credit_element_can_be = array('person', 'organisation');
+
+    //watchdog('musth_helper_functions', 'W7D001 6HZX credit_element (!i) (!t) (!a) ',
+    //    array('!i' => print_r($credit_element_person_or_organisation_nid, true),
+    //          '!t' => print_r($credit_element_role_title, true),
+    //          '!a' => print_r($abbreviate_names, true)),
+    //    WATCHDOG_DEBUG);
+
+    // Now loading the node containing the person or organisation
+
+    $credit_element_person_or_organisation_nid_as_array = array($credit_element_person_or_organisation_nid);
+
+    $credit_element_as_array = entity_load('node', $credit_element_person_or_organisation_nid_as_array);
+
+    if (empty($credit_element_as_array)) {
+
+        watchdog('musth_helper_functions',
+                 'W3E009 credits element not found when it should exist!, something is badly wrong! (!i)',
+            array('!i' => print_r($credit_element_person_or_organisation_nid, true)),
+            WATCHDOG_ERROR);
+
+        // Get out of here!
+        return FALSE;
+    }
+
+    // entity_load returns its result as an array indexed on the node nid
+    // This happens even if we asked for one node only
+    $credit_element = $credit_element_as_array[$credit_element_person_or_organisation_nid];
+
+    // The type of a node is 'person' for credits entities that are people, and 'organisation' for
+    // organisations like ensembles and venues
+    $credit_element_type = $credit_element->type;
+
+    if (!in_array($credit_element_type, $node_types_a_credit_element_can_be)) {
+        // A credits element can of two types only, the ones listed in $node_types_a_credit_element_can_be
+
+        watchdog('musth_helper_functions', 'W3E010 credits element type not supported (!c) (!l)',
+            array('!c' => print_r($credit_element_type, true),
+                  '!l' => print_r($node_types_a_credit_element_can_be, true)),
+            WATCHDOG_ERROR);
+
+        // I am not returning FALSE here because, even if $credit_element_type is not listed in
+        // $node_types_a_credit_element_can_be, I am going to treat it as if it was an organisation
+
+    }
+
+    // A credits element type can be 'person' or 'organisation'
+    if ($credit_element_type == 'person') {
+        // A person node has:
+        // field_first_name
+        // field_middle_names
+        // field_family_name
+
+        // @todo comment about field_pd_first_name
+
+        $field_person_first_name = $credit_element->field_pd_first_name;
+        if (isset($field_person_first_name[LANGUAGE_NONE])) {
+            $person_first_name = $field_person_first_name[LANGUAGE_NONE][0]['value'];
+        } else {
+            $person_first_name = "";
+        }
+
+        $field_person_middle_names = $credit_element->field_pd_middle_names;
+        if (isset($field_person_middle_names[LANGUAGE_NONE])) {
+            // This person has middle names
+
+            $person_middle_names = $field_person_middle_names[LANGUAGE_NONE][0]['value'];
+
+        } else
+            $person_middle_names = "";
+
+        $field_person_family_name = $credit_element->field_pd_family_name;
+        if (isset($field_person_family_name[LANGUAGE_NONE]))
+            $person_family_name = $field_person_family_name[LANGUAGE_NONE][0]['value'];
+        else
+            $person_family_name = "";
+
+        if ($abbreviate_names) {
+            $person_middle_names_initials = musth_helper_functions_initials_of_middle_names($person_middle_names);
+
+            if ($credit_element_role_title == 'Composer')
+                $label_to_be_returned = $person_family_name . ", " . $person_first_name[0];
+            else
+                $label_to_be_returned = $person_family_name . ", " . $person_first_name;
+
+            if (!empty($person_middle_names_initials))
+                $label_to_be_returned .= " " . $person_middle_names_initials;
+
+        } else {
+            $label_to_be_returned = $person_first_name . " " . $person_middle_names . " " . $person_family_name;
+        }
+
+    } else {
+
+        $organisation_title = $credit_element->title;
+
+        //watchdog('musth_rules', 'W7D001 71VB organisation_title (!i) (!t) ',
+        //    array('!i' => print_r($organisation_title, true),
+        //        '!t' => print_r($credit_element, true)),
+        //    WATCHDOG_DEBUG);
+
+        $label_to_be_returned = $organisation_title;
+
+    }
+
+    //    watchdog('musth_restws', 'W7D001 7UIO label (!i) (!t) ',
+    //        array('!i' => print_r($label_to_be_returned, true),
+    //              '!t' => print_r($credit_element, true)),
+    //        WATCHDOG_DEBUG);
+
+    return $label_to_be_returned;
+}
+
+/**
+ * Get initials of middle names and return them in a string
+ *
+ * @param $person_middle_names String with middle names
+ * @return string Initials of middle names
+ */
+function musth_helper_functions_initials_of_middle_names($person_middle_names) {
+
+    // We don't want to make uppercase the initials if they aren't
+
+    $person_middle_names_initials = "";
+
+    if (empty($person_middle_names)) return $person_middle_names_initials;
+
+    // We don't want multiple spaces anywhere in the middle names string before
+    // exploding it otherwise we end up with some middle names that are actually
+    // spaces
+    $person_middle_names = preg_replace('/\s+/', ' ', $person_middle_names);
+
+    // We explode the string and get an array where each element is one of the middle names
+    $middle_names_array = explode(' ', $person_middle_names);
+
+    // We get the initials of the middle names
+    foreach ($middle_names_array as $middle_name) {
+        $person_middle_names_initials .= $middle_name[0] . ' ';
+    }
+
+    // Chop last space
+    $person_middle_names_initials = rtrim($person_middle_names_initials, ' ');
+
+    return $person_middle_names_initials;
+}
+
+/**
+ * @todo documentation this function has to be fixed
+ * @todo waiting for details about url signature to fix this function
+ * This PHP function will generate a signed URL. Parameters:
+ *
+ * $path     The path of the video or player you want to sign, e.g. "videos/KsoieJsu-123.mp4"
+ *           Note this excludes the domain and excludes the trailing slash.
+ * $secret   The API secret of your account, e.g. "Jau8Ya71hakdpF0A".
+ *           This acts as a shared secret between your server and BOTR.
+ * $timeout  The time in seconds you want the signed URL to remain valid, e.g. "3600".
+ *           Typical timeouts are between a minute and a few hours. Default is "3600".
+ *           Make sure the time on your server is set correctly, or URLs with short timeouts will fail!
+ */
+function musth_helper_functions_add_signature_to_path($path, $secret, $timeout = 3600) {
+
+    $expires = time() + $timeout;
+
+    $signature = md5($path . ':' . $expires . ':' . $secret);
+
+    $path_and_signature = $path . '?exp=' . $expires . '&sig=' . $signature;
+
+    return $path_and_signature;
+};
+
+/**
+ * Given the catalogue no of a track or of a downloadable and the id of an user, this function checks if that
+ * user owns a license to play that track or download that downloadable.
+ *
+ * Actually this function can be used for any item that has a license attached.
+ *
+ * The same convention applies: you own a license for a lower level item if you own one
+ * for a higher level one.
+ *
+ * So, if you own a licence for the item whose catalogue number is V12340000, you own a license
+ * for the items whose catalogue nos are V12340100, V12340101, and so on.
+ *
+ * This function doesn't check for the existence of subscriptions. It checks only for
+ * licenses related to individual items (tracks, downloadables etc).
+ *
+ * @param $catalogue_no string Catalogue no of the item we have to check for license
+ * @param $userid int User id of the user that owns the license, if any
+ *
+ * @return bool TRUE if the user owns a valid license for the given item
+ */
+function musth_helper_check_for_license($catalogue_no, $userid) {
+
+    //watchdog('musth_helper', 'W7D001 CHCFL-1 ZXDC (!c) (!u) ',
+    //    array('!c' => print_r($catalogue_no, true),
+    //          '!u' => print_r($userid, true)),
+    //    WATCHDOG_DEBUG);
+
+    // Let's recall that if a user owns an active license for a higher level item, they own
+    // implicitly a license for any lower level item
+
+    // We will talk about items, each one having a different catalogue no
+
+    // There are three levels:
+    // Highest level item: A12340000 (programmes, audio cds, parent collection)
+    // Segment level item: A12340100 (act, single cd in a cd set, etc)
+    // Lowest level item:  A12340101 (track, audio cd track, child item)
+
+    // Remember that a catalogue no always includes its first letter (typically 'A' for audio
+    // programmes, 'V' for video programmes etc)
+
+    // Step 1 Finding the catalogue nos of:
+    // the segment the item belongs to if $catalogue_no is the catalogue no of a lowest level item
+    // the highest level item if $catalogue_no is the catalogue no of a lowest level item or a segment
+
+    // Finding segment no and track no
+    $segment_no = intval(substr($catalogue_no, 5, 2));
+    $item_no = intval(substr($catalogue_no, 7, 2));
+
+    // Calculating the catalogue nos of the highest level item and of the segment
+    $highest_level_catalogue_no = substr($catalogue_no, 0, 5) . "0000";
+    $segment_catalogue_no = substr($catalogue_no, 0, 7) . "00";
+
+    // Step 2 Filling an array with the catalogue no to check
+
+    // This is the given catalogue no
+    $catalogue_nos_to_find_the_product_id_of = array($catalogue_no);
+
+    if ($item_no != 0) {
+        if ($segment_no != 0)
+            $catalogue_nos_to_find_the_product_id_of[] = $segment_catalogue_no;
+        $catalogue_nos_to_find_the_product_id_of[] = $highest_level_catalogue_no;
+    } elseif ($segment_no != 0) {
+        $catalogue_nos_to_find_the_product_id_of[] = $highest_level_catalogue_no;
+    }
+
+    // Now $catalogue_nos_to_find_the_product_id_of contains every catalogue no we have to check
+    // If the user owns an active license for any of these catalogue nos, they can play or download or whatever
+
+    // Step 3 Getting the product ids of every product associated to the catalogue nos we have to check
+    // (the ones found above)
+    // There may be many products for a catalogue no because there may be licenses of different
+    // durations or even unlimited ones
+
+    $product_ids_we_have_to_check_licenses_for = array();
+
+    foreach ($catalogue_nos_to_find_the_product_id_of as $catalogue_no_to_find_the_product_id_of) {
+
+        // We don't specify the bundle, any will do
+        // We use the catalogue no to search because there can't be a catalogue no used
+        // to identify a track and a downloadable at the same time
+
+        $query = new EntityFieldQuery();
+        $result = $query->entityCondition('entity_type', 'commerce_product')
+            ->propertyCondition('sku', $catalogue_no_to_find_the_product_id_of, 'STARTS_WITH')
+            ->execute();
+
+        if (isset($result['commerce_product'])) {
+            $product_ids = array_keys($result['commerce_product']);
+        } else {
+            // It can't be that we are checking for the existence of a license for
+            // something that doesn't even have a product associated.
+            // How did we sell it!!
+            // Maybe the database is down or corrupted or some data is missing
+
+            watchdog('musth_helper',
+                'W3E048 Cant load a product that should exist. Catalogue no: (!c)',
+                array('!c' => print_r($catalogue_no_to_find_the_product_id_of, true)),
+                WATCHDOG_ERROR);
+
+            // Get out of here, but give permission (to avoid complaints)
+            return TRUE;
+        }
+
+        //watchdog('musth_restws', 'W7D001 CRCFPTP-2 6TGB (!c) (!u) ',
+        //    array('!c' => print_r($catalogue_no_to_find_the_product_id_of, true),
+        //        '!u' => print_r($track_product_nids, true)),
+        //    WATCHDOG_DEBUG);
+
+        $product_ids_we_have_to_check_licenses_for = array_merge($product_ids_we_have_to_check_licenses_for,
+            $product_ids);
+
+    }
+
+    // Step 4 Now we want to check if our user owns an active license for any of the products we
+    // found the ids above
+
+    try {
+        $query = new EntityFieldQuery;
+        $count_of_active_licenses = $query->entityCondition('entity_type', 'commerce_license')
+            ->propertyCondition('status', COMMERCE_LICENSE_ACTIVE)
+            ->propertyCondition('product_id', $product_ids_we_have_to_check_licenses_for, 'IN')
+            ->propertyCondition('uid', $userid)
+            ->count()
+            ->execute();
+    }
+    catch (Exception $e) {
+
+        watchdog('musth_helper', 'W3E049 Error in querying licenses associated to products. Error message: (!e)',
+            array('!e' => print_r($e->getMessage(), true)),
+            WATCHDOG_ERROR);
+
+        // Get out of here, but give permission (to avoid complaints)
+        return TRUE;
+    }
+
+//    watchdog('musth_helper', 'W7D001 CHCFL-3 715G (!c) (!u) ',
+//        array('!c' => print_r($count_of_active_licenses, true),
+//              '!u' => print_r($product_ids_we_have_to_check_licenses_for, true)),
+//        WATCHDOG_DEBUG);
+
+    if ($count_of_active_licenses > 0) {
+        // The user can play or download or whatever
+        return TRUE;
+    } else {
+        // No active licenses for the given track, the user can't play or download or whatever
+        return FALSE;
+    }
+}
+
+/**
+ * Check if the track, segment or programme whose catalogue no is given
+ * is free or not.
+ * If there are many products for the same catalogue no, we consider
+ * the programme, segment or track free if just one product has price zero
+ * @param $catalogue_no string Catalogue no, first letter included, of the programme/segment/track
+ * we want to know if it's free or not
+ * @throws RestWSException
+ * @return bool True if the programme/segment/track is free
+ */
+function musth_helper_programme_or_track_is_free($catalogue_no) {
+
+    // Searching for all products that are about the given catalogue no
+
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'commerce_product')
+          ->entityCondition('bundle', 'track')
+          ->propertyCondition('sku', $catalogue_no, 'STARTS_WITH')
+          ->propertyCondition('status', 1); // Get the product only if it's active
+
+    $result = $query->execute();
+
+    if (isset($result['commerce_product'])) {
+        $product_ids = array_keys($result['commerce_product']);
+    } else {
+        // No product found? Throw an exception
+        // Every track should have a product associated even if the price is zero
+        // Maybe there are no tracks for a given programme but this is an exception too
+        // Maybe $catalogue_no is wrong, but this is an exception too
+
+        watchdog('musth_helper', 'W3E147 No products found for the given catalogue no (!c) ',
+            array('!c' => print_r($catalogue_no, true)),
+            WATCHDOG_ERROR);
+
+        // Get out of here!
+        // We use this exception because this function is called by rest apis
+        // If this function was used by other parts of the code, this exception wouldn't work
+        throw new RestWSException('No products found', 404);
+    }
+
+    // Loading all the products we found above
+    $products_as_array = entity_load('commerce_product', $product_ids);
+
+    // Scanning all products to find a free one
+    foreach($products_as_array as $product) {
+
+        //watchdog('musth_helper', 'W7D001 musth_helper_programme_or_track_is_free IUYT (!c) (!u) ',
+        //    array('!c' => print_r($product, true),
+        //          '!u' => print_r('', true)),
+        //    WATCHDOG_DEBUG);
+
+        $product_wrapper = entity_metadata_wrapper('commerce_product', $product);
+
+        $product_price = $product_wrapper->commerce_price->amount->value();
+
+        if ($product_price == 0) return true;
+
+    }
+
+    return false;
+}
+
+/**
+ * This function analyses the prefix of a catalogue no to determine
+ * some attributes of the object that catalogue no is about.
+ *
+ * It can tell video programmes from audio ones and from subscriptions and, in the future,
+ * physical products, books and so on
+ *
+ * @param $prefix string Two-characters string with the catalogue no prefix
+ * @return array Array with the info about the given prefix
+ */
+function musth_helper_info_about_catalogue_no_prefix($prefix) {
+    $array_info_about_prefix = array();
+
+    // The prefix we are given has to be exactly one character long
+    if (strlen($prefix) != 1) {
+        $array_info_about_prefix['valid'] = false;
+
+        return $array_info_about_prefix;
+    }
+
+    // The prefix has to contain alphabetic characters only
+    if (!ctype_alpha($prefix)) {
+        $array_info_about_prefix['valid'] = false;
+
+        return $array_info_about_prefix;
+    }
+
+    if ($prefix[0] == 'V') {
+        $array_info_about_prefix['media_type'] = 'video';
+    } elseif ($prefix[0] == 'A') {
+        $array_info_about_prefix['media_type'] = 'audio';
+    } elseif ($prefix[0] == 'S') {
+        $array_info_about_prefix['media_type'] = 'subscription';
+    } else {
+        $array_info_about_prefix['media_type'] = 'undef';
+    }
+
+    // @attention what about physical products?
+
+    $array_info_about_prefix['valid'] = true;
+
+    return $array_info_about_prefix;
+}
+
+/**
+ * Now there are three tagrings with three different configurations. They display video programmes,
+ * audio programmes and library "programmes".
+ *
+ * The tagring gets three different gateway urls according to the content type.
+ *
+ * For videos the gateway is: http://musictheatre-production/amf_video
+ * For audios the gateway is: http://musictheatre-production/amf_audio
+ * For library the gateway is: http://musictheatre-production/amf_library
+ *
+ * The Drupal function current_path() returns amf_video, amf_audio or amf_library according to the
+ * gateway url the tagring used to call the apis.
+ *
+ * This function splits the output of current_path() to get 'video', 'audio' or 'library'.
+ *
+ * @return array Parameters found in the current path, for now only the content type
+ * 'video', 'audio' or 'library'.
+ */
+function musth_helper_functions_get_parameters_from_current_path() {
+
+    $parameters = array();
+
+    $current_path = current_path();
+
+    $current_path_parts = explode('_', $current_path);
+
+    if (count($current_path_parts) < 2) {
+
+        return $parameters;
+    } else {
+
+        $parameters['content_type'] = $current_path_parts[1];
+
+        //watchdog('musth_helper', 'W7D001 chfgpfcp8712 current path (!p) (!r) ',
+        //    array('!p' => print_r(current_path(), true),
+        //         '!r' => print_r($parameters, true)),
+        //    WATCHDOG_DEBUG);
+
+        return $parameters;
+    }
+
+}
+
+/**
+ * First name, middle names and family names are put together in a single string that will be displayed
+ * as the real name of a user or anyone.
+ *
+ * This function is used to compose real names to display as authors of comments or reviews, but it can be
+ * used anywhere a real name is needed.
+ *
+ * @param $first_name string First name
+ * @param $middle_names string Middle names
+ * @param $family_name string Family names
+ * @return string Composed real name
+ */
+function musth_helper_functions_compose_real_name($first_name, $middle_names, $family_name) {
+
+    if (empty($first_name) && empty($middle_names) && empty($family_name))
+        return "";
+
+    // The returned real name is, simply, first name, middle names and family name with a space
+    // to separate them
+
+    $composed_real_name = "";
+
+    if (!empty($first_name))
+        $composed_real_name = trim($first_name);
+
+    if (!empty($middle_names))
+        if (!empty($composed_real_name))
+            $composed_real_name .= " " . trim($middle_names);
+        else
+            $composed_real_name = trim($middle_names);
+
+    if (!empty($family_name))
+        if (!empty($composed_real_name))
+            $composed_real_name .= " " . trim($family_name);
+        else
+            $composed_real_name = trim($family_name);
+
+    return $composed_real_name;
+}
+
+/**
+ * Our usernames are created from emails by taking the first part of them.
+ *
+ * The userid is added at the end to avoid duplicated.
+ *
+ * So we have something like: esantanche_34
+ *
+ * We can use esantanche as username to display where needed, but we have to
+ * get rid of the user id, 34.
+ *
+ * That's what we are doing here. *
+ *
+ * @param $username string Username to transform into a displayable one
+ * @return string Cleaned-up username
+ */
+function musth_helper_functions_make_username_nice_to_display($username) {
+
+    if (empty($username))
+        return "anonymous";
+
+    // A nice username we can display can't include the user id
+    // Our usernames are like this one: newuser.surname_156
+    // where 156 is the user id
+
+    // Our usernames are composed by taking the local part of the email address the user gave
+    // followed by an underscore and the user id
+
+    // The local part of an email address can contain underscores
+    // So we have to cut away only the user id part of the username
+    // For example, if we have this username: john_smith_254, we have to obtain john_smith by cutting
+    // only the user id that has been added at the end but we have to retain 'john_smith' that contains
+    // an underscore
+
+    // Let's remember that, if there are no underscores at all, the function explode returns an array with
+    // one item only which is the full username.
+    // This can happen with usernames created in different ways
+
+    $array_of_username_parts = explode('_', $username);
+
+    // Cutting away the user id part of the username
+    if (sizeof($array_of_username_parts) > 1)
+        unset($array_of_username_parts[sizeof($array_of_username_parts) - 1]);
+
+    // Rebuilding the username to get the nice one with no user id at the end
+    return implode ('_' , $array_of_username_parts);
+}
+
+/**
+ * The user of id $uid_of_voting_user voted a node. It may be a review, a programme or whatever.
+ * It might not be a node if $entity_type is not 'node'.
+ *
+ * So this function can be used to vote any entity.
+ *
+ * The vote is $vote, the entity is the one identified by $entity_type and $entity_id.
+ *
+ * For now we don't use vote tags, but me may use them in the future to vote many characteristincs of
+ * a programme. We may vote set design, lighting, sound, costumes, etc.
+ *
+ * This is how vote tag should be used. If we use them in a different way, we risk that the voting api module,
+ * when it updates, breaks our special use of tags.
+ *
+ * Nothing is returned, but a watchdog is written if something goes wrong.
+ *
+ * So, check your watchdogs.
+ *
+ * @param $entity_type string Type of the entity the vote is about, typically 'node'
+ * @param $entity_id int Id of the entity
+ * @param $vote_tag string Usually 'vote', but it may be something like 'costumes', 'lighting', etc
+ * @param $value_type string 'percent' for 0-100 votes or 'points' for 1/-1 votes
+ * @param $vote int Vote (0 to 100 if $value_type == 'percent' or 1/-1 if $value_type == 'points')
+ * @param $uid_of_voting_user int User id of the voting user
+ */
+function musth_helper_functions_cast_vote($entity_type, $entity_id, $vote_tag, $value_type, $vote, $uid_of_voting_user) {
+
+    // Safety check, user must be logged in
+
+    if (!$uid_of_voting_user) {
+
+        // We have a bug here, this function shouldn't be called when the user is not logged in ($uid_of_voting_user == 0)
+
+        watchdog('musth_restws', 'W3E200 Anonymous users cant vote (!t) (!i) (!g) (!y) (!v) (!u) ',
+            array('!t' => print_r($entity_type, true),
+                  '!i' => print_r($entity_id, true),
+                  '!g' => print_r($vote_tag, true),
+                  '!y' => print_r($value_type, true),
+                  '!v' => print_r($vote, true),
+                  '!u' => print_r($uid_of_voting_user, true)
+            ),
+            WATCHDOG_ERROR);
+
+        return;
+    }
+
+    // @attention We may want to check if the vote we are given is valid taken into account its
+    // type. For example, if $value_type == 'points' we may want to check that $vote is either 1 or -1
+    // If $value_type == 'percent' we may want to check that $vote is between 0 and 100
+    // This check is already done in VoteResourceController::create, but a repetition can be useful
+
+    // We allow the caller of this function to specify a tag ($vote_tag)
+    // For now we support only tags like 'costumes', 'lighting', etc.
+
+    // The caller can specify a value type as well
+    // It can be 'percent' for votes expressed in percent (0 to 100)
+    // It can be 'points' for votes expressed as thumbs up or down (1 or -1)
+
+    $criteria = array('entity_type' => $entity_type,
+                      'entity_id' =>   $entity_id,
+                      'value_type' =>  $value_type,
+                      'tag' =>         $vote_tag,
+                      'uid' =>         $uid_of_voting_user);
+
+    try {
+
+        // Finding any existing votes the user gave to the entity
+        $user_votes = votingapi_select_votes($criteria);
+
+        if ($vote == 0) {
+
+            // If user's vote is zero, we delete any vote they gave for the same entity
+            // This doesn't apply to votes of type 'points'
+
+            votingapi_delete_votes($user_votes);
+        } else {
+
+            // If the vote is not zero, we record it
+
+            $vote = $criteria + array('value' => $vote);
+
+            votingapi_set_votes($vote);
+        }
+
+        // Recalculating average and count
+        // This may actually not happen if the voting module is configured to cache the results
+        // See Drupal administration menu for settings
+        votingapi_recalculate_results($entity_type, $entity_id);
+
+    }
+    catch (Exception $e) {
+
+        watchdog('musth_restws', 'W3E201 Error in casting a vote. Error message: (!e) (!t) (!i) (!g) (!y) (!v) (!u) ',
+            array('!e' => print_r($e->getMessage(), true),
+                  '!t' => print_r($entity_type, true),
+                  '!i' => print_r($entity_id, true),
+                  '!g' => print_r($vote_tag, true),
+                  '!y' => print_r($value_type, true),
+                  '!v' => print_r($vote, true),
+                  '!u' => print_r($uid_of_voting_user, true)
+            ),
+            WATCHDOG_ERROR);
+
+    }
+
+}
+
+/**
+ * This function returns average, count and sum of all votes given to an entity.
+ *
+ * All votes given to an entity should have the same vote type and tag. This function
+ * checks this.
+ *
+ * This function supports entity types other than 'node' even if the REST apis using this function
+ * don't.
+ *
+ * @todo doc to update because we may use tags here
+ *
+ * @param $entity_type string Typically 'node' but it could be another entity type
+ * @param $entity_id int Node id or entity id of the entity whose votes aggregates have
+ * to be returned
+ * @param $tag string Optional tag
+ * @return array Aggregates as array with the key being the entity id
+ */
+function musth_helper_functions_get_voting_results($entity_type, $entity_id, $tag = 'vote') {
+
+    // Not checking if the entity exists. It would be great to check this, but I want to
+    // save a query
+
+    $criteria = array(
+        'entity_type' => $entity_type,
+        'entity_id' => $entity_id,
+        'tag' => $tag
+    );
+
+    $voting_results = array();
+
+    // We are going to check that, for the given entity, we get aggregates for one vote tag
+    // only. If there is more than one tag associated to votes given to the same entity,
+    // we consider it a bug.
+    // We also check that there are aggregates for one vote type only. There shouldn't be
+    // 'points' votes and 'percent' ones at the same time for an entity
+
+    $array_of_found_tags = array();
+    $array_of_found_value_types = array();
+
+    try {
+
+        $aggregated_results = votingapi_select_results($criteria);
+
+    }
+    catch (Exception $e) {
+
+        watchdog('musth_restws', 'W3E202 Error in fetching votes aggregates. Error message: (!e) ',
+            array('!e' => print_r($e->getMessage(), true)),
+            WATCHDOG_ERROR);
+
+        return null;
+    }
+
+    /*
+     * Anatomy of an instance of $aggregated_result (see below)
+    Array (
+        [vote_cache_id] => 572
+        [entity_type] => node
+        [entity_id] => 892
+        [value] => 3
+        [value_type] => points
+        [tag] => vote
+        [function] => count
+        [timestamp] => 1421091039
+        )
+    */
+
+    foreach ($aggregated_results as $aggregated_result) {
+
+        // Keeping track of all found tags
+        if (isset($aggregated_result['tag'])) {
+            if (!in_array($aggregated_result['tag'], $array_of_found_tags))
+                $array_of_found_tags[] = $aggregated_result['tag'];
+            $voting_results['tag'] = $aggregated_result['tag'];
+        }
+
+        // Keeping track of all value types
+        if (isset($aggregated_result['value_type']))
+            if (!in_array($aggregated_result['value_type'], $array_of_found_value_types))
+                $array_of_found_value_types[] = $aggregated_result['value_type'];
+
+        if (in_array($aggregated_result['function'], array('average', 'count', 'sum')))
+            $voting_results[$aggregated_result['function']] =
+                round($aggregated_result['value']);
+
+        if (isset($aggregated_result['entity_type']))
+            $voting_results['entity_type'] = $aggregated_result['entity_type'];
+
+    }
+
+    // @todo get rid of this?
+    //    if (count($array_of_found_tags) > 1) {
+    //
+    //        // We shouldn't be asked to retrieve votes with mixed tags
+    //        // Someone called this function erroneously
+    //
+    //        watchdog('musth_restws', 'W3E203 Votes on an entity should have one tag only (!t) (!i) <br> (!y) <br> (!v) ',
+    //            array('!t' => print_r($entity_type, true),
+    //                  '!i' => print_r($entity_id, true),
+    //                  '!y' => print_r($array_of_found_tags, true),
+    //                  '!v' => print_r($aggregated_results, true)
+    //            ),
+    //            WATCHDOG_ERROR);
+    //
+    //        return null;
+    //    }
+
+    if (count($array_of_found_value_types) > 1) {
+
+        watchdog('musth_restws', 'W3E204 Votes on an entity should have one vote type only (!t) (!i) <br> (!y) <br> (!v) ',
+            array('!t' => print_r($entity_type, true),
+                  '!i' => print_r($entity_id, true),
+                  '!y' => print_r($array_of_found_value_types, true),
+                  '!v' => print_r($aggregated_results, true)
+            ),
+            WATCHDOG_ERROR);
+
+        return null;
+    }
+
+    //watchdog('musth_restws', 'musth_helper_functions_get_voting_results debug search: 7hd74hdf76f (!t) (!i) (!g) (!y) (!v) (!u) ',
+    //    array('!t' => print_r($entity_type, true),
+    //          '!i' => print_r($entity_id, true),
+    //          '!g' => print_r($vote_tag, true),
+    //          '!y' => print_r($array_of_found_tags, true),
+    //          '!v' => print_r($aggregated_results, true),
+    //          '!u' => print_r('', true)
+    //    ),
+    //    WATCHDOG_DEBUG);
+
+    /*
+     * Example of $voting_results_keyed_with_entity_id
+     * Array (
+    [829] => Array (
+        [entity_type] => node
+        [count] => 1
+        [average] => 60
+    )
+    )
+    */
+
+    // If no aggregates have been found, we return an empty array so that no result wil be sent back to the client,
+    // not even one with all zeroes in it
+
+    if (count($voting_results))
+        $voting_results_keyed_with_entity_id[$entity_id] = $voting_results;
+    else
+        $voting_results_keyed_with_entity_id = array();
+
+    return $voting_results_keyed_with_entity_id;
+}
+
+/**
+ * This function returns average, count and sum of all votes given to a collection of entities.
+ *
+ * A vote tag is required to identify the aggregates to return.
+ *
+ * All aggregates that share the given vote tag are returned.
+ *
+ * This function performs no checks on the given tag.
+ **
+ * @param $vote_tag Vote tag used to select the aggregates to return
+ * @return array Array of aggregates keyed on the node id
+ */
+function musth_helper_functions_get_voting_results_by_tag($vote_tag) {
+
+    /*
+    [0] => Array (
+    [vote_cache_id] => 831
+    [entity_type] => node
+    [entity_id] => 829
+    [value] => 1
+    [value_type] => percent
+    [tag] => V1033
+    [function] => count
+    [timestamp] => 1421759562
+    )
+    [1] => Array (
+    [vote_cache_id] => 832
+    [entity_type] => node
+    [entity_id] => 829
+    [value] => 60
+    [value_type] => percent
+    [tag] => V1033
+    [function] => average
+    [timestamp] => 1421759562
+    )
+    etc.
+    */
+
+    $criteria = array(
+        'tag' => $vote_tag
+    );
+
+    $voting_results = array();
+
+    try {
+
+        $aggregated_results = votingapi_select_results($criteria);
+
+    }
+    catch (Exception $e) {
+
+        watchdog('musth_restws', 'W3E206 Error in fetching votes aggregates for a tag. Error message: (!e) ',
+            array('!e' => print_r($e->getMessage(), true)),
+            WATCHDOG_ERROR);
+
+        return null;
+    }
+
+    /*
+     * Anatomy of an instance of $aggregated_result (see below)
+    Array (
+        [vote_cache_id] => 572
+        [entity_type] => node
+        [entity_id] => 892
+        [value] => 3
+        [value_type] => points
+        [tag] => vote
+        [function] => count
+        [timestamp] => 1421091039
+        )
+    */
+
+    // We are going to check that, for the given tag, we get aggregates for one value type
+    // only. If there is more than one value type associated to votes found when searching for the given tag,
+    // we consider it a bug.
+    // This means that, for the same tag, we don't allow 'percent' votes and 'points' one to be mixed.
+    // We also check that there are aggregates for one entity type only. If for the same tag we find
+    // aggregates about nodes and about comments, we consider it a bug.
+
+    $array_of_found_entity_types = array();
+    $array_of_found_value_types = array();
+
+    foreach ($aggregated_results as $aggregated_result) {
+
+        $id_of_the_entity_the_current_aggregated_result_array_is_about = $aggregated_result['entity_id'];
+
+        // Keeping track of all found entity types
+        if (isset($aggregated_result['entity_type'])) {
+            if (!in_array($aggregated_result['entity_type'], $array_of_found_entity_types))
+                $array_of_found_entity_types[] = $aggregated_result['entity_type'];
+
+            // We copy the entity type of the entity being voted. This function supports entity types other than 'node'
+            // even if the rest apis using this function don't
+            $voting_results[$id_of_the_entity_the_current_aggregated_result_array_is_about]['entity_type'] =
+                $aggregated_result['entity_type'];
+        }
+
+        // Keeping track of all value types
+        if (isset($aggregated_result['value_type']))
+            if (!in_array($aggregated_result['value_type'], $array_of_found_value_types))
+                $array_of_found_value_types[] = $aggregated_result['value_type'];
+
+        if (in_array($aggregated_result['function'], array('average', 'count', 'sum')))
+            $voting_results[$id_of_the_entity_the_current_aggregated_result_array_is_about][$aggregated_result['function']] =
+                round($aggregated_result['value']);
+
+        if (isset($aggregated_result['tag']))
+            $voting_results[$id_of_the_entity_the_current_aggregated_result_array_is_about]['tag'] = $aggregated_result['tag'];
+
+    }
+
+    if (count($array_of_found_entity_types) > 1) {
+
+        watchdog('musth_restws', 'W3E207 Entities being voted should be all of the same type (!t) <br> (!y) <br> (!v) ',
+            array('!t' => print_r($vote_tag, true),
+                '!y' => print_r($array_of_found_entity_types, true),
+                '!v' => print_r($aggregated_results, true)
+            ),
+            WATCHDOG_ERROR);
+
+        return null;
+    }
+
+    if (count($array_of_found_value_types) > 1) {
+
+        watchdog('musth_restws', 'W3E208 Cant mix percent and points votes for the same tag (!t) <br> (!y) <br> (!v) ',
+            array('!t' => print_r($vote_tag, true),
+                  '!y' => print_r($array_of_found_value_types, true),
+                  '!v' => print_r($aggregated_results, true)
+            ),
+            WATCHDOG_ERROR);
+
+        return null;
+    }
+
+    //watchdog('musth_restws', 'musth_helper_functions_get_voting_results_by_tag debug search: nwjd67gwg (!g) (!v) <br> (!u) ',
+    //    array('!g' => print_r($vote_tag, true),
+    //          '!v' => print_r($aggregated_results, true),
+    //          '!u' => print_r($voting_results, true)
+    //    ),
+    //    WATCHDOG_DEBUG);
+
+    /*
+     * Example of $voting_results
+    Array (
+        [829] => Array (
+            [entity_type] => node
+            [count] => 1
+            [tag] => V1033
+            [average] => 60
+        )
+        [837] => Array (
+            [entity_type] => node
+            [count] => 1
+            [tag] => V1033
+            [average] => 20
+        )
+        [831] => Array (
+            [entity_type] => node
+            [count] => 1
+            [tag] => V1033
+            [average] => 100
+        )
+        [830] => Array (
+            [entity_type] => node
+            [count] => 1
+            [tag] => V1033
+            [average] => 40
+        )
+    )
+    */
+
+    return $voting_results;
+}
+
+/**
+ * This function uses the Mollom service to check if a text is spammy
+ *
+ * If Mollom doesn't classify the given text as 'ham', this function returns true (spammy).
+ *
+ * Mollom classifies text as 'ham', 'unsure' or 'spam'. We consider a text spam if Mollom
+ * returns 'unsure' or 'spam'.
+ *
+ * If there is any problem with contacting Mollom servers to do the check, we return true. *
+ *
+ * @param $text string The text to check
+ * @return bool True if text is spammy
+ */
+function musth_helper_functions_this_text_is_spammy($text) {
+
+    $data['postBody'] = $text;
+
+    try {
+
+        $result = mollom()->checkContent($data);
+
+    }
+    catch (Exception $e) {
+
+        watchdog('musth_helper', 'W3E171 Error in checking text for spam. Error message: (!e)',
+            array('!e' => print_r($e->getMessage(), true)),
+            WATCHDOG_ERROR);
+
+        return true;
+    }
+
+    // We classify $text as not spammy only if we get a 'ham' response from Mollom
+    if ($result)
+        if (!empty($result['spamClassification']))
+            if ($result['spamClassification'] == 'ham')
+                return false;
+
+    // In any other case, like errors in calling Mollom or non-ham response, we classify $text as spammy
+    return true;
+}
+
+/**
+ * We want to know if a product has an associated track or not.
+ *
+ * For example subscriptions are not about a track. By buying a subscription you can watch all videos.
+ *
+ * Subscriptions products have a SKU beginning by 'S'.
+ *
+ * @param $product_sku string SKU of the product we want to know if it's associated to a track or not
+ * @return bool true if the given product is associated to a track
+ */
+function musth_helper_functions_this_product_has_an_associated_track($product_sku) {
+
+    $first_letter_in_sku = $product_sku[0];
+
+    //    watchdog('musth_restws', 'W7D001 bybybyby musth_helper_functions_this_product_has_no_associated_track (!l) ',
+    //        array('!l' => print_r($first_letter_in_sku, true)), WATCHDOG_DEBUG);
+
+    if ($first_letter_in_sku == 'S')
+        return false;
+    else
+        return true;
+}
+
+
+/**
+ * @todo fix doc
+ * Get the full name for a person and the name for an organisation
+ * Note that here we define how the tagring displays the name of a person or organisation
+ * Is it "first name, surname"? Is it "surname middle names first name"? Do we use initials
+ * or full names?
+ *
+ * This function is used also in the restws api ProgrammeResourceController::read to create the
+ * label for angular. This label is used in the infopanel.
+ *
+ * @param $entity_type string Generally 'node'
+ * @param $entity Object The entity where the taxonomy field is
+ * @param $field_name string Name of the field
+ * @return bool|string $label_to_be_returned The name of the person or organisation
+ */
+function musth_helper_functions_make_string_from_taxonomy_field($entity_type,
+                                                                 $entity,
+                                                                 $field_name)  {
+
+    // @todo fix
+
+    $string_to_return = '';
+
+    $taxonomy_field_to_make_string_from = field_get_items($entity_type, $entity, $field_name);
+
+    if ($taxonomy_field_to_make_string_from) {
+
+        foreach($taxonomy_field_to_make_string_from as $taxonomy_field_to_make_string_from_single_value) {
+
+            $taxonomy_term_object = taxonomy_term_load($taxonomy_field_to_make_string_from_single_value['tid']);
+
+            if ($string_to_return)
+                $string_to_return .= ", ";
+
+            $string_to_return .= $taxonomy_term_object->name;
+
+        }
+
+        //        watchdog('musth_restws', 'W7D001 ?? musth_restws_load_partner_details $profession_taxonomy_field_single_value ' .
+        //            ' (!n) <br><br> (!f) ',
+        //            array('!n' => print_r('', true),
+        //                '!f' => print_r($string_to_return, true)),
+        //            WATCHDOG_DEBUG);
+
+        //        $field_value = $partner_details_field[0]['value'];
+        //        // @todo delete me please! $array_parts_partner_details_field_name = explode('_', $name_of_partner_details_field);
+        //
+        //        $field_name = str_replace('field_pd_', '', $name_of_partner_details_field);
+        //
+        //        $partner_details_array[$field_name] = $field_value;
+
+    }
+
+    return $string_to_return;
+}

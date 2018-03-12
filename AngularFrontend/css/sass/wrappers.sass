@@ -1,0 +1,51 @@
+.wrapper
+  width: 100%
+
+.tall-wrapper
+  @extend .wrapper
+  min-height: 800px // @todo create a parameter with this
+
+.tagview-wrapper
+  @extend .tall-wrapper
+  background: url("../../images/bg_middle_block.png") repeat-x
+  height: $tagview-height
+  //height: auto !important
+  overflow: auto
+
+.userprofileview-wrapper
+  @extend .tall-wrapper
+  //background: url("../../images/bg_panelcontent.jpg") repeat-x #ffffff
+  height: auto !important
+  overflow: auto
+
+.socialview-wrapper
+  @extend .tall-wrapper
+  //top: $header-height + 20px
+  //background: url("../../images/bg_panelcontent.jpg") repeat-x #ffffff
+  height: auto !important
+  overflow: auto
+
+.header-wrapper
+  @extend .wrapper
+  background: url("../../images/header-container-bg.gif") repeat-x
+  min-height: $header-height
+
+.page-wrapper
+  //width: calc(100% - 15px)
+  //position: absolute
+  //@extend .wrapper
+  width: auto
+
+.footer-wrapper
+  @extend .wrapper
+  height: $footer-height
+  background: white url("/images/footer-container.gif") repeat-x scroll left bottom
+  z-index: $z-index-layer-footer
+
+.footer-for-tagview-wrapper
+  @extend .footer-wrapper
+  position: absolute
+  top: $header-height + $tagview-height
+
+.footer-for-other-views-wrapper
+  @extend .footer-wrapper

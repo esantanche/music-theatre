@@ -1,0 +1,48 @@
+<div class="omega-pane-30-of-30 editorial-text">
+
+    <!-- scrollme was here  id="scrollable-summary"   id="scrollable-summary"-->
+
+    <div class="scrollable-body-parent">
+
+        <div id="scrollable-body">
+
+            <div class="non-omega-pane-1-of-26">
+
+                &nbsp;
+
+            </div>
+
+            <div class="non-omega-pane-24-of-26">
+
+                <div ng-if="programme.bio_info[0].birthdate">
+
+                    <span class="label-for-detail-text">Birthdate</span>
+                    <span class="dark-grey-for-detail-text">{{programme.bio_info[0].birthdate | date:date_format_for_bio_info}}</span>
+
+                    <span>&nbsp;</span>
+
+                    <span class="label-for-detail-text">Deathdate</span>
+                    <span class="dark-grey-for-detail-text">{{programme.bio_info[0].deathdate | date:date_format_for_bio_info}}</span>
+
+                </div>
+
+                <!--<p><span></span></p>-->
+                <!--<p><span>{{programme.bio_info[0].deathdate | date:date_format_for_bio_info}}</span></p>-->
+
+                <div ng-bind-html="programme.body" style="margin-top: 10px" property="articleBody"></div>
+
+            </div>
+
+            <div class="omega-pane-1-of-26">
+
+                &nbsp;
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript-lazy" src="/lib/scrollbar/scrollbar.js"></script>

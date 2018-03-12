@@ -1,0 +1,17 @@
+<span ng-repeat="iter in [1,2,3,4,5]" ng-init="programmevotepanelinfo.mouse_over_button_no = 0">
+
+    <span ng-mouseover="programmevotepanelinfo.mouse_over_button_no = iter" ng-mouseout="programmevotepanelinfo.mouse_over_button_no = 0">
+
+        <img src="/images/white-heart.png"
+             ng-show="(programmevotepanelinfo.mouse_over_button_no > 0 && (programmevotepanelinfo.user_vote.value < (iter * 20) && user.uid != 0)) ||
+                      (programmevotepanelinfo.average < (iter * 20) && (programmevotepanelinfo.mouse_over_button_no == 0 || user.uid == 0))"
+             ng-click="user.uid && rate_programme(user.uid, programmevotepanelinfo.nid, (iter * 20))">
+
+        <img src="/images/red-heart.png"
+             ng-show="(programmevotepanelinfo.mouse_over_button_no > 0 && (programmevotepanelinfo.user_vote.value >= (iter * 20) && user.uid != 0)) ||
+                      (programmevotepanelinfo.average >= (iter * 20) && (programmevotepanelinfo.mouse_over_button_no == 0 || user.uid == 0))"
+             ng-click="user.uid && rate_programme(user.uid, programmevotepanelinfo.nid, (iter * 20))">
+
+    </span>
+
+</span>

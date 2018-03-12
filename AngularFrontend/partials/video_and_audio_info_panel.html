@@ -1,0 +1,744 @@
+<div class="non-omega-pane-4-of-30">
+
+    <!--  commentsforminfo.movefocustopostfield = true;  -->
+
+    <div ng-click="section_to_show = 'summary'; refresh_scrollbar(); commentsforminfo.do_refresh = false;"
+         class="info-panel-nav-button-pane info-panel-nav-button button-grey-text">Summary</div>
+
+    <div ng-click="section_to_show = 'tracks'; refresh_scrollbar(); commentsforminfo.do_refresh = false;"
+         class="info-panel-nav-button-pane info-panel-nav-button button-grey-text">Tracks</div>
+
+    <div ng-click="section_to_show = 'sleeve_notes'; refresh_scrollbar(); commentsforminfo.do_refresh = false;"
+         class="info-panel-nav-button-pane info-panel-nav-button button-grey-text">Sleeve Notes</div>
+
+    <div ng-click="section_to_show = 'reviews'; refresh_scrollbar(); commentsforminfo.do_refresh = false;"
+         class="info-panel-nav-button-pane info-panel-nav-button button-grey-text">Reviews</div>
+
+    <div ng-click="section_to_show = 'comments'; refresh_scrollbar(); commentsforminfo.do_refresh = true;"
+         class="info-panel-nav-button-pane info-panel-nav-button button-grey-text">Comments</div>
+
+    <!--@todo fix here-->
+
+    <div ng-click="section_to_show = 'fans'; refresh_scrollbar(); commentsforminfo.do_refresh = false;"
+         class="info-panel-nav-button-pane info-panel-nav-button button-grey-text">Fans</div>
+
+    <div ng-click="start_new_tagring_search(); commentsforminfo.do_refresh = false;"
+         class="info-panel-nav-button-pane info-panel-nav-button button-grey-text">New search</div>
+
+</div>
+
+<!--tagring_content_type_selector == 'video'-->
+
+<div class="omega-pane-26-of-30">
+
+    <div ng-show="section_to_show === 'summary'">
+
+        <div class="omega-pane-26-of-26">
+
+            <!--When a programme has many prices (which means that there are many products associated to track 0000)-->
+            <!--programme.tracks[0].price is null and, below, the price is not considered to be zero-->
+
+            <div ng-if="!infopanelinfo.no_prices">
+                <div ng-if="programme.tracks[0].price == 0" class="header3-text">
+                    This is a free programme!
+                </div>
+                <div ng-if="programme.tracks[0].price != 0">
+                    <button ng-click="bring_up_shopping_order_panel('buy_or_subscribe')"
+                            class="blue-button">Buy</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="summary-image-pane">
+
+            <meta property="thumbnailUrl" content="{{ schemamarkupinfo.thumbnail_url }}">
+
+            <img ng-src="{{ programme.summary_panel_image }}">
+
+        </div>
+
+        <!-- scrollme was here  id="scrollable-summary"   id="scrollable-summary"-->
+
+        <div class="omega-pane-19-of-26 editorial-text">
+            <div class="scrollable-summary-parent">
+                <div id="scrollable-summary">
+
+                    <!--<div property="contentLocation" typeof="AdministrativeArea">-->
+
+                    <!--Showing only principles-->
+
+                    <p>
+                        <span ng-repeat="credits_element in principles = (programme.credits_elements | filter:{ is_a_principle: '1' })">
+
+                            <span ng-if="credits_element.role_title == 'Composer'" property="author" typeof="Person">
+
+                                <span property="name">{{credits_element.label}}</span>
+                                (<span property="jobTitle">{{credits_element.role_title}}</span>)
+
+                            </span>
+
+                            <span ng-if="credits_element.role_title == 'Venue'" property="contentLocation" typeof="EventVenue">
+
+                                <span property="name">{{credits_element.label}}</span>
+                                ({{credits_element.role_title}})
+
+                            </span>
+
+                            <span ng-if="credits_element.role_title != 'Composer' && credits_element.role_title != 'Venue'">
+
+                                {{credits_element.label}} ({{credits_element.role_title}})
+
+                            </span>
+
+                            <br>
+
+                        </span>
+                    </p>
+
+                    <br>
+
+                    <h2>Synopsis</h2>
+
+                    <!-- We consider the field synopsis as an html field -->
+
+                    <span ng-bind-html="programme.synopsis"></span>
+
+                    <h2>Summary</h2>
+
+                    <!-- the filter crlf2p is experimental. Actually the html markup should be
+                    provided by Drupal via the api -->
+
+                    <span ng-bind-html="programme.summary | crlf2p" property="text"></span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div ng-show="section_to_show === 'tracks'">
+
+        <div class="scrollable-tracks-parent">
+            <div id="scrollable-tracks">
+
+                <div class="track-list-row-pane soft-text">
+
+                    <div class="non-omega-pane-1-of-26">
+                        &nbsp;
+                    </div>
+
+                    <div class="non-omega-pane-16-of-26">
+                        Name
+                    </div>
+
+                    <div class="non-omega-pane-2-of-26">
+                        Time
+                    </div>
+
+                    <div class="non-omega-pane-3-of-26">
+                        Rating
+                    </div>
+
+                    <div ng-if="!infopanelinfo.no_prices"
+                         class="non-omega-pane-2-of-26 right-aligned-text">
+                        Price
+                    </div>
+
+                    <div ng-class="{'omega-pane-2-of-26': !infopanelinfo.no_prices,
+                                    'omega-pane-4-of-26': infopanelinfo.no_prices}">
+                        &nbsp;
+                    </div>
+
+                </div>
+
+                <meta property="duration" content="{{ (programme.tracks[0].time_out - programme.tracks[0].time_in) | ISOduration }}">
+
+                <ul>
+
+                    <!-- | orderBy:tracksSortFunction -->
+
+                    <li ng-repeat="track in programme.tracks">
+
+                        <!--
+                         {{track.tid}} {{track.title}} {{track.segment_no}}
+                         {{track.track_no}} {{track.track_tooltip}} {{track.time_in}}
+                         {{track.time_out}} {{track.rating}}
+                         -->
+
+                        <!-- data-tooltip="{{track.track_tooltip}}"> -->
+
+                        <!-- @todo we need a refactoring for show_play_track_button here -->
+
+                        <!-- ng-class="{'highlighted-pane': show_play_track_button}" -->
+
+                        <div class="track-list-highlighted-row-pane"
+                             ng-mouseover="show_play_track_button = true;"
+                             ng-mouseout="show_play_track_button = false;">
+
+                            <!--data-tooltip="{{track.track_tooltip}}&#xA;{{track.displayable_credits_list}}">-->
+                            <!--@todo is it OK not to show the additional line if there is no tooltip even if there are-->
+                            <!--credits?-->
+
+                            <div class="track-info-button-pane">
+                                <span class="track-info-button"
+                                      ng-show="show_play_track_button && (track.track_tooltip || track.displayable_credits_list)"
+                                      ng-click="show_additional_line = !show_additional_line; refresh_scrollbar();"></span>
+                                <span ng-show="!show_play_track_button || (!track.track_tooltip && !track.displayable_credits_list)">&nbsp;</span>
+                            </div>
+
+                            <div ng-class="{'indented-text': track.track_no != 0,
+                                            'bold-text':     track.track_no == 0}"
+                                 class="track-title-pane">
+                                {{track.title}}
+                            </div>
+
+                            <div class="non-omega-pane-2-of-26">
+                                {{track.time_out - track.time_in | duration}}
+                            </div>
+
+                            <!-- {{(track.time_out - track.time_in) | date: 'hh:mm:ss'}} -->
+
+                            <!--<div class="track-vote-pane">-->
+                                <!--<div ng-include src="'/partials/track_vote_panel.html'"></div>-->
+                            <!--</div>-->
+
+                            <div ng-include src="'/partials/track_vote_panel.html'"
+                                 class="track-vote-pane">
+                            </div>
+
+                            <div ng-if="track.segment_no == 0 && track.track_no == 0"
+                                 ng-include src="'/partials/programme_vote_panel.html'"
+                                 class="track-vote-pane">
+                            </div>
+
+                            <div ng-if="!infopanelinfo.no_prices"
+                                 class="non-omega-pane-2-of-26 right-aligned-text">
+                                <span>{{track.price | price}}</span>
+                            </div>
+
+                            <div ng-class="{'omega-pane-2-of-26': !infopanelinfo.no_prices,
+                                            'omega-pane-4-of-26': infopanelinfo.no_prices}"
+                                 ng-show="show_play_track_button"
+                                 ng-mouseover="show_red_play_track_button = true"
+                                 ng-mouseout="show_red_play_track_button = false">
+
+                                <div ng-if="tagring_content_type_selector == 'video'">
+
+                                    <img src="/images/track_play_blue.png"
+                                         ng-show="!show_red_play_track_button">
+
+                                    <span class="track-play-button"
+                                          ng-show="show_red_play_track_button"
+                                          ng-click="play_track(track)"></span>
+
+                                </div>
+
+                                <div ng-if="tagring_content_type_selector == 'audio'">
+
+                                    <img src="/images/track_download_button_blue.png"
+                                         ng-show="!show_red_play_track_button">
+
+                                    <span class="track-download-red-button"
+                                          ng-show="show_red_play_track_button"
+                                          ng-click="play_track(track)"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="track-row-pane"
+                             ng-show="show_additional_line">
+
+                            <div class="non-omega-pane-2-of-26">
+                                &nbsp;
+                            </div>
+
+                            <div ng-class="{'indented-text': track.track_no != 0}"
+                                 class="non-omega-pane-21-of-26 additional-line-text">
+
+                                {{track.track_tooltip}}
+
+                                <span ng-if="track.track_tooltip && track.displayable_credits_list"><br></span>
+
+                                {{track.displayable_credits_list}}
+
+                            </div>
+
+                            <div class="omega-pane-3-of-26">
+
+                                &nbsp;
+
+                            </div>
+
+                        </div>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div ng-show="section_to_show === 'sleeve_notes'" class="editorial-text">
+
+        <div class="scrollable-sleeve-notes-parent">
+            <div id="scrollable-sleeve-notes">
+
+                <p>
+                    <span ng-repeat="credits_element in programme.credits_elements">
+                        {{credits_element.label}} ({{credits_element.role_title}})<br>
+                    </span>
+                </p>
+
+                <br>
+
+                <span ng-bind-html="programme.sleeve_notes | crlf2p"></span>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div ng-if="section_to_show === 'reviews'" ng-controller="ReviewsFormCtrl">
+
+        <div class="omega-pane-26-of-26">
+
+            <div class="non-omega-pane-7-of-26">
+
+                <div ng-if="user.uid"
+                     class="omega-pane-7-of-7" style="margin-bottom: 10px">
+
+                    <!--$scope.reviewsforminfo.show_new_review_panel = false;-->
+
+                    <button ng-click="reviewsforminfo.show_new_review_panel = true"
+                            class="blue-button">Create a new review</button>
+
+                </div>
+
+                <div class="omega-pane-7-of-7 temp-box" style="padding-top: 13px">
+
+                    <div ng-if="reviewsforminfo.reviews.length == 0"
+                         class="dark-grey-text" style="vertical-align: -1px; margin-left: 19px; margin-bottom: 11px">
+                        No reviews yet.
+                    </div>
+
+                    <div ng-if="reviewsforminfo.reviews.length"
+                         class="omega-pane-7-of-7"
+                         style="margin-bottom: 11px">
+
+                        <ul>
+
+                            <!-- | orderBy:tracksSortFunction  style="margin-top: 13px; margin-left: 20px"-->
+
+                            <li ng-repeat="review in reviewsforminfo.reviews">
+
+                                <div class="reviews-list-pane">
+
+                                    <div class="non-omega-pane-1-of-7">
+                                        <span ng-if="reviewsforminfo.single_review">
+                                            <img src="/images/bullet_review_active_link.png"
+                                                 ng-if="reviewsforminfo.single_review.id == review.id"
+                                                 style="vertical-align: -1px; margin-left: 19px">
+                                        </span>
+                                    </div>
+
+                                    <div class="omega-pane-6-of-7">
+
+                                        <span ng-click="change_single_review_to_show(review.id); refresh_scrollbar();"
+                                              class="blue-link link-text">
+                                            {{review.name | truncate:25}}
+                                        </span>
+
+                                        <img src="/images/thumbs_up.gif" style="vertical-align: -7px"
+                                             ng-show="review.rating.sum >= 0">
+
+                                        <img src="/images/thumbs_down.gif" style="vertical-align: -7px"
+                                             ng-show="review.rating.sum < 0">
+
+                                    </div>
+
+                                </div>
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <!--<div class="omega-pane-7-of-7">-->
+
+                    <!--&nbsp;-->
+
+                <!--</div>-->
+
+            </div>
+
+            <div class="omega-pane-19-of-26">
+
+                <div class="scrollable-reviews-parent">
+                    <div id="scrollable-reviews">
+
+                        <div class="non-omega-pane-18-of-19">
+
+                            <div ng-if="reviewsforminfo.single_review">
+
+                                <div ng-review
+                                     review="reviewsforminfo.single_review"
+                                     user="user"
+                                     totalnumberofcolumns="18"
+                                     on-rate="rate(reviewsforminfo.single_review)">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="omega-pane-1-of-19">
+
+                            &nbsp;
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="new-review-pane-container"
+             ng-show="reviewsforminfo.show_new_review_panel">
+
+            <div class="all-columns-pane-with-padding">
+
+                <div class="non-omega-pane-28-of-30">
+                    &nbsp;
+                </div>
+
+                <div class="x-shape-button-pane"
+                     ng-mouseover="show_newreviewpanel_close_button_on = true"
+                     ng-mouseout="show_newreviewpanel_close_button_on = false">
+
+                    <img src="/images/close_button_off.png"
+                         class="button"
+                         ng-show="!show_newreviewpanel_close_button_on">
+
+                    <img src="/images/close_button_on.png"
+                         class="button"
+                         ng-show="show_newreviewpanel_close_button_on"
+                         ng-click="reviewsforminfo.show_new_review_panel = false">
+                </div>
+
+            </div>
+
+            <div ng-if="reviewsforminfo.section_to_display_in_new_review_panel == 'guidelines'"
+                 class="omega-pane-30-of-30">
+
+                <div class="omega-pane-30-of-30">
+
+                    <div class="non-omega-pane-1-of-30">
+
+                        &nbsp;
+
+                    </div>
+
+                    <div class="new-review-content-pane">
+
+                        <div ng-include src="'/includes/content_fragments/new_review_guidelines.html'"></div>
+
+                    </div>
+
+                    <div class="omega-pane-1-of-30">
+
+                        &nbsp;
+
+                    </div>
+
+                </div>
+
+                <div class="omega-pane-30-of-30">
+
+                    <div class="non-omega-pane-1-of-30">
+
+                        &nbsp;
+
+                    </div>
+
+                    <div class="non-omega-pane-28-of-30">
+
+                        <button ng-click="reviewsforminfo.section_to_display_in_new_review_panel = 'newreview'"
+                                class="blue-button" style="float: right">Next</button>
+
+                    </div>
+
+                    <div class="omega-pane-1-of-30">
+
+                        &nbsp;
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div ng-if="reviewsforminfo.section_to_display_in_new_review_panel == 'newreview'"
+                 class="omega-pane-30-of-30">
+
+                <div class="omega-pane-30-of-30">
+
+                    <div class="non-omega-pane-1-of-30">
+
+                        &nbsp;
+
+                    </div>
+
+                    <div class="non-omega-pane-28-of-30">
+
+                        <div class="omega-pane-28-of-28 dark-grey-text">
+
+                            Create the new review. You fill find it in your user profile page
+                            at any time when you want to complete, submit or delete it.
+
+                        </div>
+
+                        <div ng-if="user.uid">
+
+                            <div ng-review
+                                review="reviewsforminfo.newreview"
+                                user="user"
+                                totalnumberofcolumns="28"
+                                oneditmode="true"
+                                alwaysonedit="true"
+                                on-save="save(reviewsforminfo.newreview)"></div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="omega-pane-1-of-30">
+
+                        &nbsp;
+
+                    </div>
+
+                </div>
+
+                <div class="omega-pane-30-of-30">
+
+                    &nbsp;
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div ng-if="section_to_show === 'comments'" ng-controller="CommentsFormCtrl">
+
+        <div class="scrollable-comments-parent">
+            <div id="scrollable-comments">
+
+                <div class="comments-row-pane" style="position: absolute">
+
+                    <div ng-if="user.uid">
+
+                        <div class="comments-row-pane">
+
+                            <div class="non-omega-pane-25-of-26">
+
+                                <div ng-post
+                                     post="commentsforminfo.newcomment"
+                                     user="user"
+                                     totalnumberofcolumns="25"
+                                     oneditmode="true"
+                                     alwaysonedit="true"
+                                     focusonpostfield="commentsforminfo.movefocustopostfield"
+                                     on-save="post(commentsforminfo.newcomment)"></div>
+
+                            </div>
+
+                            <div class="omega-pane-1-of-26">
+
+                                &nbsp;
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div ng-if="!user.uid">
+
+                        <div class="comments-row-pane">
+                            &nbsp;
+
+                        </div>
+
+                        <div class="comments-row-pane">
+
+                            <div class="non-omega-pane-1-of-26">
+
+                                &nbsp;
+
+                            </div>
+
+                            <div class="omega-pane-25-of-26 header3-text">
+
+                                Please, login to comment
+
+                            </div>
+
+                        </div>
+
+                        <div class="comments-row-pane">
+
+                            &nbsp;
+
+                        </div>
+
+                    </div>
+
+                    <div ng-if="commentsforminfo.comments.length == 0">
+
+                        <div class="comments-row-pane">
+
+                            <div class="non-omega-pane-1-of-26">
+
+                                &nbsp;
+
+                            </div>
+
+                            <div class="omega-pane-25-of-26 header3-text">
+
+                                No comments yet.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <ul>
+
+                        <li ng-repeat="comment in commentsforminfo.comments">
+
+                            <!-- @todo obsolete comment You won't find the variable localmovefocustopostfield anywhere else-->
+                            <!--because in this case it's used only internally by the directive ng-comment -->
+                            <!--You may ask why we have it here if it's used only internally-->
+                            <!--It's because in different cases it will be manipulated by the controller and so it has-->
+                            <!--to be visible-->
+
+                            <!--oneditmode="no"-->
+                            <!--alwaysonedit="no"-->
+
+                            <div class="comments-row-pane">
+
+                                <div class="non-omega-pane-25-of-26">
+
+                                    <div ng-post
+                                         post="comment"
+                                         user="user"
+                                         totalnumberofcolumns="25"
+                                         enablereply="true"
+                                         on-save="post(comment)"
+                                         on-delete="delete(comment)"
+                                         on-abuse="abuse(comment)"
+                                         on-reply="reply(comment)"
+                                         focusonpostfield="localmovefocustopostfield"
+                                         on-refresh-scrollbar="refresh_scrollbar()"
+                                         on-suspend-refresh="commentsforminfo.suspend_refresh = true"
+                                         on-restart-refresh="commentsforminfo.suspend_refresh = false"></div>
+
+                                </div>
+
+                                <div class="omega-pane-1-of-26">
+
+                                    &nbsp;
+
+                                </div>
+
+                            </div>
+
+                        </li>
+
+                    </ul>
+
+                    <div class="comments-row-pane" style="margin-top: 15px; padding-bottom: 20px">
+
+                        <div class="non-omega-pane-20-of-26">
+
+                            &nbsp;
+
+                        </div>
+
+                        <div class="non-omega-pane-5-of-26">
+
+                            <!--<div class="non-omega-pane-16-of-23">-->
+
+                            <!--&nbsp;-->
+
+                            <!--</div>-->
+
+                            <span ng-click="commentsforminfo.page = 0; load_comments(commentsforminfo.page)"
+                                  ng-show="commentsforminfo.page > 0"
+                                  class="link-bold-text blue-link">First</span>
+
+                            <span ng-show="commentsforminfo.page > 0"
+                                  class="link-bold-text blue-link"> - </span>
+
+                            <span ng-click="commentsforminfo.page = commentsforminfo.page - 1; load_comments(commentsforminfo.page)"
+                                  ng-show="commentsforminfo.page > 0"
+                                  class="link-bold-text blue-link">Back</span>
+
+                            <span ng-show="commentsforminfo.more_pages_available && commentsforminfo.page > 0"
+                                  class="link-bold-text blue-link"> - </span>
+
+                            <span ng-click="commentsforminfo.page = commentsforminfo.page + 1; load_comments(commentsforminfo.page)"
+                                  ng-show="commentsforminfo.more_pages_available"
+                                  class="link-bold-text blue-link">See more</span>
+
+                            <!--<div class="omega-pane-2-of-23">-->
+
+                            <!--&nbsp;-->
+
+                            <!--</div>-->
+
+                        </div>
+
+                        <div class="omega-pane-1-of-26">
+
+                            &nbsp;
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div ng-if="section_to_show === 'fans'">
+
+        <div ng-include src="'/partials/fans_panel.html'"></div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript-lazy" src="/lib/scrollbar/scrollbar.js"></script>

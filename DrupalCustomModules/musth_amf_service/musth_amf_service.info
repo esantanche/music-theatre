@@ -1,0 +1,8 @@
+name = Musth AMF service
+description = Musth AMF service for the flash Tag Ring to connect to Drupal
+package = Musth
+dependencies[] = amfserver
+dependencies[] = services
+files[] = MediaItem.php
+core = 7.x
+version = "7.x-0.1"

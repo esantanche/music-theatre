@@ -1,0 +1,161 @@
+<?php
+/**
+ * @file musth_restws.module
+ *
+ * @brief This module implements all the REST apis the application uses
+ *
+ * @ingroup musthrestwsservice
+ *
+ * Created by PhpStorm.
+ * User: www-data
+ * Date: 12/03/14
+ * Time: 16:18
+ */
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.programme.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.programme.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.urlskit.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.urlskit.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.clientexception.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.clientexception.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.user.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.user.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.order.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.order.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.lineitem.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.lineitem.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.customerprofile.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.customerprofile.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.paymenttransaction.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.paymenttransaction.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.downloadableurl.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.downloadableurl.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.product.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.product.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.comment.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.comment.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.flagging.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.flagging.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.review.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.review.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.vote.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.vote.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.votesaggregate.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.votesaggregate.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.group.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.group.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.post.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.post.res');
+
+module_load_include('inc', 'musth_restws', 'controllers/musth_restws.message.ctrl');
+module_load_include('inc', 'musth_restws', 'resource_classes/musth_restws.message.res');
+
+/**
+ * This is an implementation of the hook hook_restws_resource_info.
+ * It describes the resources available via this REST service
+ *
+ * Resources:
+ * - musth_restws_programme Given a node id, it returns an object that includes the fields
+ * of the programme as well as the credits list and the tracks
+ * - musth_restws_urls_kit Given system title of a programme, it returns the urls of the preview
+ * and full movies, correctly signed. Subtitle files urls are provided as well.
+ *
+ * @see hook_restws_resource_info
+ * @return array Description of the resources
+ */
+function musth_restws_restws_resource_info() {
+
+    //watchdog('musth_restws', 'W7D001 0101 musth_restws_restws_resource_info',
+    //    array(), WATCHDOG_DEBUG);
+
+    return array(
+        'musth_restws_programme' => array(
+            'label' => t('Programme'),
+            'class' => 'ProgrammeResourceController',
+        ),
+        'musth_restws_urls_kit' => array(
+            'label' => t('URLs Kit'),
+            'class' => 'URLsKitResourceController',
+        ),
+        'musth_restws_client_exception' => array(
+            'label' => t('Client exception'),
+            'class' => 'ClientExceptionResourceController',
+        ),
+        'musth_restws_user' => array(
+            'label' => t('User'),
+            'class' => 'UserResourceController',
+        ),
+        'musth_restws_order' => array(
+            'label' => t('Order'),
+            'class' => 'OrderResourceController',
+        ),
+        'musth_restws_line_item' => array(
+            'label' => t('Line item'),
+            'class' => 'LineItemResourceController',
+        ),
+        'musth_restws_payment_transaction' => array(
+            'label' => t('Payment transaction'),
+            'class' => 'PaymentTransactionResourceController',
+        ),
+        'musth_restws_customer_profile' => array(
+            'label' => t('Customer profile'),
+            'class' => 'CustomerProfileResourceController',
+        ),
+        'musth_restws_downloadable_url' => array(
+            'label' => t('Downloadable product url'),
+            'class' => 'DownloadableUrlResourceController',
+        ),
+        'musth_restws_product' => array(
+            'label' => t('Commerce product'),
+            'class' => 'ProductResourceController',
+        ),
+        'musth_restws_comment' => array(
+            'label' => t('Drupal comment'),
+            'class' => 'CommentResourceController',
+        ),
+        'musth_restws_flagging' => array(
+            'label' => t('Entity flagging'),
+            'class' => 'FlaggingResourceController',
+        ),
+        'musth_restws_review' => array(
+            'label' => t('Review'),
+            'class' => 'ReviewResourceController',
+        ),
+        'musth_restws_vote' => array(
+            'label' => t('Vote'),
+            'class' => 'VoteResourceController',
+        ),
+        'musth_restws_votesaggregate' => array(
+            'label' => t('VotesAggregate'),
+            'class' => 'VotesAggregateResourceController',
+        ),
+        'musth_restws_group' => array(
+            'label' => t('Group'),
+            'class' => 'GroupResourceController',
+        ),
+        'musth_restws_post' => array(
+            'label' => t('Post'),
+            'class' => 'PostResourceController',
+        ),
+        'musth_restws_message' => array(
+            'label' => t('Message'),
+            'class' => 'MessageResourceController',
+        ),
+    );
+}

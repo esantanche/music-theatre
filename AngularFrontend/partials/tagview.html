@@ -1,0 +1,143 @@
+<div id="tagview">
+
+    <div ng-include src="'/includes/header.html'"></div>
+
+    <div class="tagview-wrapper">
+
+        <div ng-show="infopanelinfo.show_loading && !programme_loaded" class="infopanel-pane-container">
+
+            <div class="loading-wheel-pane">
+
+                <img src="/images/loading51.gif">
+
+            </div>
+
+        </div>
+
+        <!--@todo typeof may be video or audio, but what about library and partners?-->
+
+        <!--@todo caption is not a property of AudioObject-->
+
+        <!--$scope.schemamarkupinfo = {-->
+        <!--type_of_object: '' // VideoObject, AudioObject, Article, Person, Organization-->
+        <!--};-->
+
+        <div ng-show="infopanelinfo.show && programme_loaded"
+             class="animate-show infopanel-pane-container info-text"
+             vocab="http://schema.org/"
+             typeof="{{schemamarkupinfo.type_of_object}}">
+
+            <!-- non-omega-pane-12-of-30 -->
+
+            <div class="all-columns-pane-with-padding">
+
+                <div class="non-omega-pane-2-of-30">
+                    &nbsp;
+                </div>
+
+                <meta property="name" content="{{ programme.display_title }}">
+
+                <meta property="headline"
+                      content="{{ programme.display_title }}"
+                      ng-if="schemamarkupinfo.type_of_object == 'Article'">
+
+                <meta property="url" content="{{ schemamarkupinfo.programme_url }}">
+
+                <div class="non-omega-pane-13-of-30 programme-title-text">
+                    <span property="description">{{ programme.display_title }}</span>
+                </div>
+
+                <!-- non-omega-pane-13-of-30 -->
+
+                <div class="display-subtitle-pane programme-sub-title-text">
+
+                    <span property="caption" ng-if="schemamarkupinfo.type_of_object == 'VideoObject'">{{ programme.display_sub_title }}</span>
+                    <span ng-if="schemamarkupinfo.type_of_object != 'VideoObject'">{{ programme.display_sub_title }}</span>
+
+                </div>
+
+                <div ng-if="schemamarkupinfo.provide_rating_property && programmevotepanelinfo.average"
+                      property="aggregateRating" typeof="AggregateRating">
+                    <meta property="ratingValue" content = "{{programmevotepanelinfo.average / 20}}">
+                    <meta property="ratingCount" content = "{{programmevotepanelinfo.count}}">
+                </div>
+
+                <div ng-include
+                     src="'/partials/programme_vote_panel.html'"
+                     class="programme-voting-pane programme-sub-title-text">
+                </div>
+
+                <div class="x-shape-button-pane"
+                     ng-mouseover="show_infopanel_close_button_on = true"
+                     ng-mouseout="show_infopanel_close_button_on = false">
+
+                    <img src="/images/close_button_off.png"
+                         class="button"
+                         ng-show="!show_infopanel_close_button_on">
+
+                    <img src="/images/close_button_on.png"
+                         class="button"
+                         ng-show="show_infopanel_close_button_on"
+                         ng-click="infopanelinfo.show = false; commentsforminfo.do_refresh = false;">
+                </div>
+
+            </div>
+
+            <div ng-if="tagring_content_type_selector == 'video' || tagring_content_type_selector == 'audio'">
+
+                <meta property="uploadDate" content="2015-12-05">
+
+                <!--<div ng-include src="'/partials/video_and_audio_info_panel.html'"></div>-->
+
+                <!--The ng-include has to be written this way otherwise it breaks RDFa hierarchy -->
+
+                <div ng-include="'/partials/video_and_audio_info_panel.html'"></div>
+
+            </div>
+
+            <div ng-if="tagring_content_type_selector == 'library'">
+
+                <div ng-include="'/partials/library_info_panel.html'"></div>
+
+            </div>
+
+            <div ng-if="tagring_content_type_selector == 'partners'">
+
+                <div ng-include="'/partials/partners_info_panel.html'"></div>
+
+            </div>
+
+        </div> <!-- end of infopanel -->
+
+        <div class="videoplayer-back-element-independent-pane"
+             ng-show="showvideoplayer">
+
+        </div>
+
+        <div class="videoplayer-independent-pane"
+             ng-show="showvideoplayer">
+
+            <div id="videoplayer">
+
+            </div>
+
+        </div>
+
+        <div class="videoplayer-close-button-independent-pane videoplayer-close-button"
+             ng-show="showvideoplayer"
+             ng-mouseover="show_videoplayer_close_button_on = true"
+             ng-mouseout="show_videoplayer_close_button_on = false">
+
+            <img src="/images/close_button_off.png"
+                 ng-show="!show_videoplayer_close_button_on">
+
+            <img src="/images/close_button_on.png"
+                 ng-show="show_videoplayer_close_button_on"
+                 ng-click="showvideoplayer = false">
+        </div>
+
+    </div>
+
+    <div ng-include src="'/includes/footer.html'"></div>
+
+</div>

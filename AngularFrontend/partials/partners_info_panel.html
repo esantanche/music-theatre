@@ -1,0 +1,155 @@
+<div class="non-omega-pane-4-of-30">
+
+    <!--  commentsforminfo.movefocustopostfield = true;  -->
+
+    <div ng-click="section_to_show = 'summary'; refresh_scrollbar();"
+         class="info-panel-nav-button-pane info-panel-nav-button button-grey-text">About</div>
+
+    <div ng-click="section_to_show = 'details'; refresh_scrollbar();"
+         class="info-panel-nav-button-pane info-panel-nav-button button-grey-text">Details</div>
+
+    <div ng-click="section_to_show = 'fans'; refresh_scrollbar();"
+         class="info-panel-nav-button-pane info-panel-nav-button button-grey-text">Fans</div>
+
+</div>
+
+<div class="omega-pane-26-of-30 editorial-text">
+
+    <div ng-show="section_to_show === 'summary'">
+
+        <div class="scrollable-body-parent">
+
+            <div id="scrollable-body">
+
+                <!--<div class="non-omega-pane-1-of-26">-->
+
+                    <!--&nbsp;-->
+
+                <!--</div>-->
+
+                <div class="non-omega-pane-25-of-26">
+
+                    <span ng-bind-html="programme.body" property="text"></span>
+
+                </div>
+
+                <div class="omega-pane-1-of-26">
+
+                    &nbsp;
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- scrollme was here  id="scrollable-summary"   id="scrollable-summary"-->
+
+    <!--<p><span>{{programme.bio_info[0].birthdate | date:date_format_for_bio_info}}</span></p>-->
+    <!--<p><span>{{programme.bio_info[0].deathdate | date:date_format_for_bio_info}}</span></p>-->
+
+    <div ng-show="section_to_show === 'details'">
+
+        <div class="omega-pane-26-of-26">&nbsp;</div>
+
+        <div ng-if="programme.partner_details[0].partner_type == 'organisation'">
+
+            <div class="partner-details-row-pane">
+
+                <div class="non-omega-pane-13-of-26">
+                    <span class="label-for-detail-text">Website</span>
+                    <br>
+                    <span class="dark-grey-for-detail-text">{{programme.partner_details[0].website}}</span>
+                </div>
+
+                <div class="omega-pane-13-of-26">
+                    <span class="label-for-detail-text">&nbsp;</span>
+                    <br>
+                    <span class="dark-grey-for-detail-text">&nbsp;</span>
+                </div>
+
+            </div>
+
+            <div class="partner-details-row-pane">
+
+                <div class="non-omega-pane-13-of-26">
+                    <span class="label-for-detail-text">Organisation type</span>
+                    <br>
+                    <span class="dark-grey-for-detail-text">{{programme.partner_details[0].organisation_type}}</span>
+                </div>
+
+                <div class="omega-pane-13-of-26">
+                    <span class="label-for-detail-text">&nbsp;</span>
+                    <br>
+                    <span class="dark-grey-for-detail-text">&nbsp;</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div ng-if="programme.partner_details[0].partner_type == 'person'">
+
+            <div class="partner-details-row-pane">
+
+                <div class="non-omega-pane-13-of-26">
+                    <span class="label-for-detail-text">Website</span>
+                    <br>
+                    <span class="dark-grey-for-detail-text">{{programme.partner_details[0].website}}</span>
+                </div>
+
+                <div class="omega-pane-13-of-26">
+                    <span class="label-for-detail-text">&nbsp;</span>
+                    <br>
+                    <span class="dark-grey-for-detail-text">&nbsp;</span>
+                </div>
+
+            </div>
+
+            <div class="partner-details-row-pane">
+
+                <div class="non-omega-pane-13-of-26">
+                    <span class="label-for-detail-text">Profession(s)</span>
+                    <br>
+                    <span class="dark-grey-for-detail-text" property="jobTitle">{{programme.partner_details[0].profession}}</span>
+                </div>
+
+                <div class="omega-pane-13-of-26">
+                    <span class="label-for-detail-text">&nbsp;</span>
+                    <br>
+                    <span class="dark-grey-for-detail-text">&nbsp;</span>
+                </div>
+
+            </div>
+
+            <div class="partner-details-row-pane">
+
+                <div class="non-omega-pane-13-of-26">
+                    <span class="label-for-detail-text">Instrument(s)</span>
+                    <br>
+                    <span class="dark-grey-for-detail-text">{{programme.partner_details[0].instrument}}</span>
+                </div>
+
+                <div class="omega-pane-13-of-26">
+                    <span class="label-for-detail-text">&nbsp;</span>
+                    <br>
+                    <span class="dark-grey-for-detail-text">&nbsp;</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div ng-if="section_to_show === 'fans'">
+
+        <div ng-include src="'/partials/fans_panel.html'"></div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript-lazy" src="/lib/scrollbar/scrollbar.js"></script>

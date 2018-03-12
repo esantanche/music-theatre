@@ -1,0 +1,18 @@
+THIS TEMPLATE IS NO LONGER IN USE. IT WAS AN EXPERIMENT
+
+<span ng-repeat="iter in [1,2,3,4,5]">
+
+    <span ng-mouseover="voteinfo.mouse_over_button_no = iter" ng-mouseout="voteinfo.mouse_over_button_no = 0">
+
+        <img src="/images/white-heart.png"
+             ng-show="(voteinfo.mouse_over_button_no < iter && voteinfo.mouse_over_button_no > 0) ||
+                      ($parent.vote < iter && voteinfo.mouse_over_button_no == 0)">
+
+        <img src="/images/red-heart.png"
+             ng-show="(voteinfo.mouse_over_button_no >= iter && voteinfo.mouse_over_button_no > 0) ||
+                      ($parent.vote >= iter && voteinfo.mouse_over_button_no == 0)"
+             ng-click="$parent.vote = iter; do_post_vote()">
+
+    </span>
+
+</span>

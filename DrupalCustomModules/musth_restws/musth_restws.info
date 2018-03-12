@@ -1,0 +1,6 @@
+name = Musth RESTws service
+description = Musth RESTws service providing REST apis
+package = Musth
+dependencies[] = restws
+core = 7.x
+version = "7.x-0.1"

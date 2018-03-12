@@ -1,0 +1,807 @@
+<div id="socialview">
+
+    <div ng-include src="'/includes/header.html'"></div>
+
+    <div class="socialview-wrapper">
+
+        <div ng-include src="'/includes/tabs-horizontal-menu.html'"></div>
+
+        <div class="socialview-pane-container">
+
+            <div class="slanting-lines-pane">
+                &nbsp;
+            </div>
+
+            <div ng-show="social_function == 'groups'">
+
+                <!--<p>section_to_show: {{groupsinfo.section_to_show}}</p>-->
+
+                <!--centered-pane-container-->
+
+                <div class="omega-pane-30-of-30">
+
+                    <!--@todo get rid of this-->
+                    &nbsp;
+
+                </div>
+
+                <!--The following pane contains all sections, browsegroups, mygroups, singlegroup and singlepost-->
+
+                <div class="omega-pane-30-of-30">
+
+                    <div class="non-omega-pane-1-of-30">
+
+                        &nbsp;
+
+                    </div>
+
+                    <div class="non-omega-pane-28-of-30">
+
+                        <div ng-show="groupsinfo.section_to_show === 'browsegroups'">
+
+                            <div ng-form="groups_filterForm" novalidate>
+
+                                <div class="omega-pane-28-of-28">
+
+                                    <div class="non-omega-pane-5-of-28">
+
+                                        <input type="text" name="groups_filter"
+                                               ng-model="groupsinfo.groups_filter"
+                                               ng-pattern="text_validation_regex_pattern"
+                                               ng-minlength="3"
+                                               size="20"
+                                               class="inputfield"/>
+
+                                    </div>
+
+                                    <div class="apply-filter-button-pane">
+
+                                        <button ng-click="load_groups(groupsinfo.groups_filter);"
+                                                ng-disabled="groups_filterForm.$invalid"
+                                                class="blue-button">Apply filter</button>
+
+                                    </div>
+
+                                    <div class="reset-filter-button-pane">
+
+                                        <button ng-click="groupsinfo.groups_filter = ''; load_groups();"
+                                                class="blue-button">Reset filter</button>
+
+                                    </div>
+
+
+                                    <div class="omega-pane-15-of-28">
+
+                                        &nbsp;
+
+                                    </div>
+
+                                </div>
+
+                                <div class="tall-full-pane">
+
+                                    <span ng-if="groups_filterForm.groups_filter.$dirty && groups_filterForm.groups_filter.$invalid">
+
+                                        <span ng-if="groups_filterForm.groups_filter.$error.pattern"
+                                              class="info-text">Invalid characters entered</span>
+
+                                        <span ng-if="groups_filterForm.groups_filter.$error.minlength"
+                                              class="info-text">Enter min three characters</span>
+
+                                    </span>
+
+                                    <span ng-if="!(groups_filterForm.groups_filter.$dirty && groups_filterForm.groups_filter.$invalid)"
+                                         class="info-text">
+
+                                        <span>Enter at least three letters or digits and the list of groups will be filtered accordingly.</span>
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="omega-pane-28-of-28">
+
+                                &nbsp;
+
+                            </div>
+
+                            <div class="omega-pane-28-of-28">
+
+                                <div class="scrollable-groups-parent">
+
+                                    <div id="scrollable-groups">
+
+                                        <ul>
+
+                                            <li ng-repeat="group in groupsinfo.groups">
+
+                                                <div class="groups-list-pane">
+
+                                                    <div class="one-column-and-left-margin-pane">
+
+                                                        <button class="info-button"
+                                                                ng-click="go_to_url('/social/en/groups/group/' + group.nid)">
+                                                            &nbsp;
+                                                        </button>
+
+                                                    </div>
+
+                                                    <div class="group-title-pane">
+
+                                                        <a ng-href="/social/en/groups/group/{{group.nid}}"
+                                                           class="left-menu-text">{{group.title}}</a>
+
+                                                        &nbsp;
+
+                                                    </div>
+
+                                                    <div class="omega-pane-1-of-28">
+
+                                                        <!--&nbsp;-->
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="groups-list-pane">
+
+                                                    <div class="non-omega-pane-1-of-28">
+
+                                                        &nbsp;
+
+                                                    </div>
+
+                                                    <!--margin-full-pane-->
+
+                                                    <div class="margin-26col-pane dark-grey-text" style="white-space: pre-wrap">{{group.description}}&nbsp;</div>
+
+                                                    <div class="omega-pane-1-of-28">
+
+                                                        <!--&nbsp;-->
+
+                                                    </div>
+
+                                                </div>
+
+                                            </li>
+
+                                        </ul>
+
+                                        <!--style="text-align: left; font-weight: bold; cursor: pointer"-->
+
+                                        <div class="groups-list-pane">
+
+                                            <div class="non-omega-pane-21-of-28">
+
+                                                &nbsp;
+
+                                            </div>
+
+                                            <div class="non-omega-pane-5-of-28">
+
+                                                <span ng-click="groupsinfo.page_in_groups_list = 0; load_groups(null, groupsinfo.page_in_groups_list)"
+                                                      ng-show="groupsinfo.page_in_groups_list > 0"
+                                                      class="link-bold-text blue-link">First</span>
+
+                                                <span ng-show="groupsinfo.page_in_groups_list > 0"
+                                                      class="link-bold-text blue-link"> - </span>
+
+                                                <span ng-click="groupsinfo.page_in_groups_list = groupsinfo.page_in_groups_list - 1; load_groups(null, groupsinfo.page_in_groups_list)"
+                                                      ng-show="groupsinfo.page_in_groups_list > 0"
+                                                      class="link-bold-text blue-link">Back</span>
+
+                                                <span ng-show="groupsinfo.more_pages_of_groups_available && groupsinfo.page_in_groups_list > 0"
+                                                      class="link-bold-text blue-link"> - </span>
+
+                                                <span ng-click="groupsinfo.page_in_groups_list = groupsinfo.page_in_groups_list + 1; load_groups(null, groupsinfo.page_in_groups_list)"
+                                                      ng-show="groupsinfo.more_pages_of_groups_available"
+                                                      class="link-bold-text blue-link">See more</span>
+
+                                                &nbsp;
+
+                                            </div>
+
+                                            <div class="omega-pane-2-of-28">
+
+                                                &nbsp;
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div> <!--End of scrollable content pane (28/28) -->
+
+                            <div class="omega-pane-1-of-30">
+
+                                &nbsp;
+
+                            </div>
+
+                        </div>
+
+                        <div ng-show="groupsinfo.section_to_show === 'mygroups'">
+
+                            <div class="omega-pane-28-of-28">
+
+                                <div ng-if="user.uid">
+
+                                    <div ng-group
+                                         group="groupsinfo.newgroup"
+                                         user="user"
+                                         oneditmode="true"
+                                         alwaysonedit="true"
+                                         totalnumberofcolumns="28"
+                                         on-save="create_new_group(groupsinfo.newgroup)"></div>
+
+                                </div>
+
+                                <div ng-if="!user.uid" class="header3-text">
+
+                                        Please, login to create a new group
+
+                                </div>
+
+                            </div>
+
+                            <div class="omega-pane-28-of-28">
+
+                                &nbsp;
+
+                            </div>
+
+                            <!--<div class="omega-pane-30-of-30">-->
+
+                                <!--<div class="omega-pane-30-of-30 soft-text">-->
+
+                                    <!--<div class="non-omega-pane-20-of-30">-->
+
+                                        <!--Title-->
+
+                                    <!--</div>-->
+                                    <!--<div class="omega-pane-10-of-30">-->
+
+                                        <!--Role-->
+
+                                    <!--</div>-->
+
+                                <!--</div>-->
+
+                            <!--</div>-->
+
+                            <div class="omega-pane-28-of-28">
+
+                                <div class="scrollable-my-groups-parent">
+
+                                    <div id="scrollable-my-groups">
+
+                                        <ul>
+
+                                            <li ng-repeat="group in user.groups">
+
+                                                <div class="my-groups-list-pane">
+
+                                                    <div class="one-column-and-left-margin-pane">
+
+                                                        <button class="info-button"
+                                                                ng-click="go_to_url('/social/en/groups/group/' + group.id)">
+                                                            &nbsp;
+                                                        </button>
+
+                                                    </div>
+
+                                                    <div class="my-groups-group-title-pane">
+
+                                                        <a ng-href="/social/en/groups/group/{{group.id}}"
+                                                           class="left-menu-text">{{group.title}}</a>
+
+                                                        &nbsp;
+
+                                                    </div>
+
+                                                    <div class="omega-pane-1-of-28">
+
+                                                        &nbsp;
+
+                                                    </div>
+
+                                                </div>
+
+                                                <!--<div class="omega-pane-28-of-28">-->
+
+                                                    <!--<div class="non-omega-pane-20-of-28">-->
+
+                                                        <!--<a ng-href="/social/en/groups/group/{{group.id}}">{{group.title}}</a>-->
+
+                                                        <!--&nbsp;-->
+
+                                                    <!--</div>-->
+                                                    <!--<div class="omega-pane-8-of-28">-->
+
+                                                        <!--{{group.role}}-->
+
+                                                        <!--&nbsp;-->
+
+                                                    <!--</div>-->
+
+                                                <!--</div>-->
+
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div ng-show="groupsinfo.section_to_show === 'singlegroup'">
+
+                            <div class="omega-pane-28-of-28">
+
+                                <div class="main-content-for-single-group-pane">
+
+                                    <div class="scrollable-single-group-parent">
+
+                                        <div id="scrollable-single-group">
+
+                                            <div class="single-group-scrollable-content-pane">
+
+                                                <div class="group-section-pane">
+
+                                                    <div class="group-section-content-side-pane">
+
+                                                        <div ng-group
+                                                             group="groupsinfo.single_group"
+                                                             user="user"
+                                                             totalnumberofcolumns="21"
+                                                             on-save="update_group(groupsinfo.single_group)"
+                                                             on-delete="delete_group(groupsinfo.single_group)"
+                                                             on-abuse="mark_group_as_abusive(groupsinfo.single_group)">
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="omega-pane-2-of-23">
+
+                                                        &nbsp;
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="membership-control-pane">
+
+                                                    <div class="membership-control-content-side-pane">
+
+                                                        <div ng-if="groupsinfo.user_is_admin_for_the_current_group"
+                                                             class="dark-grey-text">You created this group</div>
+
+                                                        <div ng-if="groupsinfo.user_is_member_of_the_current_group && !(groupsinfo.user_is_admin_for_the_current_group)"
+                                                             class="dark-grey-text">You are a member of this group</div>
+
+                                                        <div ng-if="groupsinfo.user_is_member_of_the_current_group && !groupsinfo.user_is_admin_for_the_current_group">
+
+                                                            <span>&nbsp;</span>
+
+                                                            <button ng-click="join_or_leave_a_group(groupsinfo.single_group.nid)"
+                                                                    class="blue-button">Leave this group</button>
+
+                                                        </div>
+
+                                                        <div ng-if="!groupsinfo.user_is_member_of_the_current_group && user.uid">
+
+                                                            <span>&nbsp;</span>
+
+                                                            <button ng-click="join_or_leave_a_group(groupsinfo.single_group.nid)"
+                                                                    class="blue-button">Join this group</button>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="omega-pane-2-of-23">
+
+                                                        &nbsp;
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="omega-pane-23-of-23">
+
+                                                    <div class="non-omega-pane-21-of-23">
+
+                                                        <div ng-if="groupsinfo.user_is_member_of_the_current_group">
+
+                                                            <div class="info-text">
+                                                                Create a new post!
+                                                            </div>
+
+                                                            <div class="create-a-post-pane">
+
+                                                                <div ng-post
+                                                                     post="groupsinfo.newpost"
+                                                                     user="user"
+                                                                     totalnumberofcolumns="21"
+                                                                     oneditmode="true"
+                                                                     alwaysonedit="true"
+                                                                     on-save="save_post(groupsinfo.newpost)"></div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="omega-pane-2-of-23">
+
+                                                        &nbsp;
+
+                                                    </div>
+
+                                                </div>
+
+                                                <ul>
+
+                                                    <li ng-repeat="post in (groupsinfo.posts_of_current_single_group | filter:{ published: true } )">
+
+                                                        <div class="posts-list-pane">
+
+                                                            <div class="one-column-with-top-margin-pane">
+
+                                                                <button class="info-button"
+                                                                        ng-click="go_to_url('/social/en/groups/post/' + post.nid)">
+                                                                    &nbsp;
+                                                                </button>
+
+                                                            </div>
+
+                                                            <div class="non-omega-pane-20-of-23">
+
+                                                                <div>
+
+                                                                    <a ng-href="/social/en/groups/post/{{post.nid}}"
+                                                                       class="left-menu-text">
+                                                                        {{post.body | truncate:115}}
+                                                                    </a>
+
+                                                                </div>
+
+                                                                <div class="dark-grey-text">
+
+                                                                    by {{post.name}}
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="omega-pane-2-of-23">
+
+                                                                &nbsp;
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </li>
+
+                                                </ul>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!--up to here-->
+
+                                </div>
+
+                                <div class="group-members-pane">
+
+                                    <div class="header-text">Group members</div>
+
+                                    <ul>
+
+                                        <li ng-repeat="member in groupsinfo.members_of_current_single_group">
+
+                                            <div class="group-member-name-pane">
+
+                                                <a ng-href="{{member.user_profile_permalink}}"
+                                                   class="link-and-ellipses-text">{{member.name}}</a>
+
+                                            </div>
+
+                                        </li>
+
+                                    </ul>
+
+                                    <div class="omega-pane-5-of-5">
+
+                                        <!--<div class="non-omega-pane-16-of-23">-->
+
+                                            <!--&nbsp;-->
+
+                                        <!--</div>-->
+
+                                        <span ng-click="groupsinfo.page_in_single_group_members_list = 0;
+                                                        load_single_group_with_posts(groupsinfo.single_group.nid,
+                                                                                    groupsinfo.page_in_single_group_posts_list,
+                                                                                    groupsinfo.page_in_single_group_members_list)"
+                                              ng-show="groupsinfo.page_in_single_group_members_list > 0"
+                                              class="link-bold-text blue-link">First</span>
+
+                                        <span ng-show="groupsinfo.page_in_single_group_posts_list > 0"
+                                              class="link-bold-text blue-link"> - </span>
+
+                                        <span ng-click="groupsinfo.page_in_single_group_members_list = groupsinfo.page_in_single_group_members_list - 1;
+                                                        load_single_group_with_posts(groupsinfo.single_group.nid,
+                                                                                    groupsinfo.page_in_single_group_posts_list,
+                                                                                    groupsinfo.page_in_single_group_members_list)"
+                                              ng-show="groupsinfo.page_in_single_group_members_list > 0"
+                                              class="link-bold-text blue-link">Back</span>
+
+                                        <span ng-show="groupsinfo.more_pages_of_posts_in_group_available && groupsinfo.page_in_single_group_posts_list > 0"
+                                              class="link-bold-text blue-link"> - </span>
+
+                                        <span ng-click="groupsinfo.page_in_single_group_members_list = groupsinfo.page_in_single_group_members_list + 1;
+                                                       load_single_group_with_posts(groupsinfo.single_group.nid,
+                                                                                    groupsinfo.page_in_single_group_posts_list,
+                                                                                    groupsinfo.page_in_single_group_members_list)"
+                                              ng-show="groupsinfo.more_pages_of_members_in_group_available"
+                                              class="link-bold-text blue-link">See more</span>
+
+                                        <!--<div class="omega-pane-2-of-23">-->
+
+                                            <!--&nbsp;-->
+
+                                        <!--</div>-->
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div ng-show="groupsinfo.section_to_show === 'singlepost'">
+
+                            <!--<button ng-click="groupsinfo.section_to_show = 'singlegroup';-->
+                                              <!--load_single_group_with_posts(groupsinfo.single_group_to_show)">Back</button>-->
+
+                            <div class="omega-pane-28-of-28">
+
+                                <!--<div class="omega-pane-28-of-28">-->
+                                    <!--&nbsp;-->
+
+                                <!--</div>-->
+
+                                <div class="scrollable-single-post-parent">
+
+                                    <div id="scrollable-single-post">
+
+                                        <div class="single-post-scrollable-content-pane">
+
+                                            <div class="post-section-pane">
+
+                                                <div class="post-section-content-side-pane">
+
+                                                    <div ng-post
+                                                         post="groupsinfo.single_post"
+                                                         user="user"
+                                                         totalnumberofcolumns="26"
+                                                         showfullpost="true"
+                                                         on-save="save_post(groupsinfo.single_post)"
+                                                         on-delete="delete_post(groupsinfo.single_post)"
+                                                         on-abuse="mark_post_as_abusive(groupsinfo.single_post)"></div>
+
+                                                </div>
+
+                                                <div class="omega-pane-2-of-28">
+
+                                                    &nbsp;
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="membership-info-for-post-pane">
+
+                                                <div class="membership-info-for-post-side-pane">
+
+                                                    <a ng-href="/social/en/groups/group/{{groupsinfo.single_post.gid}}"
+                                                       class="left-menu-text">This post belongs to a group, click here to discover it.</a>
+
+                                                    <div ng-if="groupsinfo.user_is_member_of_the_current_group"
+                                                         class="dark-grey-text">You are a member of the group this post belongs to</div>
+
+                                                </div>
+
+                                                <div class="omega-pane-2-of-28">
+
+                                                    &nbsp;
+
+                                                </div>
+
+                                            </div>
+
+                                            <div ng-if="groupsinfo.user_is_member_of_the_current_group">
+
+                                                <!--<div class="non-omega-pane-1-of-30">-->
+                                                <!--&nbsp;-->
+
+                                                <!--</div>-->
+
+                                                <div class="omega-pane-28-of-28 info-text">
+
+                                                    Create a comment!
+
+                                                </div>
+
+                                                <div class="omega-pane-28-of-28">
+
+                                                    &nbsp;
+
+                                                </div>
+
+                                                <div class="omega-pane-28-of-28">
+
+                                                    <div class="non-omega-pane-26-of-28">
+
+                                                        <div ng-post
+                                                             post="groupsinfo.single_post.newcomment"
+                                                             user="user"
+                                                             oneditmode="true"
+                                                             alwaysonedit="true"
+                                                             totalnumberofcolumns="26"
+                                                             on-save="save_comment(groupsinfo.single_post.newcomment, groupsinfo.single_post)"></div>
+
+                                                    </div>
+
+                                                    <div class="omega-pane-2-of-28">
+
+                                                        &nbsp;
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div ng-if="groupsinfo.single_post.comments.length == 0">
+                                                <div class="omega-pane-28-of-28">
+
+                                                    &nbsp;
+
+                                                </div>
+
+                                                <!--<div class="non-omega-pane-1-of-30">-->
+                                                <!--&nbsp;-->
+
+                                                <!--</div>-->
+
+                                                <div class="omega-pane-28-of-28 info-text">
+
+                                                    No comments yet.
+
+                                                </div>
+
+                                            </div>
+
+                                            <ul>
+
+                                                <li ng-repeat="comment in groupsinfo.single_post.comments">
+
+                                                    <!--You won't find the variable localmovefocustopostfield anywhere else-->
+                                                    <!--because in this case it's used only internally by the directive ng-comment -->
+                                                    <!--You may ask why we have it here if it's used only internally-->
+                                                    <!--It's because in different cases it will be manipulated by the controller and so it has-->
+                                                    <!--to be visible-->
+
+                                                    <!--oneditmode="no"-->
+                                                    <!--alwaysonedit="no"-->
+
+                                                    <div class="omega-pane-28-of-28">
+
+                                                        <div class="non-omega-pane-26-of-28">
+
+                                                            <div ng-post
+                                                                 post="comment"
+                                                                 user="user"
+                                                                 enablereply="true"
+                                                                 totalnumberofcolumns="26"
+                                                                 on-save="save_comment(comment, groupsinfo.single_post)"
+                                                                 on-delete="delete_comment(comment, groupsinfo.single_post)"
+                                                                 on-abuse="mark_comment_as_abusive(comment)"
+                                                                 on-reply="reply_to_comment(comment)"></div>
+
+                                                        </div>
+
+                                                        <div class="omega-pane-2-of-28">
+
+                                                            &nbsp;
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </li>
+
+                                            </ul>
+
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <div ng-click="groupsinfo.page_in_single_post_comments_list = 0;
+                                                       get_comments_and_add_them_to_post(groupsinfo.single_post,
+                                                                                         groupsinfo.page_in_single_post_comments_list)"
+                                                             ng-show="groupsinfo.page_in_single_post_comments_list > 0"
+                                                             class="button button-grey-text info-text">First</div>
+                                                    </td>
+                                                    <td>
+                                                        <div ng-click="groupsinfo.page_in_single_post_comments_list = groupsinfo.page_in_single_post_comments_list - 1;
+                                                       get_comments_and_add_them_to_post(groupsinfo.single_post,
+                                                                                         groupsinfo.page_in_single_post_comments_list)"
+                                                             ng-show="groupsinfo.page_in_single_post_comments_list > 0"
+                                                             class="button button-grey-text info-text">Previous</div>
+                                                    </td>
+                                                    <td>
+                                                        <div ng-click="groupsinfo.page_in_single_post_comments_list = groupsinfo.page_in_single_post_comments_list + 1;
+                                                       get_comments_and_add_them_to_post(groupsinfo.single_post,
+                                                                                         groupsinfo.page_in_single_post_comments_list)"
+                                                             ng-show="groupsinfo.more_pages_of_comments_to_post_available"
+                                                             class="button button-grey-text info-text">Next</div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                            <!--<div class="non-omega-pane-1-of-28">-->
+                                <!--&nbsp;-->
+
+                            <!--</div>-->
+
+
+
+                        </div>  <!-- end of singlepost section -->
+
+                    </div>  <!-- non omega pane 28 of 30 that encloses the content for all sections-->
+
+                    <!--<div class="omega-pane-1-of-30">-->
+
+                        <!--&nbsp;-->
+
+                    <!--</div>-->
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div ng-include src="'/includes/footer.html'"></div>
+
+</div>
+
+<script type="text/javascript-lazy" src="/lib/scrollbar/scrollbar.js"></script>

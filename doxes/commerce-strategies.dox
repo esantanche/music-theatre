@@ -1,0 +1,396 @@
+/**
+ * @page commercestrategies Commerce strategies
+ *
+ * @section cartornot Shopping cart or not?
+ *
+ * We don't use the shopping cart module or better, we use just a few apis from that module.
+ *
+ * We can't use apis that rely on session data because we write REST apis, which are restful and
+ * don't use the concept of session at all. And when I say at all I mean at all.
+ *
+ * See: @ref restfulauth
+ *
+ * From http://www.drupalcommerce.org/user-guide/shopping-carts-orders-and-line-items
+ * > The shopping cart is totally optional, meaning checkout is implemented in a separate module and will
+ * > still function properly for orders created by the administrator. This allows for sites to do invoicing
+ * > and payment collection where users shouldn't be allowed to create and manage their own orders via a cart.
+ *
+ * @section orderno Order number strategies
+ *
+ * For anonymous users the angular client has to keep the order id of the order created for the user.
+ * Doing so, the client can retrieve information about the order using rest apis.
+ *
+ * This is needed because rest apis won't keep the order id (for anonymous users) through calls.
+ *
+ * @section commerceconcepts Commerce concepts
+ *
+ * Sell price vs unit price
+ *
+ * The sell price of a product is the unit price to which discounts, taxes, currency conversion, etc
+ * have been applied.
+ *
+ * @see http://www.drupalcommerce.org/user-guide/sell-price-calculation
+ *
+ * @section commerceapis Commerce apis to use
+ *
+ * @subsection commerceapisprod Product apis
+ *
+ * To create and manage products
+ *
+ * * commerce_product_new - to create a new product - must use
+ * * commerce_product_save - to save the product - must use
+ * * commerce_product_load (by product id) - if you have the product id
+ * * commerce_product_load_by_sku - maybe
+ * * commerce_product_load_multiple - deprecated, use entityfieldquery
+ *
+ * @subsection commerceapisorder Order apis
+ *
+ * To manage orders
+ *
+ * From commerce_order.module
+ *
+ * * commerce_order_type_get_name - to know the name of a particular order type - maybe useful
+ * * commerce_order_new - to create a new order - must use
+ * * commerce_order_save - to save the order - must use
+ * * commerce_order_load - to load an order by id - must use at least for anonymous users
+ * * commerce_order_load_by_number - it uses the order number that can be different from the order id - we can use this if we use order numbers instead of order ids - not for now
+ * * commerce_order_load_multiple - deprecated, use entityfieldquery
+ * * commerce_order_is_latest_revision - do we use order revisions?
+ * * commerce_order_delete - to delete an order - can use
+ * * commerce_order_replace_number_tokens - do we use order numbers?
+ * * there are many other apis about order numbers
+ * * commerce_order_state_get_title - to get human readable descriptions of order status - maybe
+ * * commerce_order_status_update - to change order status - I guess that we have to use this
+ * * commerce_order_calculate_total - calculate order total - must use
+ * * commerce_order_unique_username - use if usernames are not unique - maybe
+ *
+ * @subsection commerceapilineitem Line Item apis
+ *
+ * From commerce_line_item.module
+ *
+ * * commerce_line_item_type_load - do we need to meddle with line item types?
+ * * commerce_line_item_type_get_name - getting human readable line item types - maybe we need these to display
+ * * commerce_line_item_new - creating line items here associated to an order - must use (I guess)
+ * * commerce_line_item_save - sure - must use
+ * * commerce_line_item_load - same
+ * * commerce_line_item_delete_references - do we need this? maybe
+ * * commerce_line_item_title - need this?
+ * * commerce_line_item_rebase_unit_price - Recalculates the price components - I guess that we must use this
+ * * commerce_line_items_quantity - Returns the total quantity of an array of line items - must use
+ * * commerce_line_items_total - same
+ * * commerce_line_item_summary_links - item summary links? what are they?
+ *
+ * @subsection commerceapicart Cart apis
+ *
+ * From commerce_cart.module
+ *
+ * We shouldn't be using the cart module, but let's have a look
+ *
+ * * commerce_cart_commerce_checkout_complete - this is a hook, so it's automatically called when checkout completes to
+ * delete session info about the order. We don't use session info, so we are not concerned
+ * * commerce_cart_commerce_order_delete - see commerce_cart_order_session_delete
+ * * commerce_cart_commerce_product_calculate_sell_price_line_item_alter - this api suggests that a line item may not
+ * have its order id defined - check it
+ * * commerce_cart_user_login - this is interesting. It's about converting an anonymous order and associating it to
+ * an user if she logs in
+ * * commerce_cart_user_update - what to do if the email changes. We have to change the email address associated to any
+ * existing 'cart' order (this is for registered users)
+ * * commerce_cart_commerce_order_load - This is about refreshing orders. We are going to refresh orders every time
+ * we have to send it back as reply to an api call
+ * * commerce_cart_order_load - it loads an order given the user id or uses session info if uid==0 - we will use apis
+ * from the order module
+ * * commerce_cart_order_id - see above, use order module apis and, for anonymous users, have angular provide the order id
+ * * commerce_cart_order_ids_reset - do you need this?
+ * * commerce_cart_order_new - this can be done with order apis as well, there is just some caching added
+ * * commerce_cart_order_is_cart - this does a very simple thing, in addition it calls many internal extensions if they exist
+ * * commerce_cart_commerce_entity_access_condition_commerce_order_alter - about access to orders, we will manage this
+ * in other ways
+ * * commerce_cart_order_convert - about converting an anonymous order and associate it to an user - there is something to
+ * be done about customer profiles. Are we going to use them? Maybe we have to use customer profiles as well as user profiles
+ * have a look - we have to update the customer profile with the uid as well, it's not enough to associate the order to the uid
+ * Does a rule exist that performs this conversion calling this api? I hope not, otherwise we have a problem since we don't want
+ * to use the cart module at all
+ * * commerce_cart_order_refresh - we have to do this refresh every time a cart order is requested - there are many things
+ * to do - maybe we want to use the cart module at last
+ * * commerce_cart_get_properties - can't use this one because it relies on session info
+ * * commerce_cart_order_session_order_ids - the same, it uses session info
+ * * commerce_cart_order_session_save - the same
+ * * commerce_cart_order_session_exists - same
+ * * commerce_cart_order_session_delete - same
+ * * commerce_cart_product_add - we have to do this, but we can't use session info
+ * * commerce_cart_order_product_line_item_delete - we have to do this
+ * * commerce_cart_order_empty - we have to this as well
+ * * commerce_cart_add_to_cart_form_product_ids - if you want the product id of the product referenced in a line item,
+ * you have to read the 'context' field because the column 'line_item_label' is only the sku of the product
+ *
+ * @subsection commerceapiproductref Product reference apis
+ *
+ * From commerce_product_reference.module
+ *
+ * * commerce_product_reference_field_extra_fields - do we have extra fields attached to line items?
+ * * commerce_product_line_item_configuration - it's interesting to know that line items have a reference field to the
+ * product they are about, but it references the product uri (/node/product nid)
+ * * commerce_product_line_item_new - this one is a must, we have to call it to create a line item
+ * * commerce_product_line_item_populate - this is useful as well
+ * * commerce_price_component_load - this is a must, it's about loading components of a price
+ * * commerce_product_line_item_types - do we need non-standard line item types?
+ *
+ * @subsection commerceapiprice Price apis
+ *
+ * From commerce_price.module
+ *
+ * * commerce_price_component_types - Returns a list of all available price component types. - maybe we need it
+ * * commerce_price_component_titles - this is related
+ * * commerce_price_component_type_load - same
+ * * commerce_price_component_add - to add a component to a price
+ * * commerce_price_component_load - loading price components
+ * * commerce_price_component_delete - deleting them
+ * * commerce_price_component_total - computing a total
+ *
+ * @subsection commerceapiproductpricing Product pricing apis
+ *
+ * From commerce_product_pricing.module
+ *
+ * * commerce_product_calculate_sell_price - this calculate the sell price, indispensable
+ * * there are apis to pre-calculate sell prices, maybe we use them later
+ *
+ * @subsection commerceapicustomer Customer apis
+ *
+ * From commerce_customer.module
+ *
+ * * commerce_customer_profile_label - Gets a label that can be displayed. The default is the customer name - You display what you want
+ * * commerce_customer_profile_types - Our profile is 'billing'. This api can give info about it
+ * * commerce_customer_profile_type_load - This api is even better, it loads only a given profile
+ * * commerce_customer_profile_new - must use
+ * * commerce_customer_profile_save - must use
+ * * commerce_customer_profile_load - replace with entityfieldquery
+ * * commerce_customer_profile_can_delete - must use before deleting a profile
+ * * commerce_customer_profile_delete - Sure we have to be able to delete profiles
+ *
+ * @subsection commerceapicheckout Checkout apis
+ *
+ * From commerce_checkout.module
+ *
+ * There are a few statuses associated to the 'checkout' state. They are: checkout, review, complete.
+ * They correspond with steps in the checkout process usually associated to different pages.
+ *
+ * You can set the status of an order so that you remember up to where the checkout process has
+ * progressed.
+ *
+ * * commerce_checkout_complete_access - might be useful
+ * * commerce_checkout_order_can_checkout - do we need this?
+ * * commerce_checkout_complete - this is important, it triggers the rules to be run on checkout completion - must use
+ * * commerce_checkout_create_account - this is done automatically, isn't it?
+ * * commerce_checkout_completion_message_default - default confirmation message, this function is again called automatically
+ *
+ * @subsection commerceapipayment Payment apis
+ *
+ * * commerce_payment_methods - do we need this?
+ * * commerce_payment_method_load - loading an array about a payment method - do we need it?
+ * * commerce_payment_method_get_title - need this?
+ * * commerce_payment_transaction_status_load - we may need this
+ * * commerce_payment_transaction_new - this creates a transaction, I guess we need it, unless it's done automatically
+ * * commerce_payment_transaction_save - saves a transaction
+ * * commerce_payment_transaction_load - loads a transaction
+ * * commerce_payment_transaction_load_multiple - I guess we can use entityfieldquery
+ * * commerce_payment_transaction_delete - deletes a transaction
+ * * commerce_payment_order_balance - sure we have to calculate a balance from an order and its transactions
+ *
+ * @section commerceservices Studying the Commerce Services module
+ *
+ * We studied the Commerce Services module to see if it could inspire architectural strategies for our
+ * module.
+ *
+ * Unfortunately, the Commerce Service module relies on session data to determine the shopping cart
+ * associated to an anonymous user. So, it doesn't suit our model, which is completely restful and
+ * doesn't rely on session info
+ *
+ * @subsection notesaboutcommerceservice A few notes about the module
+ *
+ * The order apis include a 'relationships/line-items' api that returns the line items associated
+ * to a given order.
+ *
+ * This 'relationships' api is on the same level as create/update/delete.
+ *
+ * The line-item resource lists line items independently from orders.
+ *
+ * Interesting apis
+ *
+ * * commerce_services_line_item_create - very useful as inspiration
+ *
+ * @section commercerestwsapis The RESTws api that we will implement
+ *
+ * We define these resources in our RESTws custom module:
+ * * Product display, info about the product that we display on shopping pages. A product display has an
+ * entity reference to a product
+ * * Product, we need this to get the product id given the sku. When we want to put in the cart a track,
+ * we need the track product id given the sku that we form from the catalogue no.
+ * * Order
+ * * LineItem, it will be a separate resource and you will be able to query all the line items of an order or
+ * an individual line item
+ * * CustomerProfile, we need this resource to access the billing details
+ * * PaymentTransaction, we have to create payment transactions and follow their workflow from
+ * 'pending' to 'success' or 'failure'. @see commerce_payment.module
+ *
+ * On Order update we have to:
+ * * consider that the update is about moving an order from uid==0 to an existing user.
+ * This is to cover the case in which a user creates an anonymous order then she logs in because she remembers that
+ * she has an account
+ * * implement email changes
+ * * create customer profiles
+ *
+ * @section commerceorderprocess How the order process will flow
+ *
+ * This is order process from when an order is created and placed in the status 'cart' to when it's completed.
+ * Here there are the rest api calls made by Angular
+ *
+ * <b>Cart creation</b>
+ *
+ * The cart is empty. The user puts an item in the cart. Angular calls the create api for the Order resource.
+ * For anonymous users Angular has to keep the order number.
+ *
+ * Angular calls the create api for the resource LineItem to create the first line item.
+ *
+ * Angular calls the query api for the order to retrieve its details.
+ *
+ * Angular calls the apis create, update, delete for the resource LineItem when the user adds products to the cart
+ * or change or delete them.
+ *
+ * After any change Angular has to call the query api for the order to get it refreshed. The commerce apis will
+ * recalculate totals and update any relation between entities.
+ *
+ * <b>Checkout start</b>
+ *
+ * When the user clicks on 'Checkout', Angular calls the update api of the Order resource to change the order status
+ * from 'cart' to 'checkout_checkout'.
+ *
+ * Then Angular asks the user to provide email and billing address.
+ *
+ * Angular calls the api create for the resource Customer profile and provides the billing details.
+ * For anonymous users Angular has to keep the Customer profile number.
+ * The api will associate the customer profile to the order or it may be done on checkout completion.
+ *
+ * If the user is logged in, a customer profile may already exist. Angular has to check this.
+ *
+ * Angular calls the update api for the order to change its status from 'checkout_checkout' to 'checkout_review'.
+ * Angular provides the user email as well for it to be added to the order. Angular provides also the id of the
+ * customer profile it has just created. It will be added to the order.
+ *
+ * <b>Checkout review</b>
+ *
+ * The user can now review the order and give consent to start the payment process.
+ *
+ * When the user clicks on 'Payment', Angular calls the create api of the resource Payment transaction.
+ * The transaction is created in a 'pending' state and is associated to the order.
+ *
+ * The encrypted information that has to be sent to the payment gateway is calculated and associated to the
+ * transaction.
+ *
+ * Angular calls the query api for the transaction to get that information.
+ *
+ * Angular will keep the transaction id for anonymous orders or it can be retrieved using the order id.
+ *
+ * <b>Checkout payment</b>
+ *
+ * Angular calls the update api for the order to update its status from 'checkout_review' to 'checkout_payment'.
+ *
+ * Angular prepares the http query for the payment gateway and redirects to it.
+ *
+ * The gateway performs an http query back to notify the result.
+ *
+ * Angular calls the update api for the transaction to update the outcome, success or failure.
+ *
+ * Angular calls the update api for the order to change its status from 'checkout_payment' to 'checkout_complete'.
+ *
+ * On occasion of this status change the Commerce rules that send confirmation messages are called.
+ *
+ * @section commercerecurringframework Commerce Recurring Framework, how does it work
+ *
+ * Just open the product whose SKU is 'SUBSCRIPTION-REC-01m'.
+ * There are three prices:
+ * - Initial price
+ * - Recurring price
+ * - Price
+ *
+ * and there are three periods:
+ * - Initial period
+ * - Recurring period
+ * - End period
+ *
+ * When the order is first created the user is billed the price 'Initial price'. After the initial period, the framework
+ * creates another order and bills the 'Recurring price'. It keeps creating order every time the recurring period expires.
+ * It stops when the end period expires.
+ *
+ * The price 'Price' should never be used. If it's used, something is wrong. You can't get rid of that price because
+ * it's the default Commerce price. Set it to zero.
+ *
+ * The right price is billed when the first order is created using the REST apis. If you create an order (including
+ * a recurring product) from the Administration menu, you may end up with the wrong price.
+ *
+ * @section commerceorderstatus Commerce order statuses
+ *
+ * Remember that there is a difference between state and status
+ * @see http://www.drupalcommerce.org/faq/order-states
+ *
+ * A state can have one or more associated statuses
+ *
+ * State: Cart - defined in commerce_cart_commerce_order_state_info - Orders in this state have not been completed by the customer yet.
+ *
+ * * status: cart - defined in commerce_cart_commerce_order_status_info
+ *
+ * State: Checkout - all the statuses in the checkout process (checkout)
+ *
+ * * status: Checkout - giving billing address and email (checkout_checkout)
+ * * status: Review - review the order and give payment details (checkout_review)
+ * * status: Payment - Customer redirected to payment gateway (checkout_payment)
+ * * status: Complete - payment successful (checkout_complete)
+ *
+ * State: Pending - order waiting to be processed
+ *
+ * * status: Pending - order waiting for the processing to start
+ * * status: Processing - the order is being processed
+ *
+ * State: Completed - order completed
+ *
+ * * status: Completed - completed
+ *
+ * @section commercemoduleworking A few things that the commerce module does
+ *
+ * @subsection commercerules Commerce Rules
+ *
+ * Rule 'Assign an anonymous order to a pre-existing user'
+ *
+ * If an order is associated to uid=0 (anonymous) and an email address has been associated to that
+ * order, the rule 'Assign an anonymous order to a pre-existing user' will associate the order to the
+ * registered user who has that email address, if any.
+ *
+ * Rule 'Create a new account for an anonymous order'
+ *
+ * For anonymous orders with an email address that is not associated with any existing user, a new
+ * user is created and their uid is added to the order.
+ *
+ * The new user account created has Username = Email address.
+ *
+ * Rule 'Send an order notification e-mail'
+ *
+ * On the 'Completing the checkout process' event, an email is automatically sent.
+ *
+ * @subsection commercemulticurrency Dealing with multicurrency
+ *
+ * From commerce_cart.module:1090 it looks like there can be as many prices as there are languages.
+ * These prices are associated to the languages Drupal uses as first index in the field array.
+ *
+ * I mean the language we specify in statements like this one:
+ *
+ * <code>
+ * $product->commerce_price[LANGUAGE_NONE][0]['original']
+ * </code>
+ *
+ * @section commercefields About Commerce fields
+ *
+ * @subsection commercevipfields Very Important Fields
+ *
+ * field_data_commerce_product - it's the node id of the product a line item is related to
+ * field_data_commerce_unit_price - unit price associated to a line item
+ *
+ */

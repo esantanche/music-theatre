@@ -1,0 +1,33 @@
+/**
+ * @page whatrestfulserveris What a restful server is
+ *
+ * Let's make the assumption that we have our application data in a given state. This means that
+ * our server application has a given, static set of data to use when calculating any reply to our
+ * requests.
+ *
+ * Any session-related information is not considered as application data.
+ *
+ * Our application is restful if it returns the same result when called with the same parameters.
+ *
+ * @section independentfrom What results should be independent from
+ *
+ * In a restful server results should be independent from:
+ *
+ * - session-related information
+ * - the fact that a user is logged in or not
+ * - any implicit parameter; every parameter should be explicitly given
+ *
+ * @section restfulnessandmethods Restfulness and methods
+ *
+ * Restfulness is more important for query methods because it affects caching.
+ *
+ * It's difficult to cache a query method's results if they change when parameters are
+ * the same from call to call.
+ *
+ * Create, update and delete methods are not cached. They benefit from restfulness anyway because
+ * it's clear what the method will do if it's behaviour depends on the given parameters only and not on
+ * some unclear session information or whatever else.
+ *
+ * When documenting a rest method we use the doxygen tag \@restfulness to document the method's
+ * restfulness.
+ */

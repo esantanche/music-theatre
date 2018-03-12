@@ -1,0 +1,273 @@
+<?php
+
+/**
+ * @file musth_rules.module
+ * 
+ * @brief Rules defined for the app
+ * 
+ * Every rule defined for this app is in this module or in the included .inc files
+ * 
+ * @ingroup musthrules
+ */
+
+/**
+ * We have to explicitly load the include files because they don't contain class definitions. Only include files
+ * that contain classes definitions are automatically loaded.
+ */
+module_load_include('inc', 'musth_rules', 'includes/musth_rules.taxonomy_apes_build');
+module_load_include('inc', 'musth_rules', 'includes/musth_rules.taxonomy_apes_reset');
+module_load_include('inc', 'musth_rules', 'includes/musth_rules.credits_apes_build');
+module_load_include('inc', 'musth_rules', 'includes/musth_rules.credits_apes_reset');
+
+// Rules for Commerce
+module_load_include('inc', 'musth_rules', 'includes/musth_rules.products_creation');
+
+// Sitemap generation for programmes
+module_load_include('inc', 'musth_rules', 'includes/musth_rules.programmes_sitemap_generation');
+
+/**
+ * This is the hook that declares every action. Declared actions can be used to configure
+ * rules using the Rules module interface. They can be run directly when needed.
+ *
+ * The hook that this function defines is called hook_rules_action_info()
+ * See it for the format of the array that it returns
+ *
+ * @return Array containing the definitions of the actions
+ */ 
+function musth_rules_rules_action_info() {
+
+  return array(
+    // Experimental action. We keep it in case we need to test the module again
+    'updates_on_programme_change' => array(
+      'label' => '(experimental) Run updates on programme creation, update and deletion',
+      'group' => 'Musth Rules Tests',
+      'base' => 'musth_rules_action_updates_on_programme_change',
+    ),
+    // Experimental action. We keep it in case we need to test the module again
+    'test_create_apes_genre' => array(
+      'label' => '(experimental) Creates apes for genre taxonomy',
+      'group' => 'Musth Rules Tests',
+      'base' => 'musth_rules_action_test_create_apes_genre',
+    ),
+    // This action creates or updates the apes related to taxonomy terms, the ones that
+    // we are going to keep, not the ones that will be replaced by the credit list
+    'apes_building_taxonomies' => array(
+      'label' => 'Creates apes for taxonomies',
+      'parameter' => array(
+          'media_type' => array(
+                'type' => 'text',
+                'label' => t('Media type, video or audio'),
+          ),
+      ),
+      'group' => 'Musth Rules Ape Building',
+      'base' => 'musth_rules_action_apes_building_taxonomies',
+    ),
+    // This action deletes all the apes related to taxonomy terms
+    'apes_resetting_taxonomies' => array(
+      'label' => 'Resets apes for taxonomies',
+      'parameter' => array(
+            'media_type' => array(
+                'type' => 'text',
+                'label' => t('Media type, video or audio'),
+            ),
+      ),
+      'group' => 'Musth Rules Ape Resetting',
+      'base' => 'musth_rules_action_apes_resetting_taxonomies',
+    ),
+    // This action creates or updates the apes related to credit lists
+    'apes_building_credits' => array(
+    'label' => 'Creates apes for ex-taxonomies (credit lists)',
+      'parameter' => array(
+        'media_type' => array(
+            'type' => 'text',
+            'label' => t('Media type, video or audio'),
+        ),
+      ),
+      'group' => 'Musth Rules Ape Building',
+      'base' => 'musth_rules_action_apes_building_credits',
+    ),
+    // This action deletes all the apes related to credit lists
+    'apes_resetting_credits' => array(
+      'label' => 'Resets apes for ex-taxonomies (credit lists)',
+      'parameter' => array(
+            'media_type' => array(
+                'type' => 'text',
+                'label' => t('Media type, video or audio'),
+            ),
+      ),
+      'group' => 'Musth Rules Ape Resetting',
+      'base' => 'musth_rules_action_apes_resetting_credits',
+    ),
+    // This action creates Commerce products from tracks if they don't already exist
+    'products_creation' => array(
+      'label' => 'Creating products from tracks',
+      'group' => 'Musth Rules Products',
+      'base' => 'musth_rules_action_products_creation',
+    ),
+    // This action creates the sitemap where there are the urls of all programmes
+    'programmes_sitemap_generation' => array(
+       'label' => 'Creating sitemap for programmes',
+       'group' => 'Musth Rules Sitemaps',
+       'base' => 'musth_rules_action_programmes_sitemap_generation',
+    ),
+);
+}
+
+/**
+ * This is just an experiment. We keep it in case we need to test the module again.
+ *
+ * @param[in] $settings Usually not needed, Here we just put in a watchdog for debugging purposes
+ * @return TRUE
+ */
+function musth_rules_action_updates_on_programme_change($settings) {
+
+//  watchdog('musth_rules', 'W7D001 musth_rules_action_updates_on_programme_change (!s)',
+//           array('!s' => print_r($settings, true)),
+//		   WATCHDOG_DEBUG);
+
+  return TRUE;
+}
+
+/**
+ * This is just an experiment. We keep it in case we need to test the module again.
+ *
+ * @param[in] $settings Currently not used
+ * @return TRUE
+ */
+function musth_rules_action_test_create_apes_genre($settings) {
+
+  watchdog('musth_rules', 'W7D001 67TG I disabled this action, re-enable it if you need it', array(), WATCHDOG_ERROR);
+
+  /*
+
+  $genre_vocabulary = taxonomy_vocabulary_machine_name_load("genre");
+  $genre_vocabulary_vid = $genre_vocabulary->vid;
+
+  // every query should be inserted in a try/catch structure
+
+  //watchdog('rules_test', '78QA rules_action_test_create_apes_genre (!v)', array('!v' => print_r($genre_vocabulary_vid, true)));
+  
+  $query = new EntityFieldQuery();
+  $nids_of_apes = $query->entityCondition('entity_type', 'ape_test_genre')
+                        ->entityCondition('bundle', 'ape_test_genre')
+                        ->execute();    
+
+  //watchdog('rules_test', '3JNH nids_of_apes (!i) (!t) ', 
+  //          array('!i' => print_r(count($nids_of_apes['ape_test_genre']), true), '!t' => print_r($nids_of_apes['ape_test_genre'], true)));
+
+  //watchdog('rules_test', '567F array_keys nids_of_apes (!i) (!t) ', 
+  //          array('!i' => print_r(count($nids_of_apes['ape_test_genre']), true), '!t' => print_r(array_keys($nids_of_apes['ape_test_genre']), true)));
+
+  //entity_delete_multiple($entity_type, $ids)
+
+  //entity_delete_multiple('ape_test_genre', array(3, 5));
+  //entity_delete_multiple('ape_test_genre', array_keys($nids_of_apes['ape_test_genre']));
+
+  $taxonomy_query = new EntityFieldQuery;
+  $taxonomy_query->entityCondition('entity_type', 'taxonomy_term')
+    ->propertyCondition('vid', $genre_vocabulary_vid)
+    ->propertyOrderBy('weight');
+
+  //  ->propertyCondition('weight', 2, '<')
+
+  $taxonomy_terms = $taxonomy_query->execute();
+
+  if (isset($taxonomy_terms['taxonomy_term'])) {
+
+    $count_taxonomy_terms = count($taxonomy_terms['taxonomy_term']);
+
+    //watchdog('rules_test', '98CV rules_action_test_create_apes_genre count_taxonomy_terms (!c)', array('!c' => print_r($count_taxonomy_terms, true)));
+    //watchdog('rules_test', '98CV rules_action_test_create_apes_genre taxonomy_terms (!t)', array('!t' => print_r($taxonomy_terms, true)));
+
+    foreach ($taxonomy_terms['taxonomy_term'] as $tid => $term) {
+      # code...
+      //watchdog('rules_test', '1LIO rules_action_test_create_apes_genre tid term title (!i) (!t) ', 
+      //    array('!i' => print_r($tid, true), '!t' => print_r($term, true)));
+      //$term->title;
+      
+      $query = new EntityFieldQuery();
+      $nids_of_programmes_with_current_genre = $query->entityCondition('entity_type', 'node')
+                        ->entityCondition('bundle', 'programme')
+                        ->fieldCondition('field_genre', 'tid', $tid, '=')
+                        ->execute();
+
+      // what happens if a genre doesn't occur in any programme but it occurred in the past
+      // In such a case there is an ape for that genre with a non-zero number of occurrences
+      // It should be deleted
+      if (isset($nids_of_programmes_with_current_genre['node'])) {
+
+        $no_of_programmes_with_current_genre = count($nids_of_programmes_with_current_genre['node']);
+
+        watchdog('rules_test', '9087 tid (!i) (!t) ', 
+            array('!i' => print_r($tid, true), '!t' => print_r($no_of_programmes_with_current_genre, true)));
+
+         if ($no_of_programmes_with_current_genre > 0) {
+           // We have to check if an ape exists that is about our current genre
+           $query = new EntityFieldQuery();
+           $nids_of_apes = $query->entityCondition('entity_type', 'ape_test_genre')
+                        ->entityCondition('bundle', 'ape_test_genre')
+                        ->fieldCondition('field_ape_genre_tid', 'tid', $tid, '=')
+                        ->execute();
+
+           if (isset($nids_of_apes['ape_test_genre'])) {
+             // There is an ape for this genre, we have to modify it. We don't have to create a new one
+             // Here I could have many apes for the current term. This is an error case that should be caught
+
+             watchdog('rules_test', 'YHNG count of already existing apes should be 1 (!i) (!t) ', 
+                array('!i' => print_r($tid, true), '!t' => print_r(count($nids_of_apes['ape_test_genre']), true)));
+
+             $nid_of_ape_already_existing_about_our_term = key($nids_of_apes['ape_test_genre']);
+             watchdog('rules_test', '6171 nids_of_apes (!i) (!t) ', 
+                    array('!i' => print_r($tid, true), '!t' => print_r($nid_of_ape_already_existing_about_our_term, true)));        
+
+             // Load the ape
+             $ape_as_array = entity_load('ape_test_genre', array($nid_of_ape_already_existing_about_our_term));
+
+             $ape_to_be_modified = $ape_as_array[$nid_of_ape_already_existing_about_our_term];
+
+             watchdog('rules_test', 'TFRD ape_to_be_modified (!i) (!t) ', 
+                      array('!i' => print_r($nid_of_ape_already_existing_about_our_term, true), '!t' => print_r($ape_to_be_modified, true)));
+
+             // Here I assume that the term itself didn't change, so we don't have to copy it in the ape
+             // We need just to update the number of occurrencies of the term in programmes
+             $ape_to_be_modified->field_no_occurrences = array(LANGUAGE_NONE => array(0 => array('value' => 9876))); 
+             $ape_to_be_modified->save();
+
+           } else {
+             // No ape exists about the current term. We have to create it
+             // this could be done only once for all terms
+             $full_term_as_array = entity_load('taxonomy_term', array($tid));
+
+             watchdog('rules_test', '1818 full_term (!i) (!t) ', 
+                      array('!i' => print_r($tid, true), '!t' => print_r($full_term_as_array[$tid]->name, true)));
+
+             $term_name = $full_term_as_array[$tid]->name;
+              
+             $entity = entity_create('ape_test_genre', array('type' =>'ape_test_genre'));
+             $entity->field_ape_genre = array(LANGUAGE_NONE => array(0 => array('value' => $term_name)));  
+             $entity->field_ape_genre_tid = array(LANGUAGE_NONE => array(0 => array('tid' => $tid)));  
+             $entity->field_no_occurrences = array(LANGUAGE_NONE => array(0 => array('value' => $no_of_programmes_with_current_genre))); 
+             $entity->save();
+           }
+         }
+
+      } else {
+        // Here $nids_of_programmes_with_current_genre['node'] is not set
+        // here we should check if there is an ape for this term and delete it because now there are no programmes associated to this genre
+        // what if there is no result because of error and not because there are no programmes for this genre?
+      }
+
+      //$nodes = entity_load('node', array_keys($entities['node']));
+
+    } // end foreach
+
+    //->fieldCondition('field_genre', 'tid', $tid, '=')
+
+  } else {
+    // no result
+  }
+
+  */
+
+  return TRUE;
+}

@@ -1,0 +1,415 @@
+.flex-pane
+  display: flex !important
+
+.center-flex-pane
+  @extend .flex-pane
+  justify-content: center
+
+.equally-spaced-flex-pane
+  @extend .flex-pane
+  justify-content: space-between
+
+// The classes produced here are like:
+// .non-omega-pane-#{$span}-of-#{$total-columns}
+// and
+// .omega-pane-#{$span}-of-#{$total-columns}
+
+=standard-grid-panes($num_of_columns_to_span)
+  @for $span from 1 through $num_of_columns_to_span
+    .non-omega-pane-#{$span}-of-#{$num_of_columns_to_span}
+      +span-columns($span, $num_of_columns_to_span)
+    .omega-pane-#{$span}-of-#{$num_of_columns_to_span}
+      +span-columns($span omega, $num_of_columns_to_span)
+
++standard-grid-panes($total-columns)
+
++standard-grid-panes(5)
++standard-grid-panes(7)
++standard-grid-panes(8)
+
+@for $iter from 15 through 29
+  +standard-grid-panes($iter)
+
+.loading-wheel-pane
+  @extend .center-flex-pane
+  @extend .omega-pane-30-of-30
+  margin-top: 90px
+
+.all-columns-pane-with-padding
+  @extend .omega-pane-30-of-30
+  padding-top: 10px
+  height: 50px // @todo parameter here
+
+// Used in header, includes header horizontal menu, shopping cart button and avatar
+.header-horizontal-menu-pane
+  @extend .omega-pane-26-of-30
+  padding-top: 15px
+
+.display-subtitle-pane
+  @extend .non-omega-pane-10-of-30
+  margin-top: 5px
+
+.summary-image-pane
+  @extend .non-omega-pane-7-of-26
+  margin-top: 5px
+
+.track-list-row-pane
+  @extend .omega-pane-26-of-26
+  border-style: solid
+  border-color: $soft-border-color
+  border-bottom-width: 1px
+  vertical-align: baseline
+  padding-top: 2px
+  margin-right: -17px
+
+.track-list-highlighted-row-pane
+  @extend .track-list-row-pane
+  &:hover
+    background: $soft-highlighting-color
+
+.track-title-pane
+  @extend .non-omega-pane-16-of-26
+  padding-top: 2px
+  padding-bottom: 2px
+
+.track-vote-pane
+  @extend .non-omega-pane-3-of-26
+  @extend .equally-spaced-flex-pane
+  padding-right: 15px
+  padding-left: 2px
+
+.track-info-button-pane
+  @extend .non-omega-pane-1-of-26
+  @extend .center-flex-pane
+
+.comments-row-pane
+  @extend .omega-pane-26-of-26
+  //position: absolute
+  //margin-right: 17px
+
+.partner-details-row-pane
+  @extend .omega-pane-26-of-26
+  margin-bottom: 5px
+
+.apply-filter-button-pane
+  @extend .non-omega-pane-4-of-28
+  margin-left: 4px
+
+.reset-filter-button-pane
+  @extend .non-omega-pane-4-of-28
+  margin-left: -14px
+
+.tall-full-pane
+  @extend .omega-pane-28-of-28
+  //top: 20px
+  height: 20px
+  margin-top: 10px
+  vertical-align: text-bottom
+
+.margin-26col-pane
+  @extend .non-omega-pane-26-of-28
+  margin-top: -11px
+
+.groups-list-pane
+  @extend .omega-pane-28-of-28
+  margin-right: -17px // Needed to make space for the scrollbar
+
+.my-groups-list-pane
+  @extend .omega-pane-28-of-28
+  height: 40px
+  margin-right: -17px // Needed to make space for the scrollbar
+
+.single-group-scrollable-content-pane
+  @extend .omega-pane-23-of-23
+  margin-right: -17px // Needed to make space for the scrollbar
+
+.group-section-pane
+  @extend .omega-pane-23-of-23
+  margin-bottom: 15px
+
+.group-section-content-side-pane
+  @extend .non-omega-pane-21-of-23
+  border-bottom: 1px solid #000
+  margin-bottom: 6px
+  padding-bottom: 9px
+
+.membership-control-pane
+  @extend .omega-pane-23-of-23
+  margin-bottom: 5px
+
+.membership-control-content-side-pane
+  @extend .non-omega-pane-21-of-23
+  border-bottom: 1px solid #000
+  margin-bottom: 6px
+  padding-bottom: 16px
+
+.main-content-for-single-group-pane
+  @extend .non-omega-pane-23-of-28
+  //background: url("/images/right-column-shadow-dark.png") no-repeat scroll right top
+
+.group-members-pane
+  @extend .omega-pane-5-of-28
+  //padding-left: 10px
+  //margin-left: 10px
+  //background: url("/images/right-column-shadow-dark.png") no-repeat scroll left top
+
+.group-member-name-pane
+  @extend .omega-pane-5-of-5
+  height: 20px
+  overflow: hidden
+
+.create-a-post-pane
+  @extend .omega-pane-21-of-21
+  margin-top: 10px
+  margin-bottom: 10px
+
+// @todo sure that we need this? I think so, but if this is useful, many other panes have to change in socialview.html
+.posts-list-pane
+  @extend .omega-pane-23-of-23
+  margin-right: -17px // Needed to make space for the scrollbar
+  margin-bottom: 10px
+
+.single-post-scrollable-content-pane
+  @extend .omega-pane-28-of-28
+  margin-right: -17px // Needed to make space for the scrollbar
+
+.post-section-pane
+  @extend .omega-pane-28-of-28
+  margin-bottom: 10px
+  //border-bottom: 1px solid #000
+
+.post-section-content-side-pane
+  @extend .non-omega-pane-26-of-28
+  border-bottom: 1px solid #000
+  margin-bottom: 10px
+  padding-bottom: 9px
+
+.membership-info-for-post-pane
+  @extend .omega-pane-28-of-28
+  margin-bottom: 5px
+
+.membership-info-for-post-side-pane
+  @extend .non-omega-pane-26-of-28
+  border-bottom: 1px solid #000
+  margin-bottom: 6px
+  padding-bottom: 16px
+
+.one-column-and-left-margin-pane
+  @extend .non-omega-pane-1-of-28
+  margin-left: auto
+  margin-right: auto
+  //margin-top: 6px
+
+.one-column-with-top-margin-pane
+  @extend .non-omega-pane-1-of-23
+  margin-top: 5px
+
+.one-column-of-21-with-top-margin-pane
+  @extend .non-omega-pane-1-of-21
+  margin-top: 4px
+
+.group-title-pane
+  @extend .non-omega-pane-26-of-28
+  height: 28px
+  margin-left: 10px
+
+.my-groups-group-title-pane
+  @extend .non-omega-pane-26-of-28
+  height: 28px
+  margin-left: 14px
+  margin-top: 3px
+
+// User profile view panes
+.vertical-left-bar-pane
+  background: transparent url("/images/left-column-shadow-dark.png") no-repeat scroll right top
+  left: 190px
+  width: 10px
+  height: 650px
+  position: absolute
+  z-index: 1
+  //<img src="/images/left-column-shadow-dark.png" style="left: 190px; position: absolute;">
+
+// Orders in user profile
+
+.order-row
+  @extend .omega-pane-30-of-30
+  //border: solid $soft-border-color
+  //border-bottom-width: 1px
+  vertical-align: baseline
+  padding-top: 5px
+
+.label-for-customer-profile-field-pane
+  @extend .non-omega-pane-3-of-30
+  height: 30px
+  margin-top: 4px
+
+.order-row-details-side-pane
+  @extend .omega-pane-20-of-21
+  height: 28px
+  padding-top: 3px
+  margin-top: 5px
+
+.status-in-order-details-row-pane
+  @extend .non-omega-pane-3-of-20
+  margin-top: 5px
+
+// My groups list in user profile
+
+.my-groups-list-in-user-profile-pane
+  @extend .omega-pane-21-of-21
+  height: 40px
+  margin-right: -17px // Needed to make space for the scrollbar
+
+.one-column-and-left-margin-in-user-profile-pane
+  @extend .non-omega-pane-1-of-21
+  margin-left: auto
+  margin-right: auto
+  //margin-top: 6px
+
+.my-groups-group-title-in-user-profile-pane
+  @extend .non-omega-pane-19-of-21
+  height: 28px
+  margin-left: 14px
+  margin-top: 3px
+
+// Fan of list in user profile
+
+.fan-of-section-in-user-profile-pane
+  @extend .omega-pane-21-of-21
+  border-bottom: 1px solid #000
+  padding-bottom: 10px
+  margin-bottom: 10px
+
+.fan-of-row-in-user-profile-pane
+  @extend .omega-pane-21-of-21
+  height: 20px
+  //margin-right: -17px // Needed to make space for the scrollbar
+
+// @todo you have been told
+// @todo this is not even a pane in the sense we give to the word because
+// it's not in the grid
+.my-super-dirty-pane
+  position: relative
+  display: block
+  margin-left: -30px
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2)
+  margin-top: -30px
+  z-index: $z-index-layer-login-menu
+  height: 84px
+  width: 100px
+
+// Used in header
+.avatar-pane
+  @extend .non-omega-pane-1-of-26
+  margin-top: -6px
+  display: block  // @todo this is not good here, it isn't a positioning property
+  margin-left: auto
+  margin-right: auto
+
+// A large avatar pane contains an avatar and is two columns wide, but it's used
+// in many grid rows that are different numbers of columns wide
+// That's why we need as many classes as the panes we need avatars in
+// For example +large-avatar-pane(21) is a two columns pane containing an avatar and
+// inserted in a 21 columns wide pane
+
+=large-avatar-pane($max_num_of_columns)
+  .large-avatar-pane-#{$max_num_of_columns}
+    @extend .non-omega-pane-2-of-#{$max_num_of_columns}
+    display: block // @todo this property should not stay here, it's belongs to the image (the avatar)
+    margin-left: 15px
+    margin-right: -15px
+    //margin-right: auto
+
+@for $iter from 18 through 30
+  +large-avatar-pane($iter)
+
+//=narrow-avatar-pane($max_num_of_columns)
+//  .narrow-avatar-pane-#{$max_num_of_columns}
+//    @extend .non-omega-pane-1-of-#{$max_num_of_columns}
+//    display: block // @todo this property should not stay here, it's belongs to the image (the avatar)
+//    margin-left: auto
+//    margin-right: auto
+//
+//+narrow-avatar-pane(21)
+
+.shopping-cart-pane
+  @extend .omega-pane-1-of-26
+  margin-top: -6px
+
+.reviews-list-pane
+  @extend .omega-pane-7-of-7
+  height: 22px
+
+.new-review-content-pane
+  @extend .non-omega-pane-28-of-30
+  height: $info-panel-height - 110
+  margin-bottom: 10px
+  overflow-y: hidden
+
+.x-shape-button-pane
+  @extend .omega-pane-2-of-30
+  margin-top: 2px
+  margin-right: -4px
+
+.info-panel-nav-button-pane
+  @extend .omega-pane-4-of-30
+  padding: 10px
+
+.programme-voting-pane
+  @extend .non-omega-pane-3-of-30
+  @extend .equally-spaced-flex-pane
+  margin-top: 7px
+  padding-right: 15px
+  padding-left: 2px
+
+.header-black-links-menu-pane
+  @extend .non-omega-pane-23-of-26
+  @extend .equally-spaced-flex-pane
+
+// @todo we need this, it's for cropping avatars. But we need the final design to know
+// what to do with this
+// It needs refactoring as well
+.cropArea
+  background: #E4E4E4
+  overflow: hidden
+  width: 300px
+  height: 400px
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2)
+
+.preview-area-pane
+  background: #E4E4E4
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2)
+
+.slanting-lines-pane
+  @extend .omega-pane-30-of-30
+  height: $slanting-lines-pane-height
+  background: url("/images/tabs-horizontal-menu-slanting-lines.png") repeat-x
+
+// @todo this is dirty!!! adding a fake pane just to add a margin!!
+// The problem is that it's for ng-group, which needs an additional margin regardless of the number of columns
+// We should make a lot of additional classes, for now let's go with this dirty trick
+.margin-for-group-title-field
+  margin-top: 10px
+  margin-bottom: 10px
+
+.margin-for-buttons
+  margin-top: 5px
+
+// Footer panes
+
+.footer-column-pane
+  @extend .non-omega-pane-7-of-28
+  border-left: 1px dotted #CCC
+  padding-left: 10px
+
+.row-for-footer-titles-pane
+  @extend .omega-pane-30-of-30
+  margin-top: 100px
+
+.row-for-footer-pane
+  @extend .omega-pane-30-of-30
+
+.footer-panel-content-pane
+  @extend .omega-pane-28-of-28
+  margin-right: -17px
+

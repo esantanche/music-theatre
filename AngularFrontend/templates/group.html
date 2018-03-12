@@ -1,0 +1,75 @@
+<div class="omega-pane-{{totalnumberofcolumns}}-of-{{totalnumberofcolumns}}">
+
+    <div ng-if="oneditmode">
+
+        <div ng-if="alwaysonedit" class="info-text">
+            Create a new group! First give it a title, then describe it.
+        </div>
+
+        <input type="text" name="grouptitle" ng-model="group.title" class="inputfield margin-for-group-title-field">
+
+        <textarea
+                rows="5"
+                cols="{{100 * (totalnumberofcolumns / 30)}}" name="groupdescription"
+                ng-model="group.description"
+                class="standardtextarea">
+
+        </textarea>
+
+    </div>
+
+    <div ng-if="!oneditmode">
+
+        <div class="header-text">{{ group.title }}</div>
+
+        <div class="dark-grey-text margin-for-group-title-field" style="white-space: pre-wrap">{{ group.description }}</div>
+
+        <div class="dark-grey-text">Since {{group.created * 1000 | date:date_time_format_for_group_creation_timestamp}}</div>
+
+    </div>
+
+    <!--:groupsinfo.date_time_format_for_group_creation_timestamp-->
+
+</div>
+
+<div class="omega-pane-{{totalnumberofcolumns}}-of-{{totalnumberofcolumns}} margin-for-buttons">
+
+    <div class="non-omega-pane-{{totalnumberofcolumns - 5}}-of-{{totalnumberofcolumns}}">
+
+        &nbsp;
+
+    </div>
+
+    <!--@todo style float left has to go in a class-->
+
+    <div class="omega-pane-5-of-{{totalnumberofcolumns}}">
+
+        <span ng-click="do_edit_mode()"
+              ng-show="group.uid == user.uid && user.uid && !oneditmode"
+              class="info-text light-grey-fixed-width-mini-button" style="float: right">Edit</span>
+
+        <span ng-click="do_delete()"
+              ng-show="group.uid == user.uid && user.uid && !oneditmode"
+              class="info-text light-grey-fixed-width-mini-button" style="float: right">Delete</span>
+
+        <span ng-click="do_save()"
+              ng-show="oneditmode"
+              class="info-text light-grey-fixed-width-mini-button" style="float: right">Save</span>
+
+        <span ng-click="do_cancel()"
+              ng-show="oneditmode && !alwaysonedit"
+              class="info-text light-grey-fixed-width-mini-button" style="float: right">Cancel</span>
+
+        <span ng-click="abuse()"
+              ng-show="group.uid != user.uid && user.uid && !oneditmode"
+              class="info-text light-grey-fixed-width-mini-button" style="float: right">Abuse</span>
+
+        &nbsp;
+
+    </div>
+
+</div>
+
+
+
+

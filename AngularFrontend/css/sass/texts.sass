@@ -1,0 +1,175 @@
+.info-text
+  font:
+    family: Helvetica, Arial, sans-serif
+    size: 12px
+
+.left-menu-text
+  @extend .info-text
+  margin-right: 2px // @todo wrong, positioning attributes shouldnt stay here
+  padding-top: 7px // @todo wrong, positioning attributes shouldnt stay here
+  color: $left-menu-text-color
+  text-overflow: ellipsis
+  overflow: hidden
+  white-space: nowrap
+
+.dark-grey-text
+  @extend .info-text
+  color: #2F2F2F // @todo use a variable
+  line-height: 1.9em
+
+.header-text
+  @extend .dark-grey-text
+  font-size: 22px
+  font-weight: normal
+
+.header2-text
+  @extend .dark-grey-text
+  font-size: 18px
+  font-weight: normal
+
+.header3-text
+  @extend .dark-grey-text
+  font-size: 14px
+  font-weight: normal
+
+.editorial-text
+  line-height: 1.5
+
+.programme-title-text
+  font-family: "Times New Roman", Times, serif
+  font-size: 20px
+  font-weight: bold
+
+.programme-sub-title-text
+  font-family: Arial, Helvetica, sans-serif
+  font-size: 12px
+  color: $subtitle-color
+
+.button-text
+  font-family: Arial, Helvetica, sans-serif
+  text-align: center
+  padding-top: 7px // @todo is this ok?
+  //vertical-align: bottom
+  font-weight: bold
+  font-size: 11px
+
+.bluish-button-text
+  @extend .button-text
+  color: $left-menu-text-color // @todo or maybe #444
+
+.button-grey-text
+  @extend .button-text
+  color: $info-panel-nav-button-text-color
+
+// This is for tracks in the info panel
+// @todo this is wrong because it's a positioning property
+.indented-text
+  padding-left: 50px
+
+.bold-text
+  font-weight: bold
+
+.soft-text
+  color: $soft-text-color
+
+// @todo fix here color has to be parametric
+// @todo why do you need an !important?
+.red-text
+  color: red !important
+
+.left-menu-text-indented
+  @extend .left-menu-text
+  text-indent: 20px
+
+.left-menu-text-not-indented
+  @extend .left-menu-text
+  text-indent: 8px
+
+.right-aligned-text
+  text-align: right
+
+.additional-line-text
+  font-style: italic
+
+.base-black-link-text
+  font-family: 'Helvetica', Arial, sans-serif
+  font-size: 11px
+  font-weight: bold
+  text-shadow: 0 1px 1px #CCC
+  color: #444
+  line-height: 15px
+  text-decoration: none
+
+.black-link-text
+  @extend .base-black-link-text
+  color: #444
+  &:hover
+    color: red
+
+.selected-black-link-text
+  @extend .base-black-link-text
+  color: red
+
+.bluish-bold-text
+  font-size: 11.2px  // @todo font attributes shouldn't be here
+  font-weight: bold  // @todo font attributes shouldn't be here
+  font-family: Helvetica, Arial, sans-serif  // @todo font attributes shouldn't be here
+  color: $left-menu-text-color // @todo or maybe #444
+
+.bluish-icon-text
+  color: $left-menu-text-color
+
+.bluish-big-icon-text
+  @extend .bluish-icon-text
+  font-size: 29px
+
+.bluish-medium-icon-text
+  @extend .bluish-icon-text
+  font-size: 18px
+
+.bluish-small-icon-text
+  @extend .bluish-icon-text
+  font-size: 13px
+
+.text-for-tests
+  font-size: 14px
+  font-family: Arial, Helvetica, sans-serif
+
+// @todo what is this? is it a link?
+// what is it doing here?
+.link-text
+  color: $left-menu-text-color // @todo make a parameter?
+  font:
+    family: Helvetica, Arial, sans-serif
+    size: 11px
+
+.link-and-ellipses-text
+  @extend .link-text
+  text-overflow: ellipsis
+  white-space: nowrap
+  overflow: hidden
+  display: inline-block // @todo this is very bad, a display in a text class!!
+  width: 165px // @todo this is very bad, a width in a text class!!
+
+.link-bold-text
+  @extend .link-text
+  font-weight: bold
+
+// @todo delete me after design finalised
+.just-bold-text
+  font-size: 14px
+  font-family: Arial, Helvetica, sans-serif
+  font-weight: bold
+
+.details-text
+  font-size: 12px
+  font-family: Arial, Helvetica, sans-serif
+  font-weight: bold
+
+.label-for-detail-text
+  @extend .details-text
+  color: $light-grey-for-labels
+
+.dark-grey-for-detail-text
+  @extend .details-text
+  color: $dark-grey-for-labels

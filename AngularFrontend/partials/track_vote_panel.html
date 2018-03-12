@@ -1,0 +1,20 @@
+<span ng-repeat="iter in [1,2,3,4,5]"
+      ng-init="track.votinginfo.mouse_over_button_no = 0"
+      ng-if="!(track.segment_no == 0 && track.track_no == 0)">
+
+    <span ng-mouseover="track.votinginfo.mouse_over_button_no = iter" ng-mouseout="track.votinginfo.mouse_over_button_no = 0">
+
+        <img src="/images/white-heart.png"
+             ng-show="(track.votinginfo.mouse_over_button_no > 0 && (track.votinginfo.user_vote.value < (iter * 20) && user.uid != 0)) ||
+                      (track.votinginfo.average < (iter * 20) && (track.votinginfo.mouse_over_button_no == 0 || user.uid == 0))"
+             ng-click="user.uid && rate_track(user.uid, track, (iter * 20), programme.system_title)">
+
+        <img src="/images/red-heart.png"
+             ng-show="(track.votinginfo.mouse_over_button_no > 0 && (track.votinginfo.user_vote.value >= (iter * 20) && user.uid != 0)) ||
+                      (track.votinginfo.average >= (iter * 20) && (track.votinginfo.mouse_over_button_no == 0 || user.uid == 0))"
+             ng-click="user.uid && rate_track(user.uid, track, (iter * 20), programme.system_title)">
+
+    </span>
+
+</span>
+

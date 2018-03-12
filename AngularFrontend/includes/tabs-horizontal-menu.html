@@ -1,0 +1,182 @@
+<div class="tabs-horizontal-menu-pane-container">
+
+    <div class="omega-pane-30-of-30">
+
+        <!--button-text-->
+
+        <div class="non-omega-pane-15-of-30">
+
+            <ul ng-if="tabs_horizontal_menu_info.menu_to_show == 'social/groups'" class="menu-list" >
+                <!--<li ng-click="groupsinfo.section_to_show = 'newgroup'; refresh_scrollbar(); commentsforminfo.do_refresh = false;"-->
+                <!--class="test-button-user-profile-vertical button-text">New group</li>-->
+                <li>
+
+                    <a href="/social/en/groups/browse"
+                       ng-class="{'right-part-inactive-tab': !apply_active_class_01,
+                                  'right-part-active-tab': apply_active_class_01 ||
+                                  tabs_horizontal_menu_info.active_item == 'browse'}"
+                       ng-mouseover="apply_active_class_01 = true"
+                       ng-mouseout="apply_active_class_01 = false">
+
+                        <!--<div ng-class="{'omega-pane-2-of-26': !infopanelinfo.no_prices,-->
+                                        <!--'omega-pane-4-of-26': infopanelinfo.no_prices}">-->
+                            <!--&nbsp;-->
+                        <!--</div>-->
+
+                        <span ng-class="{'left-part-inactive-tab': !apply_active_class_01,
+                                         'left-part-active-tab': apply_active_class_01 ||
+                                         tabs_horizontal_menu_info.active_item == 'browse'}">
+                            Browse groups
+                        </span>
+
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a href="/social/en/groups/mygroups"
+                       ng-class="{'right-part-inactive-tab': !apply_active_class_02,
+                                  'right-part-active-tab': apply_active_class_02 ||
+                              tabs_horizontal_menu_info.active_item == 'mygroups'}"
+                       ng-mouseover="apply_active_class_02 = true"
+                       ng-mouseout="apply_active_class_02 = false">
+
+                        <!--<div ng-class="{'omega-pane-2-of-26': !infopanelinfo.no_prices,-->
+                        <!--'omega-pane-4-of-26': infopanelinfo.no_prices}">-->
+                        <!--&nbsp;-->
+                        <!--</div>-->
+
+                        <span ng-class="{'left-part-inactive-tab': !apply_active_class_02,
+                                         'left-part-active-tab': apply_active_class_02 ||
+                                         tabs_horizontal_menu_info.active_item == 'mygroups'}">
+                            My groups
+                        </span>
+
+                    </a>
+
+                </li>
+
+                <li ng-show="tabs_horizontal_menu_info.active_item == 'singlegroup' ||
+                             tabs_horizontal_menu_info.active_item == 'singlepost'">
+
+                    <a ng-href="{{tabs_horizontal_menu_info.group_link}}"
+                       ng-class="{'right-part-inactive-tab': !apply_active_class_03,
+                                  'right-part-active-tab': apply_active_class_03 ||
+                                  tabs_horizontal_menu_info.active_item == 'singlegroup'}"
+                       ng-mouseover="apply_active_class_03 = true"
+                       ng-mouseout="apply_active_class_03 = false">
+
+                        <!--<div ng-class="{'omega-pane-2-of-26': !infopanelinfo.no_prices,-->
+                        <!--'omega-pane-4-of-26': infopanelinfo.no_prices}">-->
+                        <!--&nbsp;-->
+                        <!--</div>-->
+
+                        <span ng-class="{'left-part-inactive-tab': !apply_active_class_03,
+                                         'left-part-active-tab': apply_active_class_03 ||
+                                         tabs_horizontal_menu_info.active_item == 'singlegroup'}">
+                            Current group
+                        </span>
+
+                    </a>
+
+                </li>
+
+                <li ng-show="tabs_horizontal_menu_info.active_item == 'singlepost'">
+
+                    <a href="#"
+                       ng-class="{'right-part-inactive-tab': !apply_active_class_04,
+                                  'right-part-active-tab': apply_active_class_04 ||
+                                  tabs_horizontal_menu_info.active_item == 'singlepost'}"
+                       ng-mouseover="apply_active_class_04 = true"
+                       ng-mouseout="apply_active_class_04 = false">
+
+                        <!--<div ng-class="{'omega-pane-2-of-26': !infopanelinfo.no_prices,-->
+                        <!--'omega-pane-4-of-26': infopanelinfo.no_prices}">-->
+                        <!--&nbsp;-->
+                        <!--</div>-->
+
+                        <span ng-class="{'left-part-inactive-tab': !apply_active_class_04,
+                                         'left-part-active-tab': apply_active_class_04 ||
+                                         tabs_horizontal_menu_info.active_item == 'singlepost'}">
+                            Current post
+                        </span>
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+            <ul ng-if="tabs_horizontal_menu_info.menu_to_show == 'userprofile'" class="menu-list">
+                <!--<li ng-click="groupsinfo.section_to_show = 'newgroup'; refresh_scrollbar(); commentsforminfo.do_refresh = false;"-->
+                <!--class="test-button-user-profile-vertical button-text">New group</li>-->
+                <li>
+
+                    <button ng-click="change_current_function_from_tabs_menu('view')"
+                            ng-class="{'right-part-inactive-tab': !apply_active_class_01,
+                                       'right-part-active-tab': apply_active_class_01 ||
+                                       tabs_horizontal_menu_info.active_item == 'view'}"
+                            ng-mouseover="apply_active_class_01 = true"
+                            ng-mouseout="apply_active_class_01 = false">
+
+                        <!--<div ng-class="{'omega-pane-2-of-26': !infopanelinfo.no_prices,-->
+                        <!--'omega-pane-4-of-26': infopanelinfo.no_prices}">-->
+                        <!--&nbsp;-->
+                        <!--</div>-->
+
+                        <span ng-class="{'left-part-inactive-tab': !apply_active_class_01,
+                                         'left-part-active-tab': apply_active_class_01 ||
+                                         tabs_horizontal_menu_info.active_item == 'view'}">
+                            View profile
+                        </span>
+
+                    </button>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+        <div class="omega-pane-15-of-30">
+
+            <ul ng-if="tabs_horizontal_menu_info.menu_to_show == 'userprofile' &&
+                       userviewinfo.user_profile_to_show.uid == user.uid &&
+                       user.uid" class="menu-list-reverse">
+
+                <!--<li ng-click="groupsinfo.section_to_show = 'newgroup'; refresh_scrollbar(); commentsforminfo.do_refresh = false;"-->
+                <!--class="test-button-user-profile-vertical button-text">New group</li>-->
+
+                <li>
+
+                    <button ng-click="change_current_function_from_tabs_menu('edit')"
+                            ng-class="{'right-part-inactive-tab': !apply_active_class_01,
+                                   'right-part-active-red-tab': apply_active_class_01 ||
+                                   tabs_horizontal_menu_info.active_item == 'edit'}"
+                            ng-mouseover="apply_active_class_01 = true"
+                            ng-mouseout="apply_active_class_01 = false">
+
+                        <!--<div ng-class="{'omega-pane-2-of-26': !infopanelinfo.no_prices,-->
+                        <!--'omega-pane-4-of-26': infopanelinfo.no_prices}">-->
+                        <!--&nbsp;-->
+                        <!--</div>-->
+
+                        <span ng-class="{'left-part-inactive-red-tab': !apply_active_class_01,
+                                         'left-part-active-red-tab': apply_active_class_01 ||
+                                         tabs_horizontal_menu_info.active_item == 'edit'}">
+                            Edit profile
+                        </span>
+
+                    </button>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+

@@ -1,0 +1,54 @@
+// hui_tooltip from http://hackingui.com/front-end/10-best-scss-utilities/
+
+=hui_tooltip($content: attr(data-tooltip), $direction: top)
+  position: relative   // relative
+  z-index: 700
+
+  &:before, &:after
+    display: none
+    z-index: 700
+    // z-index: 98
+
+  &:hover
+    &:after  // for text bubble
+      content: $content
+      white-space: pre
+      display: block
+      position: absolute
+      height: 24px // (makes total height including padding 22px)
+      padding: 6px
+      font-size: 12px
+      font-weight: normal
+      text-indent: 0px
+      z-index: 700
+      color: #000
+      background-color: $soft-border-color                       //#222
+      //+text-shadow(1px 1px #fff)
+      // white-space nowrap
+      //       content: $content
+      //content: 'test\Atyetas'
+
+    @if ($direction == 'top')
+      &:before
+        //@include triangle(down, 6px, #222);
+        top: -6px
+        margin-top: 0
+        left: 47%
+
+      &:after
+        top: -40px   // -28px
+        left: 47%
+        margin-left: 20px  // -20px
+
+    @else if ($direction == 'bottom')
+      &:before
+        //@include triangle(up, 6px, #222);
+        top: auto
+        margin-top: 0
+        bottom: -6px
+        left: 47%
+
+      &:after
+        bottom: -39px // -28px
+        left: 47%
+        margin-left: 20px // -20px

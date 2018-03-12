@@ -1,0 +1,217 @@
+<?php
+/**
+ * @file musth_amf_service.module
+ *
+ * @brief This file implement the amf apis for the musth project
+ *
+ * Actually the apis are implemented in an include file
+ * @see musth_amf_service.tagring_apis.inc
+ *
+ * In this file there are the hooks that the module amfserver calls
+ * to see which apis we have prepared here to be called by amf clients
+ * like the tagring
+ *
+ * Now there are two gateways the tagring can use to display different types of
+ * content. One is for video content, and the other is for audio content.
+ *
+ * The apis are the same and they know which type of content to return from
+ * the gateway's url.
+ *
+ * @ingroup musthamfservice
+ *
+ * Created by PhpStorm.
+ * User: www-data
+ * Date: 26/02/14
+ * Time: 13:11
+ */
+
+// This include contains the 'body' of the apis @see musth_amf_service.tagring_apis.inc
+module_load_include('inc', 'musth_amf_service', 'includes/musth_amf_service.tagring_apis');
+// This include is used by the previous one only and contains the function that
+// access the apes @see musth_amf_service.ape_queries.inc
+module_load_include('inc', 'musth_amf_service', 'includes/musth_amf_service.ape_queries');
+
+/**
+ * Implementation of hook_service_resources
+ *
+ * This function declares all the apis used by the tagring as resources offered by
+ * the module 'services'
+ *
+ * The functions implementing the tagring apis will have 'tagring_api' in their names.
+ * Help functions used anywhere else in the code will not.
+ *
+ * The returned associative array is described here:
+ * http://drupalcontrib.org/api/drupal/contributions!services!services.services.api.php/function/hook_services_resources/6
+ *
+ * The apis are:
+ * - API.get_flash_config It's the first one called by the tagring. It returns the configuration, that is
+ *   the array of correspondences between vocabulary ids and their labels
+ * - API.get_items_by_id The tagring sends an array containing the node ids of the programmes it wants and
+ *   we send back an array of objects containing the info about those programmes that the tagring needs
+ * - API.get_filtered_terms The most complex api. If called by passing just a vid as a parameter, it
+ *   returns the entire list of apes for the entity type identified by that vid.
+ *   If a query string is passed as well, the list of apes is not complete. It's limited to the
+ *   programmes found by using the query string.
+ * - API.get_item_ids A query string is passed and node ids of the programmes associated with the
+ *   entity elements identified by the query string are returned. The tagring calls the api
+ *   API.get_filtered_terms first to get the list of entity elements the user has to choose from.
+ *   Then the tagring call the api API.get_item_ids to get the node ids of the programmes that contain
+ *   those entity elements
+ * - nodequeue.getQueueMediaIds The first thing the tagring does after having loaded the configuration
+ *   (API.get_flash_config) is to get the default playlist as list of node ids of programmes. It
+ *   the set of programmes displayed when you just start the app
+ *
+ * @return array Associative array describing the resources
+ */
+function musth_amf_service_services_resources() {
+
+    //watchdog('musth_amf_service', 'W7D001 musth_amf_service_services_resources', array(),
+    //    WATCHDOG_DEBUG);
+
+    // Why are there defaults even for parameters that are not optional?
+    // It's because of a bug in the module amfserver. It's looking for default values even if
+    // the parameter is not optional
+
+    $resources = array(
+        'API' => array(
+            'actions' => array(
+                'get_flash_config' => array(
+                    'help' => 'Get tagring configuration: vocabulary ids and labels',
+                    'file' => array('type' => 'inc',
+                                    'module' => 'musth_amf_service',
+                                    'name' => 'includes/musth_amf_service.tagring_apis'),
+                    'callback' => 'musth_amf_service_tagring_api_get_flash_config',
+                    'args' => array(),
+                    'access callback' => 'musth_amf_service_access',
+                ),
+                'get_items_by_id' => array(
+                    'help' => 'Returns the full programmes (actually just a few fields of theirs) given the nids',
+                    'file' => array('type' => 'inc',
+                                    'module' => 'musth_amf_service',
+                                    'name' => 'includes/musth_amf_service.tagring_apis'),
+                    'callback' => 'musth_amf_service_tagring_api_get_items_by_id',
+                    'args' => array(
+                        'name' => 'ids',
+                        'optional' => FALSE,
+                        'source' => array('path' => 0),
+                        'type' => 'array',
+                        'description' => 'An array with the nids of the programmes to be returned',
+                    ),
+                    'access callback' => 'musth_amf_service_access',
+                ),
+                'get_filtered_terms' => array(
+                    'help' => 'Returns apes of a given entity type or found by doing a combined search',
+                    'file' => array('type' => 'inc',
+                                    'module' => 'musth_amf_service',
+                                    'name' => 'includes/musth_amf_service.tagring_apis'),
+                    'callback' => 'musth_amf_service_tagring_api_get_filtered_terms',
+                    'args' => array(
+                        array(
+                            'name' => 'vid',
+                            'optional' => FALSE,
+                            'source' => array('path' => 0),
+                            'type' => 'int',
+                            'description' => 'The vid of the wanted entity type',
+                        ),
+                        array(
+                            'name' => 'query_string',
+                            'optional' => TRUE,
+                            'source' => array('path' => 1),
+                            'type' => 'string',
+                            'description' => 'A query string in the format vid=tid&vid=tid etc.',
+                            'default value' => ''
+                        ),
+                    ),
+                    'access callback' => 'musth_amf_service_access',
+                ),
+                'get_item_ids' => array(
+                    'help' => 'Returns the programme nids for a given combined search',
+                    'file' => array('type' => 'inc',
+                        'module' => 'musth_amf_service',
+                        'name' => 'includes/musth_amf_service.tagring_apis'),
+                    'callback' => 'musth_amf_service_tagring_api_get_item_ids',
+                    'args' => array(
+                        array(
+                            'name' => 'query_string',
+                            'optional' => FALSE,
+                            'source' => array('path' => 0),
+                            'type' => 'string',
+                            'description' => 'A query string in the format vid=tid&vid=tid etc.',
+                        ),
+                    ),
+                    'access callback' => 'musth_amf_service_access',
+                ),
+            ),
+        ),
+        'nodequeue' => array(
+            'actions' => array(
+                'getQueueMediaIds' => array(
+                    'help' => 'Sends the default playlist as list of node ids of programmes',
+                    'file' => array('type' => 'inc',
+                                    'module' => 'musth_amf_service',
+                                    'name' => 'includes/musth_amf_service.tagring_apis'),
+                    'callback' => 'musth_amf_service_tagring_api_get_queuemediaids',
+                    'args' => array(
+                        'name' => 'qid',
+                        'optional' => TRUE,
+                        'source' => array('path' => 0),
+                        'type' => 'int',
+                        'description' => 'This parameter is actually ignored and the default playlist is returned',
+                        'default value' => 0
+                    ),
+                    'access callback' => 'musth_amf_service_access',
+                )
+            )
+        ),
+    );
+
+    return $resources;
+}
+
+/**
+ * Implements hook_disable()
+ *
+ * Perform necessary actions before module is disabled. (like clear the services:methods cache)
+ *
+ * Just a standard hook that the services modules needs
+ */
+function musth_amf_service_disable() {
+    cache_clear_all('services:methods', 'cache');
+}
+
+/**
+ * Implements hook_enable()
+ *
+ * Perform necessary actions after module is enabled. (like clear the services:methods cache)
+ *
+ * Just a standard hook that the services modules needs
+ */
+function musth_amf_service_enable() {
+    cache_clear_all('services:methods', 'cache');
+}
+
+/**
+ * This is how administrators are allowed to give permission or not to use this module
+ *
+ * In the administration menu, see People->Permissions
+ *
+ * @return array Definition of what has to appear in the page People->Permissions to allow
+ * administrator to grant permission about this module
+ */
+function musth_amf_service_permission() {
+    return array(
+        'musth_amf_service_access' => array(
+            'title' => t('musth_amf_service_access'),
+            'description' => t('Permission to use the module musth_amf_service (tagring apis)'),
+        ),
+    );
+}
+
+/**
+ * Check if the user using the apis has permission to access the information they provide
+ *
+ * @return TRUE Everyone has permission because the tagring serves public info
+ */
+function musth_amf_service_access() {
+    return TRUE;
+}

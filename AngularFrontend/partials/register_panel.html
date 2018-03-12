@@ -1,0 +1,163 @@
+<div class="omega-pane-30-of-30 text-for-tests">
+
+    <!-- scrollme was here  id="scrollable-summary"   id="scrollable-summary"-->
+
+    @todo this panel is no longer used because we do user registrations by using the same iframe used to
+    login and logout
+
+    @todo so, sooner or later this panel has to be deleted
+
+    <div ng-show="registerpanelinfo.section_to_show === 'register_form'">
+
+        <button ng-click="registerpanelinfo.show = false">Close</button>
+
+        <div ng-form="registerForm" novalidate>
+
+            <br>
+
+            <label>Email:
+                <input type="email" name="email" ng-model="registerpanelinfo.email"
+                       required/>
+            </label>
+
+            <div ng-show="registerForm.email.$dirty && registerForm.email.$invalid">
+                <span ng-show="registerForm.email.$error.required">Please enter your email</span>
+                <span ng-show="registerForm.email.$error.email">Invalid characters entered or missing ones (like @)</span>
+            </div>
+
+            <br/>
+
+            <label>Password:
+                <input type="password" name="password" ng-model="registerpanelinfo.password" ng-minlength="6" required/>
+            </label>
+
+            <p>Password strength: <span ng-password-strength="registerpanelinfo.password"></span></p>
+
+            <div ng-show="registerForm.password.$dirty && registerForm.password.$invalid">
+                <span ng-show="registerForm.password.$error.required">Please enter a password</span>
+                <span ng-show="registerForm.password.$error.minlength">Too short</span>
+            </div>
+
+            <br/>
+
+            <label>First name:
+                <input type="text" name="first_name" ng-model="registerpanelinfo.first_name"
+                               ng-pattern="text_validation_regex_pattern"
+                               required/>
+            </label>
+
+            <div ng-show="registerForm.first_name.$dirty && registerForm.first_name.$invalid">
+                <span ng-show="registerForm.first_name.$error.required">Please enter your first_name</span>
+                <span ng-show="registerForm.first_name.$error.pattern">Invalid characters entered</span>
+            </div>
+
+            <br/>
+
+            <label>
+            Middle names: <input type="text" name="middle_names" ng-model="registerpanelinfo.middle_names"
+                                 ng-pattern="text_validation_regex_pattern"
+                                 required/>
+            </label>
+
+            <div ng-show="registerForm.middle_names.$dirty && registerForm.middle_names.$invalid">
+                <span ng-show="registerForm.middle_names.$error.required">Please enter your middle_names</span>
+                <span ng-show="registerForm.middle_names.$error.pattern">Invalid characters entered</span>
+            </div>
+
+            <br/>
+
+            <label>
+            Family name: <input type="text" name="family_name" ng-model="registerpanelinfo.family_name"
+                                ng-pattern="text_validation_regex_pattern"
+                                required/>
+            </label>
+
+            <div ng-show="registerForm.family_name.$dirty && registerForm.family_name.$invalid">
+                <span ng-show="registerForm.family_name.$error.required">Please enter your family_name</span>
+                <span ng-show="registerForm.family_name.$error.pattern">Invalid characters entered</span>
+            </div>
+
+            <br/>
+
+            <button ng-click="register_new_user()" ng-disabled="registerForm.$invalid">Register</button>
+
+        </div>
+
+    </div>
+
+    <div ng-show="registerpanelinfo.section_to_show === 'message_section'">
+
+        <p>section_to_show: {{registerpanelinfo.section_to_show}}</p>
+        <p>registration_outcome: {{registerpanelinfo.registration_outcome}}</p>
+
+        <div ng-if="registerpanelinfo.registration_outcome == 'err_duplicate_email'">
+
+            <p>There is an user with this email {{registerpanelinfo.email}}</p>
+
+            <p>Click close or edit registration</p>
+
+            <button ng-click="registerpanelinfo.section_to_show = 'register_form'">Edit registration</button>
+
+        </div>
+
+        <div ng-if="registerpanelinfo.registration_outcome == 'registration_successful'">
+
+           <p>Registration successful</p>
+           <p>You will get a confirmation email</p>
+
+        </div>
+
+        <div ng-if="registerpanelinfo.registration_outcome == 'error'">
+
+            <p>Something went wrong</p>
+            <p>Click the close button and try again</p>
+
+        </div>
+
+        <button ng-click="registerpanelinfo.show = false">Close</button>
+
+    </div>
+    <!--
+        Middle names: <input type="text" name="middle_names" ng-model="user.middle_names"
+                           ng-pattern="text_validation_regex_pattern"
+                           ng-disabled="!can_edit" required/>
+
+        <div ng-show="realnameForm.middle_names.$dirty && realnameForm.middle_names.$invalid">
+            <span ng-show="realnameForm.middle_names.$error.required">Please enter your middle_names</span>
+            <span ng-show="realnameForm.middle_names.$error.pattern">Invalid characters entered or missing ones (like @)</span>
+        </div>
+
+        <br/>
+
+        Family name: <input type="text" name="family_name" ng-model="user.family_name"
+                             ng-pattern="text_validation_regex_pattern"
+                             ng-disabled="!can_edit" required/>
+
+        <div ng-show="realnameForm.family_name.$dirty && realnameForm.family_name.$invalid">
+            <span ng-show="realnameForm.family_name.$error.required">Please enter your family_name</span>
+            <span ng-show="realnameForm.family_name.$error.pattern">Invalid characters entered or missing ones (like @)</span>
+        </div>
+
+        <br/>
+
+        <-- button ng-click="loginreset()">Reset</button --
+        <button ng-click="update_user_details(user); can_edit = false" ng-disabled="realnameForm.$invalid">Update</button>
+
+        <br/>
+
+    </div -->
+
+    <!-- a ng-href="{{path_of_file_to_download}}" target="_self">File to download</a -->
+
+    <!-- div class="scrollable-body-parent">
+
+        <div id="scrollable-body">
+
+            <span ng-bind-html="programme.body"></span>
+
+        </div>
+
+    </div -->
+
+
+</div>

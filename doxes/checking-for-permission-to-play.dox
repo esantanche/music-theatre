@@ -1,0 +1,113 @@
+/**
+ * @page checkingforpermissiontoplay Checking for permission to play
+ *
+ * @section whatthispageisabout What is this page about
+ *
+ * When users press 'Play' we have to call the rest api URLsKit to see if they
+ * have permission to play the movie or track.
+ *
+ * In this page we explain the process of checking these permissions.
+ *
+ * The methods used to sign urls are also explained.
+ *
+ * @section usinglicensestocheckforpermissions How we use Commerce License to check for permissions
+ *
+ * @subsection tracklicense Permission to play a track
+ *
+ * You have permission to play a track if you own an active license for that track or for the
+ * segment that track belongs to or for the programme that track belongs to.
+ *
+ * The existence of these licenses is check in the function musth_restws_check_for_permission_to_play
+ * @see musth_restws_check_for_permission_to_play
+ *
+ * These licenses are created on order completion by the module Commerce License.
+ *
+ * Precisely the rules:
+ * - Activates licenses of a free order
+ * - Activates licenses of an order
+ *
+ * do the job.
+ *
+ * For a non-free order the licenses are activated on full payment. The licenses are created when the
+ * product is added to the cart but they are inactive.
+ *
+ * Currently the track products are created with a 2 days duration for the license.
+ *
+ * @subsection subscriptionlicense Permission to play on subscription
+ *
+ * If you own a license for a subscription, you can play anything you want.
+ *
+ * We can't use Commerce License directly to create subscription licenses because Commerce License
+ * doesn't support calendar months.
+ *
+ * So we use the Commerce Recurring Framework.
+ *
+ * See: @ref commercerecurringframework
+ *
+ * It works fine. It creates a new order every month on the same day of the month. The order is for
+ * the recurring product that represents a subscription and that product has a license associated.
+ *
+ * This license is a Commerce License license and has a duration of 31 days. If the current month has only
+ * 28, 29 or 30 days these licenses will overlap, but, if the user doesn't cancel his subscription, he will never
+ * notice.
+ *
+ * If the user cancels the subscription, he will get 1, 2 or 3 days extra. We don't care because, by using
+ * licenses, our work simplifies a lot.
+ *
+ * These subscription licenses are checked in the function musth_restws_check_for_subscriptions
+ * @see musth_restws_check_for_subscriptions
+ *
+ * @section signingurls How we sign urls
+ *
+ * @todo To be completed
+ *
+ * @section apesmakingrule The apes-making rule
+ *
+ * @attention This section has not been implemented. Currently, we haven't apes to check for permissions.
+ *
+ * @subsection apesmakingrulewhy Why we have to make apes to check for permissions
+ *
+ * We create apes to check for permission to play a programme first because in case
+ * of monthly subscription we can't use the module Commerce License and so there will
+ * be no licenses to check.
+ *
+ * When we use licenses, apes are useful to speed up the check.
+ *
+ * @subsection whentheruleistriggered When the rule is triggered
+ *
+ * We create a rule called 'Create the play permits for the checking-out order'
+ *
+ * This rule is triggered by the event 'Completing the checkout process' and has weight 8
+ * so that we are sure that it's run only after the many other rules that are run on
+ * order completion
+ *
+ * We suppose that if an order is completing it's checkout, it means that the payment has been done
+ *
+ * You will see that the commerce rule that sets a license as active doesn't set the expiry date.
+ *
+ * When a rule sets a license as active, the start and expiration times of the license are set
+ * when the license is saved. This is why you don't see the expiration time in the rule that sets
+ * the license active
+ *
+ * So, when an order is paid in full the expiration date is calculated and the license is set as
+ * active. The same when the order completes checkout if it's a free order.
+ *
+ * @subsection whattheseapesarelike What these apes are like
+ *
+ * The apes that will be used to check for permission to play will be called Play Permits.
+ *
+ * So, on order completion play permits are created to allow the
+ * customer to play the movies or tracks they bought.
+ *
+ * What precisely happens is that the rule 'Create the play permits for the checking-out order'
+ * checks if the checking-out order has been fully paid and creates the play permits using the information
+ * found in the licenses that have been activated for that order
+ *
+ * A play permit contains:
+ * - expiration timestamp
+ * - the type of subscription for subscriptions - this could be extracted from the product SKU
+ * - catalogue number extracted from the track product SKU
+ * - user id of the user to whom the play permit has been granted
+ *
+ */
+

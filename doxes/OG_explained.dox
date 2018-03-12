@@ -1,0 +1,134 @@
+/**
+ * @page ogexplained OG explained
+ *
+ * @section ogwhatis What is OG?
+ *
+ * OG stands for Organic Groups and is the Drupal module we use to implement group functions.
+ *
+ * @section ourgroups Our groups
+ *
+ * We have one only type of groups. Any registered user can create or join a group.
+ * Freshly created groups need to be approved by editors.
+ *
+ * Groups have a title and a description. Users can search for a group to join by browsing
+ * group titles or by searching them by giving at least three letters of the title.
+ *
+ * Groups contain posts and posts can be commented.
+ *
+ * A group's creator is also its administrator. There are no moderators.
+ *
+ * @section groupfunctions Group functions
+ *
+ * @subsection groupfunctionsquery Querying groups
+ *
+ * Users will be able to browse and search groups. They want to list all existing groups
+ * to find one they want to join.
+ *
+ * The group list will show group titles and descriptions. Users may be able to choose
+ * the group they want to join just by reading title and description.
+ *
+ * They can also click on the group to get to its page where they can read the group's posts and
+ * comments to posts. On the group page there will be the group members list.
+ *
+ * The latter can be searched for example to find a specific user. Users may want to see if their friends
+ * are already in the group.
+ *
+ * Currently the list of a group's members is provided, but can't be searched.
+ *
+ * It's possible to search for groups by giving at least three characters of their title.
+ *
+ * @subsection groupfunctionscreate Creating groups
+ *
+ * Any logged-in user can create a group. They have to provide a title and a description.
+ * The title has to be at least three characters long.
+ *
+ * The creator of a group is automatically given administrator privileges.
+ *
+ * Groups are created unpublished. Editors have to review new groups and publish them.
+ *
+ * @subsection groupfunctionsupdate Updating groups
+ *
+ * A group admin can change its title and description.
+ *
+ * @subsection groupfunctionsdelete Deleting groups
+ *
+ * A group admin can delete it.
+ *
+ * @section postfunctions Post functions
+ *
+ * Groups have posts. Group members can create posts associated to the group.
+ *
+ * A post has no title. It has a body only. No html code is allowed in a post's body.
+ *
+ * It's important to remember that posts come with the number of the comments that have been
+ * created about them. Users have to click somewhere to show a post's comments, they are not
+ * loaded automatically, and the number of comments helps with deciding if to see them or not.
+ * If that number is zero, the button to show comments is not displayed at all.
+ *
+ * Of course each post shows its author's name.
+ *
+ * @subsection postfunctionsquery Querying posts
+ *
+ * Users can list all posts in a group beginning with the newest ones.
+ * For technical reasons, both published and unpublished posts are sent from the server
+ * to the client, but the body of unpublished posts is removed.
+ *
+ * Then the client code decides what to do with unpublished posts, if to show their title, if not to
+ * show them at all, etc.
+ *
+ * @subsection postfunctionscreate Creating posts
+ *
+ * A group's members can create posts. If Mollom finds that the post is spammy, we don't publish it.
+ * An editor will have to check the post and decide if to publish it or not.
+ *
+ * Mollom is the online service we use to check if any text is spam or not.
+ *
+ * @subsection postfunctionsupdate Updating posts
+ *
+ * A post's body can be edited. It has to be done in place, where the post is displayed in the context
+ * of its group. There are no functions to list a user's posts, so we can't list all posts created by a user
+ * for them to edit the posts regardless of the group.
+ *
+ * If, after editing, the post is found to be spammy, it's unpublished. Editors will have to decide if to
+ * publish it again or not.
+ *
+ * A post's author can edit it, as well as the group admin.
+ *
+ * @subsection postfunctionsdelete Deleting posts
+ *
+ * A post's author can delete it. The group admin can delete it as well.
+ *
+ * @section userfunctions User functions
+ *
+ * @subsection userfunctionsprofile User profile and groups
+ *
+ * The user profile will show the list of groups the user is a member of.
+ * This groups list will include group title and the role the user has in
+ * the group, regular member or admin.
+ *
+ * @subsection userfunctionsmembers Group members
+ *
+ * It's possible to list all members of a group. This list will show up in the group page.
+ *
+ * @subsection userfunctionsjoin Joining a group
+ *
+ * Any registered user can join a group. There is no need for authorization.
+ * From a group page, a user can just click 'join' and they are in.
+ *
+ * They can also leave the group of course by clicking 'leave' in the group page.
+ *
+ * For now there is no way any other user can force a user to join or leave.
+ * If the group admin wants to prevent a user from joining, they have to send an email to
+ * editors for them to set the user membership as 'blocked'
+ *
+ * @section commentfunctions Comment functions
+ *
+ * Comments show up below a post. They are created and edited in place. No function is available to
+ * edit comments created by the same author about many posts.
+ *
+ * Comments are displayed on demand. They don't show up automatically.
+ *
+ * Only group members can comment on a post belonging to the group.
+ *
+ * The group admin can edit and delete any comment in the group.
+ */

@@ -1,0 +1,69 @@
+/**
+ * @page howwedocumentangular How we produce html documentation for Angular code
+ *
+ * AngularJS documentation follows Docular conventions.
+ *
+ * Docular is a package that generates html documentation from comments.
+ *
+ * It has been developed specifically for AngularJS. We use it instead of Doxygen because
+ * the latter has poor JavaScript support.
+ *
+ * @section howtoinstalldocular How to install Docular
+ *
+ * The installation procedure is here: http://grunt-docular.com/documentation/docular/docularinstall/index
+ *
+ * Node.js and grunt are required.
+ *
+ * This is the most recent installation procedure:
+ *
+ *     go here: http://nodejs.org/
+ *     download Node.js (node-v0.10.36.tar.gz)
+ *     esantanche@luna:/vol/WORKnARCH/Temp/Nodejs/node-v0.10.36$ ./configure
+ *     esantanche@luna:/vol/WORKnARCH/Temp/Nodejs/node-v0.10.36$ make
+ *     esantanche@luna:/vol/WORKnARCH/Temp/Nodejs/node-v0.10.36$ sudo make install
+ *     esantanche@luna:/vol/WORKnARCH/SwProjects/musictheatre/production/frontends/angular/app$ sudow npm install grunt-docular
+ *     esantanche@luna:/vol/WORKnARCH/SwProjects/musictheatre/production/frontends/angular/app$ sudo npm install -g grunt-cli
+ *     esantanche@luna:/vol/WORKnARCH/SwProjects/musictheatre/production/frontends/angular/app$ sudow npm install docular
+ *
+ * You will have to customise these files:
+ *
+ * * /vol/WORKnARCH/SwProjects/musictheatre/production/frontends/angular/app/Gruntfile.js
+ * * /vol/WORKnARCH/SwProjects/musictheatre/production/frontends/angular/app/package.json
+ *
+ * @section howtogeneratedoculardocs How to generate Docular documentation
+ *
+ * To generate Docular documentation you use grunt. You run it from the app folder.
+ *
+ *     cd /vol/WORKnARCH/SwProjects/musictheatre/production/frontends/angular/app
+ *     sudo -u www-data grunt
+ *
+ * Folders will be different for each installation.
+ *
+ * Once the documentation generated, you start a grunt server that will serve it.
+ *
+ *     sudo -u www-data grunt docularserver &
+ *
+ * You need to point a browser to that server.
+ *
+ *     iceweasel http://localhost:8888 &
+ *
+ * All this is automated by a script called generate-angular-doc-with-docular-luna.sh.
+ * This script is customised to work on luna, Emanuele's computer. You find the script in the
+ * admin-script repository.
+ *
+ * @section tagsdocularuses Tags Docular uses
+ *
+ * When writing comments in AngularJS code, you use specialised tags like \@ngdoc, \@restrict, \@example, etc.
+ * You find them here: https://github.com/angular/angular.js/wiki/Writing-AngularJS-Documentation
+ *
+ * There are special tags used to document directives, filters, controllers ans services.
+ *
+ * @section docularref Docular reference
+ *
+ * Reference information about Docular:
+ *
+ * * http://grunt-docular.com/ How to install and use Doculare
+ * * https://github.com/Vertafore/grunt-docular/ How to configure
+ * * https://github.com/angular/angular.js AngularJS source code documented by using the tags above and useful
+ * as example
+ */

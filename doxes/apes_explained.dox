@@ -1,0 +1,75 @@
+/**
+ * @page apesexplained Apes explained
+ *
+ * @todo library apes are missing here, and partners too
+ *
+ * @section ape What is an ape?
+ *
+ * Ape stands for auto-populated entity.
+ *
+ * @section taxonomyapes Taxonomy apes
+ *
+ * * These apes contain the taxonomies to be sent to the tagring.
+ * * We are talking here about the taxonomies that still exist in the database.
+ * * They are: Genre, Form, Period, Instrument, Film Type
+ * * Taxonomies can be hierarchical. All of them
+ *
+ * @section extaxonomyapes Ex-taxonomy apes
+ *
+ * * The taxonomies: Composer, Conductor, Performer, Ensemble and Venue have been replaced by the credits list
+ * that is the field field_cast_crew_credits in programme and similar in tracks.
+ * * Apes are created starting from the field field_cast_crew_credits in programmes.
+ * * There is no problem of hierarchy.
+ *
+ * @section whatthetagringexpects What the tagring expects
+ *
+ * The tagring needs:
+ * - label: the taxonomy term
+ * - tid: the taxonomy id
+ * - count: number of programmes where the term appears
+ * - depth: 0 if this term has no parents; 1 if this term has a parent
+ * - parent: the term id of the parent (maybe the tagring doesn't use this field, but we have to send it anyway)
+ *
+ * With our new taxonomies we use tids for the taxonomies that still exist and nids for the credit-list
+ * made-up taxonomies.
+ *
+ * @section structureofapes Structure of an ape
+ *
+ * There are two types of apes:
+ * - Apes from taxonomies
+ * - Apes from the credit list
+ *
+ * @subsection structureoftaxonomyapes Structure of a taxonomy ape
+ *
+ * Taxonomy apes are about: Genre, Form, Period, Instrument, Film type
+ *
+ * A taxonomy ape has:
+ * - label: the taxonomy term
+ * - tid: the taxonomy id
+ * - count: number of programmes where the term appears
+ * - depth: 0 if this term has no parents; 1 if this term has a parent
+ * - parent: the term id of the parent (maybe the tagring doesn't use this field, but we have to send it anyway)
+ *
+ * @subsection structureofcreditapes Structure of a credit ape
+ *
+ * Credit apes are about: Composer, Conductor, Performer, Ensemble, Venue
+ *
+ * A credit ape has:
+ * - label: the name of the person or organization
+ * - tid: nid of the person or organization
+ * - count: number of programmes where the person or organization appears
+ * - depth: 0
+ * - parent: 0
+ *
+ * @section apesandmediatype Apes and media type
+ *
+ * We added the field field_media_type to apes because we need to differentiate between
+ * 'video' apes and 'audio' apes.
+ *
+ * * 'video' apes are related to video programmes and used by the tagring.
+ * * 'audio' apes are related to audio programmes (CDs) and used in the shop.
+ *
+ * The tagring gets 'video' apes only, whilst the REST resource Programme sends to Angular
+ * 'video' or 'audio' apes as requested.
+ *
+ */

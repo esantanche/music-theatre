@@ -1,0 +1,91 @@
+/**
+ * @page userregistrationprocesses User Registration Processes
+ *
+ * @section introuserregistrationprocesses Introduction
+ *
+ * Users may register themselves to be able to join and participate to groups.
+ * They may be registered automatically when they buy something.
+ *
+ * @section selfregistration Users can register themselves
+ *
+ * This registration is implemented by using Drupal standard registration form.
+ *
+ * @section autoregistration Automatic registration
+ *
+ * This registration happens when the Commerce module completes an order.
+ *
+ * @section facebookregistration Facebook registration
+ *
+ * User accounts can be created by logging in to Facebook or other social networks.
+ *
+ * @section drupalstandardregistration Drupal standard registration
+ *
+ * To start the registration process an email is required.
+ *
+ * Drupal uses the PHP function filter_var with the FILTER_VALIDATE_EMAIL filter.
+ * This filter applies RFC822 rules to the email address. It looks like the filter's behaviour
+ * changes with PHP version. But this doesn't matter. Drupal it's using this filter and it will
+ * reject email addresses accordingly.
+ *
+ * The module "Email Registration" will create a Drupal username for the user from the email.
+ * It will use the local part of the email address and will add an underscore and the drupal
+ * user id.
+ *
+ * A Drupal user name has to pass this regex:
+ *
+ *     /[^\x{80}-\x{F7} a-z0-9@_.\'-]/i
+ *
+ * This means that there might be email addresses whose local part doesn't fit this regex and
+ * can't be used as drupal usernames.
+ *
+ * In this case the module "Email Registration" will clean up the local part of the email address
+ * so that it is compatible with Drupal usernames rules.
+ *
+ * The module will remove any illegal character and any whitespace.
+ *
+ * The way the module "Email Registration" works has been figured out by analysing its code.
+ *
+ * @section autoregistrationonorder Automatic registration on order
+ *
+ * When an anonymous user starts the checkout process, their email address is collected.
+ *
+ * Angular validates the email address by using this regex:
+ *
+ *     /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+ *
+ * Many characters are discarded.
+ *
+ * The Commerce modules will create a new user account from the provided email.
+ *
+ * It will be the same as the local part of the email address with illegal characters removed and other
+ * processing done so that the created username complies with Drupal requirements.
+ *
+ * If the same username already exists, a number is added to make the username unique.
+ *
+ * This works differently from the usernames created by the "Email Registration" module.
+ *
+ * We may end up with usernames that, even after cleaning up, are different from the local part of the
+ * email address users give and that have additional numbers attached to make them unique.
+ *
+ * Users can always enter their real name to fix this sort of problems.
+ *
+ * @section accountscreatedbyhybridauth Accounts created by Hybridauth
+ *
+ * The module Hybridauth can create Drupal accounts from Facebook ones.
+ * These accounts may have completely different usernames from the ones above.
+ *
+ * @section userregistrationprocessesconclusion Conclusion
+ *
+ * User names created when registering or when Commerce modules automatically create user accounts or in other ways
+ * may end up looking weird.
+ *
+ * And yet they may show up in the frontend if the user doesn't choose a real name.
+ *
+ * For now the solution is that users can set their real name and control what shows up as their name in the front end.
+ *
+ * @section userregistrationprocessesref Reference articles
+ *
+ * * https://drupalcommerce.org/blog/16726/updating-drupal-commerce-created-usernames
+ * * https://www.drupal.org/project/commerce_username_update
+ *
+ */

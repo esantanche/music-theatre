@@ -1,0 +1,187 @@
+<div id="shopview">
+
+    THIS VIEW IS OBSOLETE! DELETE IT!!
+
+    <div ng-include src="'/includes/header.html'"></div>
+
+    <div class="shopview-wrapper">
+
+        <!-- div class="vertical-left-menu-button" ng-class="name_of_class" ng-click="button_open = !button_open"
+             ng-mouseover="name_of_class = 'vertical-left-menu-parent-' + (button_open ? 'open' : 'closed') + '-mouseover'"
+             ng-mouseout="name_of_class = 'vertical-left-menu-parent-' + (button_open ? 'open' : 'closed') + '-mouseout'">this is the one
+        </div -->
+
+        <div class="tagring-pane-container">
+
+            <div class="omega-pane-30-of-30">
+
+                <span ng-repeat="Initial in Initials">
+                    <button ng-click="ChangeInitial(Initial)">{{ Initial == '' ? 'all' : Initial }}</button>
+                </span>
+
+            </div>
+
+            <!--  class="track-row-pane" -->
+
+            <div class="non-omega-pane-5-of-30">
+
+                <div ng-repeat="Type in Types">
+
+                    <div class="vertical-left-menu-button" ng-class="calculate_class_name_for_search_term_type(Type)"
+                         ng-click="search_term_type_menu_info.selected_type = Type; currentType = Type; OnTypeChanged()"
+                         ng-mouseover="search_term_type_menu_info.mouseover_on_type = Type"
+                         ng-mouseout="search_term_type_menu_info.mouseover_on_type = 'none'">
+
+                        <div class="left-menu-text-not-indented bold-text"
+                             ng-class="{ 'red-text': search_term_type_menu_info.selected_type == Type }">
+                            {{Type | uppercase}}
+                        </div>
+                    </div>
+
+                    <div ng-if="search_term_type_menu_info.selected_type == Type">
+
+                        <div ng-repeat="search_term in search_terms">
+
+                            <div class="vertical-left-menu-button"
+                                 ng-class="calculate_class_name_for_search_term(search_term)"
+                                 ng-click="search_term_type_menu_info.currentSearchTerm = search_term; OnSearchTermChanged()"
+                                 ng-mouseover="search_term_type_menu_info.mouseover_on_search_term = search_term"
+                                 ng-mouseout="search_term_type_menu_info.mouseover_on_search_term = null">
+
+                                <p ng-class="{ 'left-menu-text-not-indented bold-text': search_term.hierarchy_depth == 0,
+                                       'left-menu-text-indented': search_term.hierarchy_depth == 1,
+                                       'red-text': search_term_type_menu_info.currentSearchTerm == search_term }">
+
+                                    {{search_term.label}}
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <!-- parent-no-children-mouseover.png
+                        ng-class="calculate_class_name_for_search_term_type(Type)"
+                        p ng-repeat="search_term in search_terms">{{search_term.label}}</p -->
+
+                        <!-- select data-ng-model="currentSearchTerm"
+                                data-ng-options="search_term.label for search_term in search_terms"
+                                ng-change="OnSearchTermChanged()"></select -->
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="omega-pane-25-of-30">
+
+                <!-- select data-ng-model="currentType"
+                        data-ng-options="Type for Type in Types"
+                        ng-change="OnTypeChanged()"></select -->
+
+                <!-- select data-ng-model="currentSearchTerm"
+                        data-ng-options="search_term.label for search_term in search_terms"
+                        ng-change="OnSearchTermChanged()"></select -->
+
+                <!-- select data-ng-model="currentInitial"
+                        data-ng-options="Initial for Initial in Initials"
+                        ng-change="OnInitialChanged()"></select -->
+
+                Currently selected term: {{search_term_type_menu_info.currentSearchTerm.label}}
+
+                <table>
+                    <tr ng-repeat="programme in filtered_programmes = (programmes | filter:programmeFirstLetterPredicateFunction)">
+
+                        <td><img ng-src="{{programme.summary_panel_image}}"></td>
+                        <td>{{programme.summary_panel_image}}</td>
+
+                        <td>{{programme.nid}}</td>
+                        <td>{{programme.display_title}}</td>
+                        <td>{{programme.display_sub_title}}</td>
+                        <td>{{programme.system_title}}</td>
+                        <td>
+                            <button ng-click="buy_programme_or_track(programme, null, false)">Buy down</button>
+                        </td>
+                        <td>
+                            <button ng-click="buy_programme_or_track(programme, null, true)">Buy shipping</button>
+                        </td>
+
+                        <!-- <ul>
+                            <li ng-repeat="credit_element in programme.credits_elements">
+                                {{credit_element.label}} - {{credit_element.role_title}}
+                            </li> | filter:currentInitial:programmeFirstLetterPredicateFunction
+                            <td>{{programme.summary_panel_image}} </td>
+                            ng-repeat="item in filtered = (items | filter:filterExpr)"
+                        </ul> -->
+
+                    </tr>
+                </table>
+
+                <div ng-if="filtered_programmes.length == 0">
+                    No programmes to show, please choose differently.
+                </div>
+
+            </div>
+
+            <!-- button ng-click="button_open = !button_open; name_of_class = 'vertical-left-menu-parent-' +
+            (button_open ? 'open' : 'closed') + '-mouseout'">Open/close</button -->
+
+            <!-- div
+                 ng-mouseover="mouse_over_class = true"
+                 ng-mouseout="mouse_over_class = false">
+
+                vertical-left-menu-parent-closed-mouseout
+
+                <div class="vertical-left-menu-button" ng-class="{'vertical-left-menu-parent-closed-mouseover': mouse_over_class,
+                                                                   'vertical-left-menu-parent-closed-mouseout': !mouse_over_class}">parent closed over or out</div>
+            </div -->
+
+        </div>
+
+</div>
+
+
+    <hr>
+
+Debug info pane
+
+<ul>
+    <li>userid: {{user.uid}}</li>
+    <li>username: {{user.name}}</li>
+    <li>userlanguage: {{user.language}}</li>
+</ul>
+
+<ul>
+    <li ng-repeat="search_term in search_terms">
+
+        {{search_term.type}},
+        {{search_term.eid}},
+        {{search_term.label}},
+        {{search_term.tid}},
+        {{search_term.nid}},
+        {{search_term.programmes_count}},
+        order: {{search_term.order}},
+        hierarchy_depth: {{search_term.hierarchy_depth}},
+        parent_tid: {{search_term.parent_tid}},
+        {{search_term.media_type}}
+
+    </li>
+</ul>
+
+
+    <!-- table>
+
+        <tr ng-repeat="track in programme.tracks">
+
+            <td>{{track.tid}}</td>
+            <td>{{track.title}}</td>
+            <td>seg {{track.segment_no}}</td>
+            <td>tra {{track.track_no}}</td>
+            <td>{{track.time_out - track.time_in | date: 'H:mm:ss'}}</td>
+            <td>
+                <button ng-click="buy_programme_or_track(programme, track)">Buy track</button>
+            </td>
+
+        </tr>
+
+    </table -->

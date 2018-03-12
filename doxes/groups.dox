@@ -1,0 +1,37 @@
+/**
+ * @defgroup musthrules Musth Rules
+ *
+ * Group that includes the files in the musth_rules module where all rules are defined
+ */
+
+/**
+ * @defgroup musthamfservice Musth AMF Service
+ *
+ * Group that includes the files in the musth_amf_service module where there are all
+ * the apis called by the tagring
+ */
+
+/**
+ * @defgroup musthrestwsservice Musth RESTws service
+ *
+ * Group that includes the files in the musth_amf_service module where there are all
+ * the apis called by the tagring
+ */
+
+/**
+* @defgroup musthhelperfunctions Musth Helper Functions
+*
+* Group that includes functions that are used by many Musth modules
+*/
+
+/**
+* @defgroup musthlicense Musth License
+*
+* Group that is about our custom Commerce License, which is actually very basic
+*/
+
+/**
+* @defgroup scrollbar Scrollbar files
+*
+* The files used to run the scrollbars
+*/

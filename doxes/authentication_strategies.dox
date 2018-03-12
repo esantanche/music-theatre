@@ -1,0 +1,71 @@
+/**
+ * @page authstrategies Authentication strategies
+ *
+ * This page is about how we authenticate users. Our Drupal server needs to know who is
+ * using the application when users ask for access to some resources.
+ *
+ * @section restauth Authenticating users when using REST apis
+ *
+ * There are two ways to authenticate users when calling REST apis.
+ *
+ * The first one is by using http basic authentication. The user is authenticated at each call.
+ * The RESTws module opens and closes a session for each call.
+ *
+ * We still use this authentication method when testing REST apis by using SoapUI.
+ *
+ * A second way is to open a session by using Drupal standard login form. This ends up leaving on the client
+ * a cookie that the browser will subsequently send every time it performs a REST call.
+ *
+ * The cookie is removed when the session is closed by using Drupal standard logout form.
+ *
+ * In this case the RESTws module requires an additional piece of information.
+ *
+ * You have to ask the module for a token that you will have to send every time you call any REST api.
+ *
+ * @section restfulserver Restful servers and authentication
+ *
+ * We are attempting to build a fully restful server.
+ *
+ * This is not the place where we discuss about our server being restful or not.
+ *
+ * There is another document for that (See: @ref whatrestfulserveris).
+ *
+ * Here we want to discuss how our authentication strategies affect our server's restfulness.
+ *
+ * @section authandrestfulness Authentication and restfulness
+ *
+ * We have two authentication strategies. Http basic authentication and session-based authentication.
+ *
+ * Let's see how these two strategies can affect our server restfulness.
+ *
+ * A way to make a server not restful is to store some information that depends on the session.
+ *
+ * If this information is used to calculate the rest call result, the rest api is not restful.
+ *
+ * It isn't because results are session dependent instead of depending on the call's parameters only.
+ *
+ * A restful call produces results that depend on the call's parameters only.
+ *
+ * @subsection basicauthcase Basic authentication case
+ *
+ * Sessions are opened and closed at each call. Nothing session depend is saved from a call to the next.
+ *
+ * Http basic authentication won't make the server not restful at least as far as authentication and sessions
+ * are concerned.
+ *
+ * @subsection sessionauthcase Session authentication case
+ *
+ * In this case a session is opened and stays open through rest calls.
+ *
+ * There is the possibility that rest apis store information in sessions that they use subsequently.
+ *
+ * REST apis are supposed to disclose their use of session information when documenting their own restfulness.
+ *
+ * Example: imagine that a rest api stores in the session the number of results the client wants in a page.
+ *
+ * This makes the rest api not restful because results will be different from call to call even tough the call's
+ * parameters are still the same.
+ *
+ * Session information is used as implicit parameter, thing that should never happen in a restful server.
+ *
+ */

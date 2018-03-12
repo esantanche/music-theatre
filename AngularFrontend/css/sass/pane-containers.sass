@@ -1,0 +1,125 @@
+.pane-container
+  +container
+  +border-box-sizing
+  //+susy-grid-background // (use for debugging)
+
+.centered-pane-container
+  @extend .pane-container
+  position: absolute   //   position: absolute
+  left: 50%
+  //margin-left: auto
+  //margin-right: auto
+  //margin-left: 50%
+  margin-left: -$half-grid-width
+
+.tagring-pane-container
+  @extend .centered-pane-container
+  top: $header-height
+  background: transparent
+
+.header-pane-container
+  @extend .centered-pane-container
+  background: url("../../images/menu-bg.png") center no-repeat
+  padding-left: 200px
+  padding-right: 200px
+  margin-left: -$half-grid-width - 200
+  height: $header-height
+  z-index: $z-index-layer-header-menu
+
+.tabs-horizontal-menu-pane-container
+  @extend .centered-pane-container
+  //top: 100px
+  margin-top: $margin-between-header-and-tabs
+  height: $tabs-horizontal-menu-pane-container-height
+  background: url("/images/tabs-horizontal-menu-slanting-lines.png") repeat-x
+  z-index: 0 // @todo make variable
+  vertical-align: baseline
+
+.infopanel-pane-container
+  @extend .centered-pane-container
+  top: 409px
+  height: $info-panel-height
+  z-index: $z-index-layer-infopanel
+  background: url("../../images/bg_panelcontent.jpg") repeat-x #ffffff
+  overflow-x: hidden
+  overflow-y: hidden
+
+.userprofileview-pane-container
+  @extend .centered-pane-container
+  top: $header-height + $tabs-horizontal-menu-pane-container-height + $margin-between-header-and-tabs
+  height: $user-profile-view-main-pane-container-height // @todo fix me and make a parameter
+  //background: url("../../images/bg_panelcontent.jpg") repeat-x #ffffff
+  background: url("/images/top-shadow-1040.png") repeat-x
+  overflow-x: hidden
+  overflow-y: hidden
+
+.socialview-pane-container
+  @extend .centered-pane-container
+  top: $header-height + $tabs-horizontal-menu-pane-container-height + $margin-between-header-and-tabs
+  height: $social-view-main-pane-container-height
+  z-index: 100 // @todo variable here
+  background: url("/images/top-shadow-1040.png") repeat-x
+  //background: url("../../images/bg_panelcontent.jpg") repeat-x #ffffff
+  overflow-x: hidden
+  overflow-y: hidden
+
+.near-top-full-grid-width-pane-container
+  @extend .centered-pane-container
+  z-index: $z-index-layer-near-top-pane-container
+  +background-image(linear-gradient(white, #bbb))
+  overflow: hidden
+
+.loginpanel-pane-container
+  @extend .near-top-full-grid-width-pane-container
+  top: 150px
+  height: $login-panel-height
+
+.new-review-pane-container
+  @extend .centered-pane-container
+  height: $info-panel-height
+  top: 0
+  z-index: $z-index-layer-new-review
+  background: url("../../images/bg_panelcontent.jpg") repeat-x #ffffff
+  overflow-x: hidden
+  overflow-y: hidden
+
+.shoppingorderpanel-pane-container
+  @extend .centered-pane-container
+  top: 200px
+  background: white
+  z-index: 1000  // @todo make a parameter
+  overflow: hidden
+  +background-image(linear-gradient(white, #bbb))
+
+.userpanel-pane-container
+  @extend .centered-pane-container
+  top: 100px
+  background: #ffffff
+  z-index: 2000 // @todo make a parameter
+
+.registerpanel-pane-container
+  @extend .centered-pane-container
+  top: 300px
+  background: #ffffff
+  z-index: 3000 // @todo make a parameter
+
+.footer-pane-container
+  @extend .centered-pane-container
+  //top: $header-height + $tagview-height
+  //height: $footer-height
+  //z-index: 1000
+
+.footer-panel-pane-container
+  @extend .centered-pane-container
+  z-index: 2000
+  height: 800px
+  background: white
+  //+background-image(linear-gradient(white, #bbb))
+
+.footer-panel-contactus-pane-container
+  @extend .centered-pane-container
+  top: 150px
+  //background: white
+  z-index: 1000  // @todo make a parameter
+  overflow: hidden
+  +background-image(linear-gradient(white, #bbb))

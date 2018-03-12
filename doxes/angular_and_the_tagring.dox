@@ -1,0 +1,55 @@
+/**
+ * @page angularandthetagring Angular and the tagring
+ *
+ * @section howangularloadsviews How Angular loads views
+ *
+ * At any time the url changes, Angular parses it and attempts a match with the
+ * url patterns defined by the $routeProvider.when instructions.
+ *
+ * You find them in the file frontends/angular/app/js/app.js.
+ *
+ * For Angular to redo the match, the URL doesn't have to change pattern.
+ * it's sufficient that the content of the url changes.
+ *
+ * If the URL is /en/v/26/Donizetti-s-Don-Pasquale-at-Ravenna-Festival,
+ * this new URL will trigger a reload of the view and a new match:
+ * /en/v/26/Donizetti-s-Don-Pasquale-at-Ravenna-Festival-new
+ *
+ * These two paths will trigger the choice of the same view, but the view will
+ * be reloaded anyway.
+ *
+ * This because the parameter :programme changes from "Donizetti-s-Don-Pasquale-at-Ravenna-Festival"
+ * to "Donizetti-s-Don-Pasquale-at-Ravenna-Festival-new" and Angular has to tell the controller
+ * about this change.
+ *
+ * To do this Angular has to reinitialise the controller.
+ *
+ * The page is not reloaded, but the view is, and the view is 80% of a page.
+ *
+ * @section whywemovedthetagring Why we moved the tagring
+ *
+ * The tagring was inside a view, the tag view (frontends/angular/app/partials/tagview.html).
+ *
+ * Every time the url changed, the view was destroyed and reloaded and the tagring was
+ * destroyed too.
+ *
+ * This meant that the tagring lost its status and the user had to redo any search he was doing
+ * from scratch.
+ *
+ * With the tagring outside the view, there is no reloading and no reinitialisation for it.
+ *
+ * @section howweinitialisethetagring How we initialise the tagring
+ *
+ * We initialise the tagring from an Angular service called Tagringhelper and defined here:
+ * frontends/angular/app/js/services/tagringhelperService.js
+ *
+ * Since a service is initialised only once when the application starts,
+ * we are not bound to reinitialise the tagring at every time the view is reloaded.
+ *
+ * Controllers can ask the Tagringhelper service for a reinitialisation, but the latter can ignore the
+ * request.
+ *
+ * In fact, the Tagringhelper service reinitialise the tagring only if there a change between
+ * audio tagring and video tagring.
+ *
+ */

@@ -1,0 +1,25 @@
+.link
+  cursor: pointer
+
+// @todo these links are temporary and have to be refactored
+
+// @todo well, black-link is no longer black, I moved the colour elsewhere
+// @todo there should be cursor pointer here, isn't it?
+// @todo this is strange case of elements that are buttons and links at the same time
+.black-link
+  @extend .link
+  display: block
+  box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.4), inset -2px -2px 2px 0px rgba(255, 255, 255, 0.7)
+  +border-radius(10px)
+  padding: 3px 10px // In this case we consider padding as part of the element and not as positioning
+  //color: black
+  //&:visited
+  //  color: black
+  &:hover
+    color: red
+    text-decoration: underline // @todo this is not so good, it should be in a text class
+
+// Used in reviews list in info panel
+.blue-link
+  @extend .link
+  +hover-link
